@@ -1,179 +1,119 @@
-import { config } from 'dotenv';
+import { config as loadEnv } from 'dotenv';
 import { fileURLToPath } from 'node:url';
-config({ path: fileURLToPath(new URL('../../.env', import.meta.url)), quiet: true });
-
-import { existsSync, readFileSync } from 'node:fs';
-import path from 'node:path';
-import { sendSlackAlert, pingHealthcheck, buildHealthcheckUrl, withRetry, normalizeEntityId } from '@botarmy/core';
-import {
-  openDb, startRun, finishRun, lastAcceptedSnapshot, insertSnapshot,
-  loadActiveSponsors, applyRegister, listPendingDiffs, markDiffsNotified,
-} from './db.js';
-import { discoverRegisterCsv, downloadCsv, parseRegister, computeDelta, normalizeName } from './harvester.js';
-import { buildDigestPayload, sendDigest } from './digest.js';
-
-const BOT_DIR = path.dirname(fileURLToPath(import.meta.url));
-const DRY_RUN = process.argv.includes('--dry-run');
-
-const log = {
-  info: (m) => console.log(`${new Date().toISOString()} INFO  ${m}`),
-  warn: (m) => console.warn(`${new Date().toISOString()} WARN  ${m}`),
-  error: (m) => console.error(`${new Date().toISOString()} ERROR ${m}`),
-};
-
-/** Read env lazily: static imports run before the dotenv call above. */
-function loadSettings(env = process.env) {
-  const resolve = (p) => (path.isAbsolute(p) ? p : path.join(BOT_DIR, p));
-  return {
-    dbPath: resolve(env.SLS_DB_PATH || 'data/sponsor-licence-scout.db'),
-    watchlistPath: resolve(env.SLS_WATCHLIST || 'watchlist.json'),
-    slackWebhookUrl: env.SLS_SLACK_WEBHOOK_URL || env.SLACK_WEBHOOK_URL || '',
-    healthchecksBaseUrl: env.HEALTHCHECKS_BASE_URL || '',
-    healthcheckUuid: env.SLS_HC_UUID || '',
-    // A register that shrinks by more than this in one day is treated as a bad download.
-    maxDropRatio: Number(env.SLS_MAX_DROP_RATIO ?? 0.1),
-    minOrgs: Number(env.SLS_MIN_ORGS ?? 1000),
-  };
-}
+loadEnv({ path: fileURLToPath(new URL('../../.env', import.meta.url)), quiet: true });
 
 /**
- * Optional watchlist of companies to star in the digest. The register has no
- * company number, so matching is by normalised name; the Companies House
- * number, if given, is normalised into a spine ID and stored on matching
- * diffs so other bots can join on it.
+ * B1 Sponsor Licence Scout — entry point.
+ *
+ *   npm start -w bots/sponsor-licence-scout
+ *   npm run dry-run -w bots/sponsor-licence-scout      # zero writes: no DB files, no Slack, no pings
+ *   node bots/sponsor-licence-scout/index.js --from-snapshot 42   # re-process a stored snapshot
  */
-function loadWatchlist(watchlistPath) {
-  if (!existsSync(watchlistPath)) return { additionRoutes: [], match: () => null };
-  const raw = JSON.parse(readFileSync(watchlistPath, 'utf8'));
-  const byName = new Map();
-  for (const c of raw.companies ?? []) {
-    let entityId = null;
-    if (c.registrationNumber) {
-      try {
-        entityId = normalizeEntityId(c.registrationNumber, 'UK');
-      } catch (err) {
-        log.warn(`Watchlist "${c.name}": ${err.message}`);
-      }
-    }
-    for (const label of [c.name, ...(c.aliases ?? [])]) byName.set(normalizeName(label), { name: c.name, entityId });
-  }
+import { existsSync, readFileSync } from 'node:fs';
+import { config, db as coreDb, health, logger, slack, snapshot, spine as coreSpine } from '@botarmy/core';
+import { harvest, SOURCE } from './harvest.js';
+import { AnomalyError, BOT, buildWatchMatcher, markNotified, pendingDiffs, processSnapshot } from './process.js';
+import { buildAnomalyAlert, buildDigest } from './digest.js';
+
+const args = process.argv.slice(2);
+const DRY_RUN = args.includes('--dry-run');
+const FROM_SNAPSHOT = args.includes('--from-snapshot') ? Number(args[args.indexOf('--from-snapshot') + 1]) : null;
+const SLACK_CHANNEL = 'sponsors'; // SLACK_WEBHOOK_URL_SPONSORS, else SLACK_WEBHOOK_URL
+
+const log = logger.forBot(BOT);
+
+/** Read settings lazily, after dotenv has loaded. */
+function loadSettings() {
   return {
-    additionRoutes: raw.additionRoutes ?? [],
-    match: (org) => byName.get(normalizeName(org.name)) ?? null,
+    minOrgs: config.number('SLS_MIN_ORGS', 1000),
+    maxDropRatio: config.number('SLS_MAX_DROP_RATIO', 0.1),
+    watchlistPath: config.optional('SLS_WATCHLIST', fileURLToPath(new URL('./watchlist.json', import.meta.url))),
   };
 }
 
-function makePinger(s) {
-  if (!s.healthchecksBaseUrl || !s.healthcheckUuid) {
-    log.warn('Healthcheck disabled: set HEALTHCHECKS_BASE_URL and SLS_HC_UUID');
-    return async () => {};
+function loadWatchlist(path) {
+  if (!existsSync(path)) return { additionRoutes: [], match: () => null };
+  const raw = JSON.parse(readFileSync(path, 'utf8'));
+  return { additionRoutes: raw.additionRoutes ?? [], match: buildWatchMatcher(raw) };
+}
+
+async function deliver(message) {
+  if (DRY_RUN) {
+    console.log(JSON.stringify(message, null, 2));
+    return;
   }
-  return async (event) => {
-    if (DRY_RUN) return;
-    try {
-      await withRetry(() => pingHealthcheck(buildHealthcheckUrl(s.healthchecksBaseUrl, s.healthcheckUuid, event)), 2, 1000);
-    } catch (err) {
-      log.warn(`Healthcheck ping (${event ?? 'success'}) failed: ${err.message}`);
-    }
-  };
+  await slack.post(SLACK_CHANNEL, message);
 }
 
 async function main() {
-  const s = loadSettings();
-  const ping = makePinger(s);
-  await ping('start');
+  const settings = loadSettings();
+  if (!DRY_RUN) slack.resolveWebhook(SLACK_CHANNEL); // fail fast, loudly, before any work
+  if (FROM_SNAPSHOT !== null && !Number.isInteger(FROM_SNAPSHOT)) throw new Error('--from-snapshot needs a numeric snapshot id');
+  const watchlist = loadWatchlist(settings.watchlistPath);
 
-  let db;
-  let runId;
+  const store = snapshot.openStore({ dryRun: DRY_RUN });
+  const db = coreDb.connect(BOT, { dryRun: DRY_RUN });
+  const spine = coreSpine.openSpine({ dryRun: DRY_RUN });
   try {
-    if (!s.slackWebhookUrl && !DRY_RUN) throw new Error('Set SLACK_WEBHOOK_URL (or SLS_SLACK_WEBHOOK_URL)');
-    const watchlist = loadWatchlist(s.watchlistPath);
+    coreDb.migrate(db, new URL('./migrations/', import.meta.url), { namespace: BOT });
+    log.info(DRY_RUN ? 'Dry run: working on in-memory copies; nothing will be written' : 'Live run', { dataDir: config.dataDir() });
 
-    db = openDb(DRY_RUN ? s.dbPath.replace(/\.db$/, '.dryrun.db') : s.dbPath);
-    const now = new Date().toISOString();
-    runId = startRun(db, now);
+    // 1. Harvest (snapshot-first) or pick a stored snapshot.
+    let snapshotId;
+    if (FROM_SNAPSHOT !== null) {
+      const row = store.get(FROM_SNAPSHOT);
+      if (!row || row.source !== SOURCE) throw new Error(`Snapshot ${FROM_SNAPSHOT} is not a ${SOURCE} snapshot`);
+      snapshotId = FROM_SNAPSHOT;
+    } else {
+      snapshotId = (await harvest({ store, log })).snapshot.id;
+    }
 
-    const source = await withRetry(() => discoverRegisterCsv(), 3, 5000);
-    log.info(`Register: ${source.filename} (${source.url})`);
-    const file = await withRetry(() => downloadCsv(source.url), 3, 5000);
+    // 2. Process.
+    let result;
+    try {
+      result = processSnapshot({ db, spine, store, snapshotId, watchMatch: watchlist.match, settings, log });
+    } catch (err) {
+      if (err instanceof AnomalyError) {
+        log.error(`Snapshot rejected: ${err.message}`, err.details);
+        await deliver(buildAnomalyAlert({ reason: err.message, ...err.details }));
+        err.alerted = true;
+      }
+      throw err; // halt: health.run pings /fail and sets exit code 1
+    }
+    if (result.outcome === 'already-processed') {
+      log.info(`Snapshot ${snapshotId} already processed (${result.previousOutcome}); nothing new`);
+    }
 
-    const previous = lastAcceptedSnapshot(db);
-    const base = { runId, url: source.url, filename: source.filename, publishedDate: source.publishedDate, sha256: file.sha256, bytes: file.bytes, now };
-
-    if (previous?.sha256 === file.sha256) {
-      insertSnapshot(db, { ...base, rowCount: previous.row_count, orgCount: previous.org_count, outcome: 'unchanged' });
-      finishRun(db, runId, { status: 'unchanged' });
-      log.info('Register unchanged since the last run');
-      await ping();
+    // 3. Notify (includes diffs left over from an earlier failed post).
+    const pending = pendingDiffs(db);
+    if (!pending.length) {
+      log.info('No pending changes; no Slack message');
       return;
     }
-
-    const { orgs, rowCount, skipped } = parseRegister(file.text);
-    const stats = { rowCount, orgCount: orgs.size, skipped };
-
-    // A truncated or malformed download must never become a wave of "removals".
-    const shrink = previous ? 1 - orgs.size / previous.org_count : 0;
-    const rejectReason = orgs.size < s.minOrgs
-      ? `only ${orgs.size} organisations parsed (minimum ${s.minOrgs})`
-      : shrink > s.maxDropRatio
-        ? `register shrank ${(shrink * 100).toFixed(1)}% (${previous.org_count} → ${orgs.size}); limit ${s.maxDropRatio * 100}%`
-        : null;
-
-    if (rejectReason) {
-      insertSnapshot(db, { ...base, rowCount, orgCount: orgs.size, outcome: 'rejected', note: rejectReason });
-      finishRun(db, runId, { status: 'rejected', stats, error: rejectReason });
-      log.error(`Snapshot rejected: ${rejectReason}`);
-      if (!DRY_RUN) {
-        await sendSlackAlert(s.slackWebhookUrl, `:warning: Sponsor register snapshot rejected (${source.filename}): ${rejectReason}. No diffs recorded.`)
-          .catch((e) => log.error(`Could not send alert: ${e.message}`));
-      }
-      process.exitCode = 1;
-      await ping('fail');
-      return;
-    }
-
-    const isBaseline = !previous;
-    const active = loadActiveSponsors(db);
-    const delta = isBaseline ? { added: [], removed: [], ratingChanged: [], relocated: [] } : computeDelta(active, orgs);
-    const snapshotId = insertSnapshot(db, { ...base, rowCount, orgCount: orgs.size, outcome: isBaseline ? 'baseline' : 'diffed', note: isBaseline ? 'first snapshot; no diffs emitted' : null });
-    applyRegister(db, { snapshotId, orgs, delta, now, watchMatch: watchlist.match, isBaseline });
-
-    Object.assign(stats, {
-      added: delta.added.length,
-      removed: delta.removed.length,
-      ratingChanged: delta.ratingChanged.length,
-      relocated: delta.relocated.length,
-    });
-    log.info(`${isBaseline ? 'Baseline' : 'Diffed'}: ${JSON.stringify(stats)}`);
-
-    const pending = listPendingDiffs(db);
-    if (pending.length) {
-      const payload = buildDigestPayload({
-        diffs: pending,
-        additionRoutes: watchlist.additionRoutes,
-        meta: { publishedDate: source.publishedDate, orgCount: orgs.size, relocated: delta.relocated.length, sourceUrl: source.url },
-      });
-      if (DRY_RUN) console.log(JSON.stringify(payload, null, 2));
-      else {
-        await sendDigest(s.slackWebhookUrl, payload);
-        markDiffsNotified(db, pending.map((d) => d.id), now);
-      }
-    }
-
-    finishRun(db, runId, { status: 'ok', stats });
-    await ping();
-  } catch (err) {
-    log.error(err.stack ?? err.message);
-    process.exitCode = 1;
-    if (db && runId) finishRun(db, runId, { status: 'failed', error: err.message });
-    await ping('fail');
-    if (s.slackWebhookUrl && !DRY_RUN) {
-      await sendSlackAlert(s.slackWebhookUrl, `:rotating_light: Sponsor Licence Scout failed: ${err.message}`)
-        .catch((e) => log.error(`Could not send failure alert: ${e.message}`));
-    }
+    const latest = pending.at(-1);
+    const suppressed = db.prepare(`SELECT kind, COUNT(*) AS n FROM suppressed_changes WHERE snapshot_id = ? GROUP BY kind`).all(snapshotId)
+      .reduce((acc, r) => ({ ...acc, [r.kind]: r.n }), {});
+    const orgCount = db.prepare(`SELECT COUNT(*) FROM sponsors WHERE active = 1`).pluck().get();
+    await deliver(buildDigest({
+      diffs: pending,
+      additionRoutes: watchlist.additionRoutes,
+      meta: { publishedDate: result.publishedDate ?? latest.published_date, orgCount, relocated: suppressed.RELOCATED ?? 0, renamed: suppressed.RENAMED ?? 0, sourceUrl: latest.source_url },
+    }));
+    if (!DRY_RUN) markNotified(db, pending.map((d) => d.id));
+    log.info(`${DRY_RUN ? 'Would post' : 'Posted'} digest with ${pending.length} changes`);
   } finally {
-    db?.close();
+    db.close();
+    spine.close();
+    store.close();
   }
 }
 
-await main();
+await health.run(BOT, main, {
+  dryRun: DRY_RUN,
+  uuid: process.env.SLS_HC_UUID?.trim() || undefined, // legacy name; HC_UUID_SPONSOR_LICENCE_SCOUT also works
+  log,
+  onFailure: async (err) => {
+    if (DRY_RUN || err.alerted) return;
+    await slack.post(SLACK_CHANNEL, `:rotating_light: Sponsor Licence Scout failed: ${err.message}`);
+  },
+});
