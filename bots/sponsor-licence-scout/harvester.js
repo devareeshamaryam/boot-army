@@ -1,10 +1,15 @@
 /**
  * UK Home Office "Register of licensed sponsors: workers".
  *
- * The CSV's URL changes on every publication
- * (assets.publishing.service.gov.uk/media/<id>/YYYY-MM-DD_-_Worker_and_Temporary_Worker.csv),
- * so it is discovered each run from the GOV.UK Content API, with the
- * publication's HTML page as a fallback.
+ * The CSV's URL and filename change with every publication, and the naming
+ * scheme itself has changed over time, e.g.
+ *   .../media/<id>/2026-03-27_-_Worker_and_Temporary_Worker.csv
+ *   .../media/<id>/SP_-_Worker_and_Temporary_Worker_Web_Register_-_2026-09-29.csv
+ * so the link is discovered every run and matched loosely:
+ *   1. GOV.UK Content API attachments
+ *   2. the publication's HTML page (anchor hrefs, anchor text, raw asset URLs,
+ *      and "View online" csv-preview links mapped back to the asset)
+ *   3. SPONSOR_CSV_URL from the environment, if set
  *
  * CSV columns: Organisation Name, Town/City, County, Type & Rating, Route.
  * One row per organisation per route; values often carry stray whitespace.
@@ -14,61 +19,181 @@ import { createHash } from 'node:crypto';
 export const PUBLICATION_PATH = '/government/publications/register-of-licensed-sponsors-workers';
 const CONTENT_API = `https://www.gov.uk/api/content${PUBLICATION_PATH}`;
 const PUBLICATION_PAGE = `https://www.gov.uk${PUBLICATION_PATH}`;
-const CSV_NAME = /Worker_and_Temporary_Worker\.csv$/i;
-const ASSET_HOST = /^https:\/\/assets\.publishing\.service\.gov\.uk\//;
+const ASSET_ORIGIN = 'https://assets.publishing.service.gov.uk';
 const REQUIRED_COLUMNS = ['Organisation Name', 'Town/City', 'County', 'Type & Rating', 'Route'];
 
-const USER_AGENT = `bot-army-sponsor-licence-scout/0.1${process.env.SLS_CONTACT ? ` (+${process.env.SLS_CONTACT})` : ''}`;
+/** Browser-like headers; override the User-Agent with SLS_USER_AGENT if you prefer. */
+const BROWSER_UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36';
+const ACCEPT = {
+  html: 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+  json: 'application/json,text/plain;q=0.9,*/*;q=0.8',
+  csv: 'text/csv,application/csv,text/plain;q=0.9,*/*;q=0.8',
+};
 
-async function get(url, { accept = '*/*', timeoutMs = 60_000 } = {}) {
-  const res = await fetch(url, {
-    headers: { 'User-Agent': USER_AGENT, Accept: accept },
-    signal: AbortSignal.timeout(timeoutMs),
-  });
+function headers(accept) {
+  return {
+    'User-Agent': process.env.SLS_USER_AGENT || BROWSER_UA,
+    Accept: accept,
+    'Accept-Language': 'en-GB,en;q=0.9',
+  };
+}
+
+async function get(url, { accept = ACCEPT.html, timeoutMs = 60_000 } = {}) {
+  const res = await fetch(url, { headers: headers(accept), redirect: 'follow', signal: AbortSignal.timeout(timeoutMs) });
   if (!res.ok) throw new Error(`GET ${url} -> ${res.status} ${res.statusText}`);
   return res;
 }
 
-const dateFromFilename = (name) => name.match(/(\d{4}-\d{2}-\d{2})/)?.[1] ?? null;
+/* ------------------------------------------------------------- discovery */
 
-function pickLatest(candidates) {
-  const csvs = candidates
-    .filter((c) => c.url && ASSET_HOST.test(c.url) && CSV_NAME.test(c.filename))
-    .map((c) => ({ ...c, publishedDate: dateFromFilename(c.filename) }))
-    .sort((a, b) => (b.publishedDate ?? '').localeCompare(a.publishedDate ?? ''));
-  return csvs[0] ?? null;
+const dateFromFilename = (name) => String(name ?? '').match(/(\d{4}-\d{2}-\d{2})/)?.[1] ?? null;
+
+const decodeEntities = (s) => String(s ?? '')
+  .replace(/&amp;/gi, '&').replace(/&#x2F;/gi, '/').replace(/&#47;/g, '/').replace(/&quot;/gi, '"');
+
+const stripTags = (s) => decodeEntities(String(s ?? '').replace(/<[^>]*>/g, ' ')).replace(/\s+/g, ' ').trim();
+
+/**
+ * Turn any link we might see into a canonical asset URL, or null.
+ *  - absolute or protocol-relative assets.publishing.service.gov.uk URLs
+ *  - relative "/media/<id>/<file>.csv" paths
+ *  - www.gov.uk/csv-preview/<id>/<file>.csv ("View online" pages)
+ */
+export function toAssetUrl(href) {
+  const raw = decodeEntities(href).trim();
+  if (!raw) return null;
+  let url;
+  try {
+    url = new URL(raw, `${ASSET_ORIGIN}/`);
+  } catch {
+    return null;
+  }
+  if (!/\.csv$/i.test(url.pathname)) return null;
+
+  const preview = url.pathname.match(/^\/csv-preview\/([^/]+)\/(.+\.csv)$/i);
+  if (/(^|\.)gov\.uk$/i.test(url.hostname) && preview) return `${ASSET_ORIGIN}/media/${preview[1]}/${preview[2]}`;
+  if (url.hostname.toLowerCase() === 'assets.publishing.service.gov.uk' && url.pathname.startsWith('/media/')) {
+    return `${ASSET_ORIGIN}${url.pathname}`;
+  }
+  return null;
 }
 
-/** Find the current register CSV. @returns {{ url, filename, publishedDate }} */
+/**
+ * Score how likely a candidate is to be the workers register, using both the
+ * filename and any link text. 0 means "not a candidate at all".
+ */
+export function scoreCandidate({ url, text = '' }) {
+  const filename = decodeURIComponent(url.split('/').pop() ?? '');
+  const haystack = `${filename} ${text}`.replace(/[_-]+/g, ' ');
+  if (/student/i.test(haystack)) return 0; // the separate student sponsor register
+  if (/worker.*temporary|temporary.*worker/i.test(haystack)) return 3;
+  if (/register.*sponsor|sponsor.*register/i.test(haystack)) return 2;
+  return 1; // any CSV under assets.publishing.service.gov.uk
+}
+
+function rankCandidates(candidates) {
+  const seen = new Map();
+  for (const c of candidates) {
+    const url = toAssetUrl(c.url);
+    if (!url) continue;
+    const score = scoreCandidate({ url, text: c.text });
+    if (!score) continue;
+    const filename = decodeURIComponent(url.split('/').pop());
+    const prev = seen.get(url);
+    if (!prev || score > prev.score) {
+      seen.set(url, { url, filename, publishedDate: dateFromFilename(filename), score, via: c.via });
+    }
+  }
+  return [...seen.values()].sort((a, b) =>
+    b.score - a.score || (b.publishedDate ?? '').localeCompare(a.publishedDate ?? ''));
+}
+
+async function candidatesFromContentApi() {
+  const body = await (await get(CONTENT_API, { accept: ACCEPT.json })).json();
+  const details = body?.details ?? {};
+  const attachments = [
+    ...(Array.isArray(details.attachments) ? details.attachments : []),
+    ...(Array.isArray(details.documents) ? details.documents : []),
+  ];
+  const out = [];
+  for (const a of attachments) {
+    if (typeof a === 'object' && a) {
+      for (const key of ['url', 'preview_url', 'file_url']) {
+        if (a[key]) out.push({ url: a[key], text: `${a.title ?? ''} ${a.filename ?? ''}`, via: 'content-api' });
+      }
+    } else if (typeof a === 'string') {
+      // Some publications embed attachments as rendered HTML strings.
+      for (const c of candidatesFromHtml(a)) out.push({ ...c, via: 'content-api' });
+    }
+  }
+  return out;
+}
+
+export function candidatesFromHtml(html) {
+  const out = [];
+  for (const m of html.matchAll(/<a\b[^>]*?href\s*=\s*(["'])(.*?)\1[^>]*>([\s\S]*?)<\/a>/gi)) {
+    out.push({ url: m[2], text: stripTags(m[3]), via: 'html' });
+  }
+  // Bare URLs in the page (link text, data attributes, JSON-LD).
+  for (const m of html.matchAll(/(?:https?:)?\/\/assets\.publishing\.service\.gov\.uk\/media\/[^"'\s<>)]+?\.csv/gi)) {
+    out.push({ url: m[0].startsWith('//') ? `https:${m[0]}` : m[0], text: '', via: 'html' });
+  }
+  return out;
+}
+
+/**
+ * Find the current register CSV.
+ * @returns {Promise<{ url: string, filename: string, publishedDate: string|null, via: string }>}
+ */
 export async function discoverRegisterCsv() {
+  const attempts = [];
+
   try {
-    const body = await (await get(CONTENT_API, { accept: 'application/json' })).json();
-    const attachments = [...(body?.details?.attachments ?? []), ...(body?.details?.documents ?? [])]
-      .filter((a) => typeof a === 'object' && a?.url)
-      .map((a) => ({ url: a.url, filename: a.filename ?? decodeURIComponent(a.url.split('/').pop()) }));
-    const hit = pickLatest(attachments);
+    const hit = rankCandidates(await candidatesFromContentApi())[0];
     if (hit) return hit;
-  } catch {
-    // fall through to the HTML page
+    attempts.push('Content API: no CSV attachment matched');
+  } catch (err) {
+    attempts.push(`Content API: ${err.message}`);
   }
 
-  const html = await (await get(PUBLICATION_PAGE, { accept: 'text/html' })).text();
-  const links = [...html.matchAll(/https:\/\/assets\.publishing\.service\.gov\.uk\/[^"'\s<>]+?\.csv/gi)]
-    .map((m) => ({ url: m[0], filename: decodeURIComponent(m[0].split('/').pop()) }));
-  const hit = pickLatest(links);
-  if (!hit) throw new Error('Could not find the Worker and Temporary Worker CSV on GOV.UK');
-  return hit;
+  try {
+    const html = await (await get(PUBLICATION_PAGE, { accept: ACCEPT.html })).text();
+    const ranked = rankCandidates(candidatesFromHtml(html));
+    if (ranked[0]) return ranked[0];
+    const csvCount = (html.match(/\.csv\b/gi) ?? []).length;
+    const title = stripTags(html.match(/<title[^>]*>([\s\S]*?)<\/title>/i)?.[1] ?? '').slice(0, 80);
+    attempts.push(`Publication page ("${title}"): ${csvCount} ".csv" mentions, none under ${ASSET_ORIGIN}/media/`);
+  } catch (err) {
+    attempts.push(`Publication page: ${err.message}`);
+  }
+
+  const override = process.env.SPONSOR_CSV_URL?.trim();
+  if (override) {
+    if (!/^https:\/\//i.test(override)) throw new Error('SPONSOR_CSV_URL must be an https:// URL');
+    const filename = decodeURIComponent(new URL(override).pathname.split('/').pop() || 'sponsor-register.csv');
+    return { url: override, filename, publishedDate: dateFromFilename(filename), score: 0, via: 'SPONSOR_CSV_URL' };
+  }
+
+  throw new Error(
+    `Could not find the Worker and Temporary Worker CSV on GOV.UK.\n  - ${attempts.join('\n  - ')}\n`
+    + `  Set SPONSOR_CSV_URL to the CSV link from ${PUBLICATION_PAGE} to run anyway.`,
+  );
 }
 
 /** Download the CSV, decoding as UTF-8 (falling back to Windows-1252 if it isn't). */
 export async function downloadCsv(url) {
-  const buffer = Buffer.from(await (await get(url, { accept: 'text/csv' })).arrayBuffer());
+  const res = await get(url, { accept: ACCEPT.csv, timeoutMs: 120_000 });
+  const buffer = Buffer.from(await res.arrayBuffer());
   const sha256 = createHash('sha256').update(buffer).digest('hex');
   let text;
   try {
     text = new TextDecoder('utf-8', { fatal: true }).decode(buffer);
   } catch {
     text = new TextDecoder('windows-1252').decode(buffer);
+  }
+  // An HTML error or consent page served with 200 must not reach the parser as "CSV".
+  if (/^\s*<(!doctype|html)/i.test(text.slice(0, 200))) {
+    throw new Error(`Expected CSV from ${url} but received an HTML page`);
   }
   return { text, sha256, bytes: buffer.length };
 }
