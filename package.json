@@ -1,0 +1,17 @@
+{
+  "name": "bot-army",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Monorepo for a fleet of Node.js bots sharing common code.",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "workspaces": [
+    "packages/*",
+    "bots/*"
+  ],
+  "scripts": {
+    "lint": "echo lint: no linter configured yet"
+  }
+}

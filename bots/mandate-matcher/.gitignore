@@ -1,0 +1,4 @@
+# Local state and register exports contain personal data. Never commit them.
+data/
+imports/
+watchlist.json

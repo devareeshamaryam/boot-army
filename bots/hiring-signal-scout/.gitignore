@@ -1,0 +1,4 @@
+# Local state holds contact details (personal data). Never commit it.
+data/
+watchlist.json
+templates.json

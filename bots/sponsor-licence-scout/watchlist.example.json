@@ -1,0 +1,7 @@
+{
+  "additionRoutes": ["Skilled Worker", "Global Business Mobility: Senior or Specialist Worker", "Scale-up"],
+  "companies": [
+    { "name": "Example Consulting Limited", "aliases": ["Example Consulting"], "registrationNumber": "01234567" },
+    { "name": "Example Health Care Ltd", "registrationNumber": "SC123456" }
+  ]
+}

@@ -1,0 +1,57 @@
+{
+  "firms": [
+    {
+      "regulator": "FCA",
+      "ref": "122702",
+      "name": "Barclays Bank Plc",
+      "market": "UK",
+      "tier": 1,
+      "aliases": ["Barclays"]
+    },
+    {
+      "regulator": "MAS",
+      "ref": "REPLACE-MAS-REF",
+      "name": "Example Asset Management (Singapore) Pte. Ltd.",
+      "market": "SG",
+      "tier": 2,
+      "registrationNumber": "201912345K",
+      "source": { "type": "file", "path": "imports/mas/REPLACE-MAS-REF.csv" }
+    },
+    {
+      "regulator": "SFC",
+      "ref": "AAA000",
+      "name": "Example Securities (Hong Kong) Limited",
+      "market": "HK",
+      "tier": 1,
+      "source": [
+        { "type": "file", "path": "imports/sfc/AAA000-ro.csv", "defaultRole": "Responsible Officer" },
+        { "type": "file", "path": "imports/sfc/AAA000-rep.csv", "defaultRole": "Licensed Representative" }
+      ]
+    },
+    {
+      "regulator": "DFSA",
+      "ref": "REPLACE-DFSA-REF",
+      "name": "Example Capital (DIFC) Limited",
+      "market": "DIFC",
+      "tier": 2,
+      "registrationNumber": "1234",
+      "source": { "type": "file", "path": "imports/dfsa/REPLACE-DFSA-REF.csv" }
+    },
+    {
+      "regulator": "FSRA",
+      "ref": "REPLACE-FSRA-REF",
+      "name": "Example Investments (ADGM) Ltd",
+      "market": "ADGM",
+      "tier": 3,
+      "registrationNumber": "000004567",
+      "source": {
+        "type": "file",
+        "path": "imports/fsra/REPLACE-FSRA-REF.csv",
+        "fields": { "personRef": ["Your Column Name For The Individual ID"] }
+      }
+    }
+  ],
+  "feeds": [
+    { "name": "Google Alert: compliance officer appointments", "url": "https://www.google.com/alerts/feeds/REPLACE/REPLACE" }
+  ]
+}

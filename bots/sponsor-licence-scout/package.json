@@ -1,0 +1,20 @@
+{
+  "name": "sponsor-licence-scout",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Daily diff of the UK Home Office register of licensed Worker and Temporary Worker sponsors.",
+  "type": "module",
+  "main": "index.js",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "dry-run": "node index.js --dry-run"
+  },
+  "dependencies": {
+    "@botarmy/core": "*",
+    "better-sqlite3": "^12.11.1",
+    "dotenv": "^18.0.4"
+  }
+}

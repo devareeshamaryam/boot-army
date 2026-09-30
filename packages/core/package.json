@@ -1,0 +1,15 @@
+{
+  "name": "@botarmy/core",
+  "version": "0.1.0",
+  "description": "Shared utilities for bot-army bots.",
+  "type": "module",
+  "main": "index.js",
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.129.0",
+    "dotenv": "^18.0.4",
+    "node-fetch": "^3.3.2"
+  }
+}
