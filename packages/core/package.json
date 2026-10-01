@@ -1,15 +1,24 @@
 {
   "name": "@botarmy/core",
-  "version": "0.1.0",
-  "description": "Shared utilities for bot-army bots.",
+  "version": "0.3.0",
+  "private": true,
+  "description": "Shared platform library for bot-army bots (IMPLEMENTATION_PLAN.md Section 3).",
   "type": "module",
   "main": "index.js",
+  "exports": {
+    ".": "./index.js"
+  },
   "engines": {
-    "node": ">=20"
+    "node": ">=22"
+  },
+  "scripts": {
+    "test": "node --test \"test/**/*.test.js\""
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.129.0",
+    "better-sqlite3": "^12.11.1",
     "dotenv": "^18.0.4",
+    "fuzzball": "^2.2.6",
     "node-fetch": "^3.3.2"
   }
 }

@@ -498,11 +498,11 @@ describe('index.js', () => {
     assert.deepEqual(readdirSync(dataDir), [], 'no files created');
   });
 
-  test('live baseline creates the bot DB, spine and snapshot store', () => {
+  test('live baseline creates the bot DB, the core DB (spine + snapshot index) and raw store', () => {
     const r = run();
     assert.equal(r.status, 0, r.stderr);
     const files = readdirSync(dataDir);
-    for (const f of ['sponsor-licence-scout.sqlite', 'spine.sqlite', 'snapshots.sqlite', 'raw']) assert.ok(files.includes(f), `${f} exists`);
+    for (const f of ['sponsor-licence-scout.sqlite', 'spine.sqlite', 'raw']) assert.ok(files.includes(f), `${f} exists`);
   });
 
   test('--dry-run with changes prints the digest and leaves every file byte-identical', () => {
