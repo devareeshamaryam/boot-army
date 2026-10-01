@@ -1,22 +1,23 @@
 {
   "name": "payment-practices-scout",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
-  "description": "Flags UK companies whose reported supplier payment times jump between reporting periods.",
+  "description": "B9: flags UK companies whose reported supplier payment times jump between reporting periods.",
   "type": "module",
   "main": "index.js",
   "engines": {
-    "node": ">=20"
+    "node": ">=22"
   },
   "scripts": {
     "start": "node index.js",
-    "dry-run": "node index.js --dry-run"
+    "dry-run": "node index.js --dry-run",
+    "harvest": "node harvest.js",
+    "credit-check": "node index.js --credit-check",
+    "test": "node --test \"test/**/*.test.js\""
   },
   "dependencies": {
     "@botarmy/core": "*",
-    "better-sqlite3": "^12.11.1",
     "csv-parse": "^5.5.6",
-    "dotenv": "^18.0.4",
-    "node-fetch": "^3.3.2"
+    "dotenv": "^18.0.4"
   }
 }

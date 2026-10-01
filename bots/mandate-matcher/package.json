@@ -1,21 +1,21 @@
 {
   "name": "mandate-matcher",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
-  "description": "Daily digest of senior regulated-person moves (FCA, MAS, SFC, DFSA, FSRA) scored for mandate relevance.",
+  "description": "B2: regulated-person movers from FCA, MAS, SFC, DFSA and FSRA register deltas, scored against live mandates.",
   "type": "module",
   "main": "index.js",
   "engines": {
-    "node": ">=20"
+    "node": ">=22"
   },
   "scripts": {
     "start": "node index.js",
-    "dry-run": "node index.js --dry-run"
+    "dry-run": "node index.js --dry-run",
+    "retention": "node index.js --retention-only",
+    "test": "node --test \"test/**/*.test.js\""
   },
   "dependencies": {
     "@botarmy/core": "*",
-    "better-sqlite3": "^12.11.1",
-    "dotenv": "^18.0.4",
-    "rss-parser": "^3.13.0"
+    "dotenv": "^18.0.4"
   }
 }
