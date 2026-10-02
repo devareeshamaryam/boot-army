@@ -1,0 +1,310 @@
+{
+  "_readme": "Target companies and source settings for Hiring-Signal Scout (B5). Secrets are never stored here: auth.env names an environment variable in the root .env.",
+  "companies": [
+    {
+      "id": "example-consulting",
+      "name": "Example Consulting Limited",
+      "aliases": [
+        "Example Consulting"
+      ],
+      "country": "UK",
+      "registrationNumber": "01234567",
+      "domain": "example-consulting.com",
+      "ats": {
+        "type": "greenhouse",
+        "token": "exampleconsulting"
+      }
+    },
+    {
+      "id": "example-digital-sg",
+      "name": "Example Digital Pte. Ltd.",
+      "country": "SG",
+      "registrationNumber": "201912345K",
+      "ats": {
+        "type": "lever",
+        "slug": "exampledigital",
+        "region": "global"
+      }
+    },
+    {
+      "id": "example-gulf-services",
+      "name": "Example Gulf Services LLC",
+      "aliases": [
+        "Example Gulf",
+        "شركة مثال الخليج"
+      ],
+      "country": "SA",
+      "ats": {
+        "type": "workable",
+        "account": "example-gulf"
+      }
+    },
+    {
+      "id": "example-global",
+      "name": "Example Global Holdings plc",
+      "aliases": [
+        "Example Global"
+      ],
+      "ats": {
+        "type": "workday",
+        "host": "exampleglobal.wd3.myworkdayjobs.com",
+        "tenant": "exampleglobal",
+        "site": "External_Careers",
+        "optIn": false,
+        "_note": "Workday's career-site API is undocumented. Set optIn to true to poll it; until then it is reported as unsupported every run."
+      }
+    }
+  ],
+  "filters": {
+    "_note": "Awards must match a CPV prefix or, when a notice publishes no CPV codes, an award keyword. Spikes count only postings whose titles match stackKeywords (leave empty to count all postings).",
+    "cpvPrefixes": [
+      "72",
+      "48",
+      "79",
+      "73"
+    ],
+    "allowUnknownCpv": true,
+    "awardKeywords": [
+      "digital",
+      "software",
+      "systems integration",
+      "data",
+      "cloud",
+      "cyber",
+      "consultancy"
+    ],
+    "stackKeywords": [
+      "engineer",
+      "developer",
+      "data",
+      "cloud",
+      "devops",
+      "security",
+      "salesforce",
+      "sap",
+      "architect",
+      "analyst"
+    ]
+  },
+  "thresholds": {
+    "majorAward": {
+      "GBP": 1000000,
+      "EUR": 1000000,
+      "SGD": 2000000,
+      "HKD": 10000000,
+      "SAR": 5000000,
+      "AED": 5000000,
+      "USD": 1000000,
+      "default": 1000000
+    },
+    "includeUnknownAwardValue": false,
+    "majorFunding": {
+      "USD": 5000000,
+      "GBP": 4000000,
+      "EUR": 5000000,
+      "SGD": 7000000,
+      "SAR": 20000000,
+      "AED": 20000000,
+      "default": 5000000
+    },
+    "includeUnknownFundingAmount": true
+  },
+  "spikes": {
+    "windowDays": 7,
+    "baselineWeeks": 8,
+    "multiplier": 2,
+    "minNewJobs": 5
+  },
+  "sources": {
+    "contractsFinder": {
+      "lookbackDays": 3,
+      "maxPages": 30
+    },
+    "findATender": {
+      "lookbackDays": 3,
+      "maxPages": 20
+    },
+    "ted": {
+      "lookbackDays": 3,
+      "noticeTypes": [
+        "can-standard",
+        "can-social"
+      ],
+      "buyerCountries": [
+        "IRL",
+        "NLD",
+        "DEU",
+        "FRA"
+      ],
+      "maxPages": 20,
+      "_cpvField_note": "TED is asked for 'classification-cpv'. If TED rejects the query, set \"cpvField\" to the correct field name, or to null to request no CPV data."
+    },
+    "gebiz": {
+      "enabled": true
+    },
+    "hk": {
+      "datasets": [
+        {
+          "_note": "Add each department's 'tenders awarded' dataset from data.gov.hk. Replace this example URL.",
+          "name": "example-department",
+          "url": "https://example.data.gov.hk/tenders-awarded.csv",
+          "format": "csv",
+          "buyerName": "Example Department",
+          "fields": {
+            "supplier": [
+              "Name of Contractor"
+            ],
+            "noticeId": [
+              "Tender Ref. No."
+            ]
+          }
+        }
+      ]
+    },
+    "etimad": {
+      "_note": "Etimad has no documented public API. Use the endpoint and token from your Etimad API portal access. Leave url empty to disable.",
+      "url": "",
+      "method": "GET",
+      "format": "json",
+      "itemsPath": "data",
+      "currency": "SAR",
+      "auth": {
+        "header": "Authorization",
+        "scheme": "Bearer",
+        "env": "ETIMAD_API_TOKEN"
+      },
+      "pagination": {
+        "param": "pageNumber",
+        "start": 1,
+        "maxPages": 5
+      },
+      "fields": {
+        "noticeId": [
+          "tenderId",
+          "referenceNumber"
+        ],
+        "title": [
+          "tenderName"
+        ],
+        "buyer": [
+          "agencyName"
+        ],
+        "supplier": [
+          "awardedSupplierName"
+        ],
+        "value": [
+          "awardValue"
+        ],
+        "awardDate": [
+          "awardDate"
+        ]
+      }
+    },
+    "meaAggregator": {
+      "_note": "Your MEA tender/award aggregator subscription. Set url, auth and the field names from the vendor's API docs. Leave url empty to disable.",
+      "url": "",
+      "format": "json",
+      "itemsPath": "results",
+      "auth": {
+        "header": "X-API-Key",
+        "env": "MEA_AGGREGATOR_API_KEY"
+      },
+      "pagination": {
+        "param": "page",
+        "start": 1,
+        "maxPages": 5
+      },
+      "fields": {
+        "noticeId": [
+          "id"
+        ],
+        "title": [
+          "title"
+        ],
+        "buyer": [
+          "buyer"
+        ],
+        "supplier": [
+          "winner"
+        ],
+        "value": [
+          "value"
+        ],
+        "currency": [
+          "currency"
+        ],
+        "awardDate": [
+          "awardDate"
+        ],
+        "url": [
+          "url"
+        ]
+      }
+    }
+  },
+  "jobFeeds": {
+    "_note": "LinkedIn and Indeed do not offer public job-reading APIs and prohibit scraping. Point these at a licensed feed (data vendor or partner programme) covering your watchlist. Leave url empty to disable.",
+    "linkedin": {
+      "url": "",
+      "format": "json",
+      "itemsPath": "jobs",
+      "auth": {
+        "header": "Authorization",
+        "scheme": "Bearer",
+        "env": "LINKEDIN_FEED_TOKEN"
+      },
+      "fields": {
+        "id": [
+          "jobId"
+        ],
+        "company": [
+          "companyName"
+        ],
+        "title": [
+          "title"
+        ],
+        "location": [
+          "location"
+        ],
+        "url": [
+          "jobUrl"
+        ]
+      }
+    },
+    "indeed": {
+      "url": "",
+      "format": "json",
+      "itemsPath": "results",
+      "auth": {
+        "header": "X-API-Key",
+        "env": "INDEED_FEED_KEY"
+      },
+      "fields": {
+        "id": [
+          "jobkey"
+        ],
+        "company": [
+          "company"
+        ],
+        "title": [
+          "jobtitle"
+        ],
+        "location": [
+          "formattedLocation"
+        ],
+        "url": [
+          "url"
+        ]
+      }
+    }
+  },
+  "funding": {
+    "_note": "RSS/Atom feeds of funding news. Google Alerts (delivery: RSS feed) for each company works well. Replace the example URL.",
+    "feeds": [
+      {
+        "name": "Google Alert: watchlist funding",
+        "url": "https://www.google.com/alerts/feeds/REPLACE/REPLACE"
+      }
+    ]
+  }
+}

@@ -1,8 +1,8 @@
 {
-  "name": "hiring-signal-scout",
-  "version": "0.3.0",
+  "name": "tender-scout",
+  "version": "0.1.0",
   "private": true,
-  "description": "B5: contract-award, funding and job-posting velocity signals for a watchlist of target companies.",
+  "description": "B3: open UK and EU tender notices matched and scored against each subscribing entity's capability profile.",
   "type": "module",
   "main": "index.js",
   "engines": {

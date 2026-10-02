@@ -1,8 +1,8 @@
 {
-  "name": "hiring-signal-scout",
-  "version": "0.3.0",
+  "name": "distress-scout",
+  "version": "0.1.0",
   "private": true,
-  "description": "B5: contract-award, funding and job-posting velocity signals for a watchlist of target companies.",
+  "description": "B4: UK corporate distress radar. Gazette insolvency notices, Companies House status and CSV feeds staged by severity and tagged for action.",
   "type": "module",
   "main": "index.js",
   "engines": {

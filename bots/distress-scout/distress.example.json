@@ -1,0 +1,38 @@
+{
+  "_readme": "Distress Scout (B4) settings. Companies are keyed on Companies House numbers: names are recycled, numbers are not. Secrets (CH_API_KEY) live in the root .env.",
+
+  "watchlist": [
+    { "companyNumber": "01234567", "name": "Example Client Holdings Ltd", "note": "key Osbrooks account" },
+    { "companyNumber": "SC123456", "name": "Example Scottish Supplier Ltd" }
+  ],
+
+  "tagRules": [
+    { "id": "talent-formal-insolvency", "tag": "TALENT", "tiers": ["severe_insolvency"], "eventTypes": ["administration", "winding_up_order", "creditors_voluntary_liquidation", "liquidator_appointed"] },
+    { "id": "acquire-administration", "tag": "ACQUIRE", "tiers": ["severe_insolvency"], "eventTypes": ["administration"] },
+    { "id": "assets-formal", "tag": "ASSETS", "tiers": ["severe_insolvency", "active_distress"], "eventTypes": ["administration", "winding_up_order", "creditors_voluntary_liquidation", "administrative_receiver", "receiver_appointed"] },
+    { "id": "property-receiver", "tag": "PROPERTY", "eventTypes": ["receiver_appointed"] },
+    { "id": "property-real-estate-sic", "tag": "PROPERTY", "tiers": ["active_distress", "severe_insolvency"], "sicPrefixes": ["68", "41"] },
+    { "id": "approach-early", "tag": "APPROACH", "tiers": ["early_warning", "active_distress"] }
+  ],
+
+  "routes": {
+    "TALENT": ["distress-talent-ateca", "distress-talent-osbrooks"]
+  },
+
+  "sources": {
+    "gazette": { "enabled": true, "lookbackDays": 3, "maxPages": 30, "fetchFullNotices": true, "maxNoticeFetches": 150 },
+    "companiesHouse": { "enabled": true, "refreshDays": 7, "maxLookups": 200, "lookupGazetteCompanies": true },
+    "csvFeeds": [
+      {
+        "_note": "Optional: a licensed extract (e.g. CCJs) you export to a file. Remove this entry if unused.",
+        "name": "ccj-extract",
+        "path": "imports/ccj.csv",
+        "fields": { "companyNumber": ["Company Number"], "eventType": ["Type"], "eventDate": ["Judgment Date"], "reference": ["Case Number"] },
+        "eventTypeMap": { "CCJ": "ccj", "Judgment": "ccj" }
+      }
+    ]
+  },
+
+  "volumeGuard": { "minExpected": 20, "lookbackRuns": 5 },
+  "alertWindowDays": 30
+}

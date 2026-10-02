@@ -1,0 +1,70 @@
+{
+  "_readme": "Capability profiles for TenderScout (B3). Copy to profiles.json. The CPV prefixes and keywords below are starting suggestions: replace them with each business's real capability statement.",
+
+  "profiles": [
+    {
+      "id": "ateca",
+      "name": "Ateca",
+      "cpvPrefixes": ["796", "7941", "7942"],
+      "keywords": ["recruitment", "executive search", "interim", "contingent workforce", "talent acquisition", "managed service provider"],
+      "excludeKeywords": ["school meals", "catering"],
+      "valueBand": { "min": 50000, "max": 5000000, "currency": "GBP" },
+      "locations": ["UK", "United Kingdom", "England", "London"],
+      "minDaysToDeadline": 10,
+      "slackChannel": "tenders-ateca"
+    },
+    {
+      "id": "osbrooks",
+      "name": "Osbrooks",
+      "cpvPrefixes": ["453", "4542", "507"],
+      "keywords": ["planned maintenance", "reactive maintenance", "refurbishment", "electrical installation", "mechanical and electrical", "HVAC"],
+      "excludeKeywords": ["design only"],
+      "valueBand": { "min": 25000, "max": 2000000, "currency": "GBP" },
+      "locations": ["London", "South East", "Kent", "Surrey", "Essex"],
+      "minDaysToDeadline": 14,
+      "slackChannel": "tenders-osbrooks"
+    },
+    {
+      "id": "amc",
+      "name": "AMC",
+      "cpvPrefixes": ["345", "5024", "6372"],
+      "keywords": ["vessel", "marine", "harbour", "port services", "ship repair"],
+      "excludeKeywords": [],
+      "valueBand": { "min": 20000, "currency": "GBP" },
+      "locations": [],
+      "minDaysToDeadline": 10,
+      "slackChannel": "tenders-amc"
+    },
+    {
+      "id": "trading-co",
+      "name": "Trading Co",
+      "cpvPrefixes": ["301", "3922", "1814"],
+      "keywords": ["supply of", "consumables", "personal protective equipment", "office supplies"],
+      "excludeKeywords": ["installation"],
+      "valueBand": { "min": 10000, "max": 750000, "currency": "GBP" },
+      "locations": [],
+      "minDaysToDeadline": 7,
+      "slackChannel": "tenders-trading"
+    }
+  ],
+
+  "sources": {
+    "contractsFinder": { "lookbackDays": 2, "maxPages": 30 },
+    "findATender": { "lookbackDays": 2, "maxPages": 20 },
+    "ted": {
+      "_note": "TED volume is large: filter at query time. cpvField/countryField/deadlineField/valueField are configurable because their exact TED names were not verified; null = not requested (treated as unknown).",
+      "lookbackDays": 2,
+      "noticeTypes": ["cn-standard", "cn-social"],
+      "buyerCountries": ["IRL", "NLD", "BEL"],
+      "cpvPrefixes": ["796", "453", "345"],
+      "cpvField": "classification-cpv",
+      "countryField": "buyer-country",
+      "deadlineField": null,
+      "valueField": null,
+      "currencyField": null,
+      "maxPages": 20
+    }
+  },
+
+  "volumeGuard": { "minExpected": 20, "lookbackRuns": 7 }
+}
