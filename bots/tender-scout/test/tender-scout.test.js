@@ -20,7 +20,10 @@ import {
   BOT, EVENT_TYPE, activeProfiles, applyFilters, getCursor, markNotified, matchAndScore, parseOcdsTenders,
   parseTedTenders, pendingMatches, recordSourceRun, setCursor, storeTenders, syncProfiles, validateConfig, volumeAnomaly,
 } from '../process.js';
-import { DEFAULT_WEIGHTS, NOT_SCORED, bestCpvMatch, daysUntil, scoreTender, toNumberOrNull } from '../score.js';
+import {
+  B6_WEIGHTS, DEFAULT_WEIGHTS, NOT_SCORED, UNKNOWN_B6, bestCpvMatch, buyerCountryOf, daysUntil, openAwardsForScoring, scoreTender, toNumberOrNull,
+} from '../score.js';
+import { buyerKeyOf, recomputeBuyers, recomputeSuppliers } from 'award-analytics/analytics';
 import { buildAnomalyAlert, buildDigest, deadlineLabel, valueLabel } from '../digest.js';
 
 const BOT_DIR = fileURLToPath(new URL('../', import.meta.url));
@@ -352,6 +355,138 @@ describe('digest', () => {
 
 /* =========================================================== entry point */
 
+
+/* ============================================= B6 award analytics integration */
+
+const B6_MIGRATIONS = new URL('../../award-analytics/migrations/', import.meta.url);
+
+/**
+ * Seed a real B6 database in dataDir. awards: [[buyer, supplierKey, supplierName, cpv]]
+ * Only B6's public interface (award-analytics/analytics) computes the analytics.
+ */
+function seedB6(dataDir, awards) {
+  const db = coreDb.connect('award-analytics', { dataDir });
+  try {
+    coreDb.migrate(db, B6_MIGRATIONS, { namespace: 'award-analytics' });
+    const insA = db.prepare(`INSERT INTO contract_awards (source, notice_id, award_ref, buyer_key, buyer_name, buyer_country, title, value, currency, value_kind,
+      award_date, cpv, cpv_division, number_of_tenderers, supplier_count, confidence, url, snapshot_id, first_seen)
+      VALUES ('contractsFinder', ?, '1', ?, ?, 'UK', 'Staffing', 100000, 'GBP', 'contract', '2026-06-01', ?, ?, 3, 1, 'awarded', NULL, 1, ?)`);
+    const insS = db.prepare(`INSERT INTO award_suppliers (award_id, supplier_key, raw_name, match_method, is_jv) VALUES (?, ?, ?, 'registry', 0)`);
+    const buyers = new Set();
+    const suppliers = new Set();
+    awards.forEach(([buyer, key, name, cpv], i) => {
+      const id = Number(insA.run(`n-${i}`, buyerKeyOf(buyer), buyer, JSON.stringify([cpv]), cpv.slice(0, 2), NOW).lastInsertRowid);
+      insS.run(id, key, name);
+      buyers.add(buyerKeyOf(buyer));
+      suppliers.add(key);
+    });
+    recomputeSuppliers(db, [...suppliers], { now: NOW });
+    recomputeBuyers(db, [...buyers], { now: NOW });
+  } finally {
+    db.close();
+  }
+}
+const LEEDS_HISTORY = [
+  ...Array.from({ length: 5 }, () => ['Leeds City Council', 'UK:07654321', 'Incumbent Staffing Ltd', '79600000']),
+  ['Leeds City Council', 'UK:01111111', 'Other Staffing Ltd', '79600000'],
+  ['Tiny Parish Council', 'UK:02222222', 'Local Ltd', '79600000'],
+];
+
+describe('B6 award analytics integration', () => {
+  const profile = CONFIG().profiles[0];
+  const tender = { title: 'Interim recruitment and executive search', description: 'Recruitment of senior leaders', cpv: ['79600000'], valueMax: 400000, valueMin: null,
+    currency: 'GBP', deadline: inDays(30), locations: ['London'], buyer: 'Leeds City Council', source: 'contractsFinder' };
+  const fake = (conc, inc) => ({ available: true, buyerConcentration: () => conc, incumbent: () => inc, close() {} });
+  const HIGH = { available: true, concentration: 'high', hhi: 7200, awards: 6, scope: 'CPV division 79', windowMonths: 24, topSupplier: { name: 'Incumbent Staffing Ltd' } };
+  const INC = { available: true, awards: 6, scope: 'CPV division 79', incumbent: { key: 'UK:07654321', name: 'Incumbent Staffing Ltd', wins: 5, share: 0.83 } };
+
+  test('with B6 data both factors are scored, explained, and every point still adds up', () => {
+    const { score, reasons } = scoreTender(tender, profile, NOW, fake(HIGH, INC));
+    assert.equal(reasons.buyerConcentration.value, 0.3);
+    assert.equal(reasons.incumbent.value, Math.round((1 - 0.7 * 0.83) * 100) / 100);
+    assert.match(reasons.buyerConcentration.note, /high buyer \(HHI 7200, 6 awards, CPV division 79\)/);
+    assert.match(reasons.incumbent.note, /incumbent Incumbent Staffing Ltd: 5 wins, 83% of awards/);
+    assert.deepEqual(reasons.notScored, []);
+    const keys = [...Object.keys(DEFAULT_WEIGHTS), ...Object.keys(B6_WEIGHTS)];
+    const sum = keys.reduce((acc, k) => acc + reasons[k].points, 0);
+    assert.ok(Math.abs(sum - score) <= 0.5, `points ${sum} vs score ${score}`);
+    assert.deepEqual(scoreTender(tender, profile, NOW, fake(HIGH, INC)), scoreTender(tender, profile, NOW, fake(HIGH, INC)), 'deterministic');
+  });
+
+  test('an open buyer with no incumbent outscores an incumbent-held one', () => {
+    const open = scoreTender(tender, profile, NOW, fake({ ...HIGH, concentration: 'unconcentrated', hhi: 700 }, { ...INC, incumbent: null }));
+    const held = scoreTender(tender, profile, NOW, fake(HIGH, INC));
+    assert.ok(open.score > held.score, `${open.score} > ${held.score}`);
+  });
+
+  test('without B6 (no lookup, or B6 not run yet) scores are exactly as before, with the reason listed', () => {
+    const before = scoreTender(tender, profile, NOW);
+    const unavailable = scoreTender(tender, profile, NOW, { available: false, reason: 'award-analytics has no data yet (run B6 first)' });
+    assert.equal(unavailable.score, before.score);
+    assert.equal(unavailable.reasons.buyerConcentration, undefined);
+    assert.deepEqual(before.reasons.notScored, NOT_SCORED);
+    assert.match(unavailable.reasons.notScored[0], /buyerConcentration .*: award-analytics has no data yet/);
+  });
+
+  test('thin history, missing buyer and a throwing lookup are explicit unknowns, never errors', () => {
+    const thin = scoreTender(tender, profile, NOW, fake({ available: false, reason: 'only 1 award(s) for this buyer in 24 months' }, { available: false, reason: 'only 1 award(s)' }));
+    assert.equal(thin.reasons.buyerConcentration.unknown, true);
+    assert.equal(thin.reasons.buyerConcentration.value, UNKNOWN_B6);
+    assert.match(thin.reasons.buyerConcentration.note, /unknown: only 1 award/);
+    const noBuyer = scoreTender({ ...tender, buyer: null }, profile, NOW, fake(HIGH, INC));
+    assert.match(noBuyer.reasons.incumbent.note, /buyer not published/);
+    const broken = { available: true, buyerConcentration() { throw new Error('database is locked'); }, incumbent() { throw new Error('database is locked'); } };
+    const r = scoreTender(tender, profile, NOW, broken);
+    assert.match(r.reasons.buyerConcentration.note, /lookup failed: database is locked/);
+    assert.ok(Number.isInteger(r.score));
+  });
+
+  test('TED buyers are looked up by their notice country; UK sources by UK', () => {
+    assert.equal(buyerCountryOf({ source: 'contractsFinder', locations: ['IE'] }), 'UK');
+    assert.equal(buyerCountryOf({ source: 'ted', locations: ['irl'] }), 'IRL');
+    assert.equal(buyerCountryOf({ source: 'ted', locations: [] }), 'EU');
+  });
+
+  test('real B6 database: B3 scoring reads it through the public lookup; a dry-run open writes nothing', () => {
+    const dataDir = tmp();
+    assert.equal(openAwardsForScoring({ dataDir }).available, false, 'before B6 has run');
+    seedB6(dataDir, LEEDS_HISTORY);
+    const fingerprintB6 = () => readdirSync(dataDir).sort().map((f) => `${f}:${createHash('sha256').update(readFileSync(path.join(dataDir, f))).digest('hex')}`);
+    const before = fingerprintB6();
+    const awards = openAwardsForScoring({ dataDir, dryRun: true });
+    try {
+      // While open: a dry-run lookup reads an in-memory copy, so SQLite has created no side files.
+      // (A live-mode open would create -wal/-shm here; they vanish again on close, so only this check sees them.)
+      assert.deepEqual(readdirSync(dataDir).filter((f) => /award-analytics\.sqlite-(wal|shm)$/.test(f)), [], 'no B6 side files while a dry-run lookup is open');
+      const { reasons } = scoreTender(tender, profile, NOW, awards);
+      assert.equal(reasons.buyerConcentration.input.concentration, 'high');
+      assert.equal(reasons.incumbent.input.incumbent, 'Incumbent Staffing Ltd');
+      assert.equal(reasons.incumbent.input.share, 0.83);
+      const tiny = scoreTender({ ...tender, buyer: 'Tiny Parish Council' }, profile, NOW, awards);
+      assert.equal(tiny.reasons.buyerConcentration.unknown, true, 'one award is too little history');
+    } finally {
+      awards.close();
+    }
+    assert.deepEqual(fingerprintB6(), before, 'B6 files byte-identical after a dry-run read');
+  });
+
+  test('matchAndScore passes the lookup through and stores the B6 reasons', () => {
+    const env = openAll();
+    seedB6(env.dataDir, LEEDS_HISTORY);
+    syncProfiles(env.db, CONFIG().profiles, NOW);
+    const { changedIds } = storeTenders({ db: env.db, store: env.store, fetch: storeOcds(env, 'contractsFinder', [release({ ocid: 'ocds-b6', title: 'Interim recruitment services' })]), now: NOW, log: quiet });
+    const awards = openAwardsForScoring({ dataDir: env.dataDir });
+    try {
+      matchAndScore({ ...env, profiles: activeProfiles(env.db), tenderIds: changedIds, now: NOW, log: quiet, awards });
+    } finally {
+      awards.close();
+    }
+    const stored = JSON.parse(env.db.prepare(`SELECT reasons FROM scored_matches LIMIT 1`).pluck().get());
+    assert.equal(stored.incumbent.input.incumbent, 'Incumbent Staffing Ltd');
+    assert.deepEqual(stored.notScored, []);
+  });
+});
+
 describe('index.js', () => {
   let dataDir;
   let fixtures;
@@ -463,6 +598,17 @@ describe('index.js', () => {
     const after = cursorsNow();
     assert.equal(after.ted, cursorsBefore.ted, 'ted cursor held: the window is re-fetched next run');
     assert.equal(after.contractsFinder, quietDay, 'healthy source advanced');
+  });
+
+  test('--dry-run with B6 data present uses it and leaves every file, B6 included, byte-identical', async () => {
+    seedB6(dataDir, LEEDS_HISTORY);
+    const day = '2026-10-05T06:00:00.000Z';
+    writeDay(day, cursorsNow(), [release({ ocid: 'ocds-05', title: 'Interim recruitment services', date: day })], [tedNotice(5, 'Interim staffing')]);
+    const before = fingerprint(dataDir);
+    const r = await runAsync(day, '--dry-run');
+    assert.equal(r.status, 0, r.stdout + r.stderr);
+    assert.match(r.stdout, /B6 award analytics available: scoring buyer concentration and incumbent \(read-only copy\)/);
+    assert.deepEqual(fingerprint(dataDir), before);
   });
 
   test('when every source fails the run exits 1 with a loud alert', () => {

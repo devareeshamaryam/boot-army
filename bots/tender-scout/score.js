@@ -1,24 +1,36 @@
 /**
- * B3 scoring. Pure and deterministic: the same tender, profile and date always
- * give the same score and the same reasons.
+ * B3 scoring. Pure and deterministic: the same tender, profile, date and B6
+ * lookup state always give the same score and the same reasons.
  *
  * score = round(100 × Σ weight·factor / Σ weight), every factor 0–1:
- *   cpv       how specifically the notice's CPV codes match the profile's prefixes
- *   keywords  keyword density: distinct capability phrases found (title hits count double)
- *   value     position of the contract value against the profile's band
- *   location  delivery location against the profile's locations
- *   deadline  time left to prepare a bid
+ *   cpv                 how specifically the notice's CPV codes match the profile's prefixes
+ *   keywords            keyword density: distinct capability phrases found (title hits count double)
+ *   value               position of the contract value against the profile's band
+ *   location            delivery location against the profile's locations
+ *   deadline            time left to prepare a bid
+ *   buyerConcentration  (B6) how open the buyer's past awards are: unconcentrated scores highest
+ *   incumbent           (B6) whether one supplier holds the buyer's work, scaled by its share
  *
  * Every factor reports its input, its value and the points it contributed, so
  * each point of the score is explained. Missing data is an explicit "unknown"
  * with a fixed neutral value; nothing is estimated.
  *
- * Not scored yet: buyer concentration and incumbent signals need B6 (award
- * analytics). They are listed in reasons.notScored rather than guessed.
+ * B6 factors are scored only when an available award-analytics lookup is
+ * passed in. Without one (B6 not run, not installed, or failing) they are
+ * listed in reasons.notScored with the reason, and the score is exactly what
+ * it would be without B6. With one, both factors are weighted for every
+ * tender; a buyer B6 knows too little about is an explicit unknown.
  */
+import { openAwardLookup } from 'award-analytics/analytics';
 
 export const DEFAULT_WEIGHTS = Object.freeze({ cpv: 30, keywords: 25, value: 15, location: 15, deadline: 15 });
+/** Weights for the B6 factors; used only when a B6 lookup is available. Override per profile via "weights". */
+export const B6_WEIGHTS = Object.freeze({ buyerConcentration: 10, incumbent: 10 });
 export const NOT_SCORED = Object.freeze(['buyerConcentration (needs B6 award analytics)', 'incumbent (needs B6 award analytics)']);
+
+/** Neutral value for a B6 factor whose buyer has too little award history. */
+export const UNKNOWN_B6 = 0.5;
+export const CONCENTRATION_VALUES = Object.freeze({ unconcentrated: 0.9, moderate: 0.6, high: 0.3 });
 
 const UNKNOWN = Object.freeze({ cpv: 0.4, value: 0.5, location: 0.5, deadline: 0.4 });
 const DAY_MS = 86_400_000;
@@ -138,8 +150,77 @@ function deadlineFactor(tender, profile, now) {
  * @param {string} now     ISO timestamp the score is computed for
  * @returns {{ score: number, reasons: object }}
  */
-export function scoreTender(tender, profile, now) {
-  const weights = { ...DEFAULT_WEIGHTS, ...(profile.weights ?? {}) };
+/* ------------------------------------------------------------ B6 factors */
+
+/** Country key B6 uses for this tender's buyer: UK sources are UK; TED uses the notice's first location code. */
+export function buyerCountryOf(tender) {
+  if (tender.source !== 'ted') return 'UK';
+  return String(tender.locations?.[0] ?? 'EU').toUpperCase();
+}
+
+/** Run a lookup call; a throwing lookup becomes an explicit unknown, never a crashed run. */
+function ask(fn, query) {
+  try {
+    return fn(query) ?? { available: false, reason: 'lookup returned nothing' };
+  } catch (err) {
+    return { available: false, reason: `lookup failed: ${err.message}` };
+  }
+}
+
+const unknownB6 = (reason) => ({ value: UNKNOWN_B6, unknown: true, input: null, note: `unknown: ${reason}` });
+
+export function concentrationFactor(res) {
+  if (!res?.available) return unknownB6(res?.reason ?? 'no award data for this buyer');
+  const value = CONCENTRATION_VALUES[res.concentration];
+  if (value === undefined) return unknownB6(`unrecognised concentration "${res.concentration}"`);
+  return {
+    value, unknown: false,
+    input: { concentration: res.concentration, hhi: res.hhi, awards: res.awards, scope: res.scope, windowMonths: res.windowMonths, topSupplier: res.topSupplier?.name ?? null },
+    note: `${res.concentration.replace('_', ' ')} buyer (HHI ${res.hhi}, ${res.awards} awards, ${res.scope})`,
+  };
+}
+
+export function incumbentFactor(res) {
+  if (!res?.available) return unknownB6(res?.reason ?? 'no award data for this buyer');
+  if (!res.incumbent) {
+    return { value: 0.85, unknown: false, input: { incumbent: null, awards: res.awards, scope: res.scope }, note: `no incumbent across ${res.awards} awards (${res.scope})` };
+  }
+  const share = toNumberOrNull(res.incumbent.share);
+  if (share === null || share < 0 || share > 1) return unknownB6('incumbent share not usable');
+  return {
+    value: round2(1 - 0.7 * share), unknown: false,
+    input: { incumbent: res.incumbent.name, wins: res.incumbent.wins, share, scope: res.scope },
+    note: `incumbent ${res.incumbent.name}: ${res.incumbent.wins} wins, ${Math.round(share * 100)}% of awards (${res.scope})`,
+  };
+}
+
+/**
+ * Open the B6 lookup for scoring. Dry runs read an in-memory copy (nothing on
+ * disk changes). Never throws: if award-analytics is missing or failing, the
+ * result is an unavailable lookup and B3 scores without B6.
+ */
+export function openAwardsForScoring({ dryRun = false, dataDir, log } = {}) {
+  try {
+    const lookup = openAwardLookup({ dryRun, ...(dataDir ? { dataDir } : {}) });
+    if (lookup.available) log?.info(`B6 award analytics available: scoring buyer concentration and incumbent${dryRun ? ' (read-only copy)' : ''}`);
+    else log?.info('B6 award analytics not available yet; buyer concentration and incumbent not scored');
+    return lookup;
+  } catch (err) {
+    log?.warn(`B6 award analytics lookup could not be opened: ${err.message}`);
+    return { available: false, reason: `lookup could not be opened: ${err.message}`, close() {} };
+  }
+}
+
+/* ----------------------------------------------------------------- score */
+
+/**
+ * @param {object} tender
+ * @param {object} profile
+ * @param {string} now
+ * @param {object|null} [awards]  award-analytics lookup (openAwardsForScoring); null = score without B6
+ */
+export function scoreTender(tender, profile, now, awards = null) {
+  const weights = { ...DEFAULT_WEIGHTS, ...B6_WEIGHTS, ...(profile.weights ?? {}) };
   const factors = {
     cpv: cpvFactor(tender, profile),
     keywords: keywordFactor(tender, profile),
@@ -147,7 +228,23 @@ export function scoreTender(tender, profile, now) {
     location: locationFactor(tender, profile),
     deadline: deadlineFactor(tender, profile, now),
   };
-  const total = Object.keys(factors).reduce((s, k) => s + (weights[k] ?? 0), 0) || 1;
+
+  let notScored = [...NOT_SCORED];
+  if (awards?.available) {
+    if (!tender.buyer) {
+      factors.buyerConcentration = unknownB6('buyer not published on the notice');
+      factors.incumbent = unknownB6('buyer not published on the notice');
+    } else {
+      const query = { buyerName: tender.buyer, country: buyerCountryOf(tender), cpv: tender.cpv?.[0] ?? null };
+      factors.buyerConcentration = concentrationFactor(ask((q) => awards.buyerConcentration(q), query));
+      factors.incumbent = incumbentFactor(ask((q) => awards.incumbent(q), query));
+    }
+    notScored = [];
+  } else if (awards?.reason) {
+    notScored = NOT_SCORED.map((n) => `${n}: ${awards.reason}`);
+  }
+
+  const total = Object.keys(factors).reduce((sum, k) => sum + (weights[k] ?? 0), 0) || 1;
   const reasons = {};
   let raw = 0;
   for (const [k, f] of Object.entries(factors)) {
@@ -155,6 +252,6 @@ export function scoreTender(tender, profile, now) {
     raw += contribution;
     reasons[k] = { ...f, value: round2(f.value), weight: weights[k] ?? 0, points: round2(contribution) };
   }
-  reasons.notScored = [...NOT_SCORED];
+  reasons.notScored = notScored;
   return { score: Math.max(0, Math.min(100, Math.round(raw))), reasons };
 }

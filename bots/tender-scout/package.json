@@ -1,6 +1,6 @@
 {
   "name": "tender-scout",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "description": "B3: open UK and EU tender notices matched and scored against each subscribing entity's capability profile.",
   "type": "module",
@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@botarmy/core": "*",
+    "award-analytics": "*",
     "dotenv": "^18.0.4"
   }
 }

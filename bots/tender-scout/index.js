@@ -16,6 +16,7 @@ import {
   storeTenders, syncProfiles, validateConfig, volumeAnomaly,
 } from './process.js';
 import { buildAnomalyAlert, buildDigest } from './digest.js';
+import { openAwardsForScoring } from './score.js';
 
 const DRY_RUN = process.argv.includes('--dry-run');
 const DEFAULT_CHANNEL = 'tenders'; // SLACK_WEBHOOK_URL_TENDERS, else SLACK_WEBHOOK_URL
@@ -60,6 +61,7 @@ async function main() {
   const db = coreDb.connect(BOT, { dryRun: DRY_RUN });
   const store = snapshot.openStore({ dryRun: DRY_RUN });
   const spine = coreSpine.openSpine({ dryRun: DRY_RUN });
+  let awards = null; // B6 lookup, opened just before scoring
   try {
     coreDb.migrate(db, new URL('./migrations/', import.meta.url), { namespace: BOT });
     const now = s.TS_NOW ? new Date(s.TS_NOW).toISOString() : new Date().toISOString();
@@ -98,7 +100,9 @@ async function main() {
 
     // 3. Match, score, emit spine events.
     const profiles = activeProfiles(db);
-    const counts = matchAndScore({ db, spine, profiles, tenderIds: changed, now, log });
+    // B6 award analytics: read-only, in-memory copy on dry runs; unavailable → factors listed as not scored.
+    awards = openAwardsForScoring({ dryRun: DRY_RUN, log });
+    const counts = matchAndScore({ db, spine, profiles, tenderIds: changed, now, log, awards });
 
     // 4. One digest per profile.
     let posted = 0;
@@ -116,6 +120,7 @@ async function main() {
       .run(new Date().toISOString(), problems.length ? 'partial' : 'ok', JSON.stringify(stats), runId);
     log.info('Run complete', stats);
   } finally {
+    awards?.close?.();
     db.close();
     store.close();
     spine.close();

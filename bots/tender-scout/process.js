@@ -372,7 +372,10 @@ const COUNTRY_JURISDICTION = { GBR: 'UK', GB: 'UK', UK: 'UK' };
  * Amended tenders are rescored; a match already sent is not sent again.
  * @returns {{ scored: number, opportunities: number, events: number }}
  */
-export function matchAndScore({ db, spine, profiles, tenderIds, now = new Date().toISOString(), log }) {
+/**
+ * @param {object|null} [awards]  B6 lookup from score.js openAwardsForScoring(); null scores without B6
+ */
+export function matchAndScore({ db, spine, profiles, tenderIds, now = new Date().toISOString(), log, awards = null }) {
   const getTender = db.prepare(`SELECT * FROM tenders WHERE id = ?`);
   const upsert = db.prepare(`
     INSERT INTO scored_matches (tender_id, profile_id, passed, filter_reason, score, reasons, content_hash, scored_at)
@@ -388,7 +391,7 @@ export function matchAndScore({ db, spine, profiles, tenderIds, now = new Date()
     db.transaction(() => {
       for (const p of profiles) {
         const f = applyFilters(tender, p, now);
-        const { score, reasons } = scoreTender(tender, p, now);
+        const { score, reasons } = scoreTender(tender, p, now, awards);
         upsert.run(id, p.profileId, f.passed ? 1 : 0, f.reason, f.passed ? score : null, JSON.stringify(reasons), tender.contentHash, now);
         counts.scored += 1;
         if (f.passed) passedFor.push({ profileId: p.profileId, score });
