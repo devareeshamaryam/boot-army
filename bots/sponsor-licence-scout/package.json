@@ -1,7 +1,8 @@
 {
   "name": "sponsor-licence-scout",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
+  "description": "B1: daily Home Office licensed sponsors register to Google Sheet (new / revoked) + one Slack message.",
   "type": "module",
   "main": "index.js",
   "engines": {
@@ -9,9 +10,14 @@
   },
   "scripts": {
     "start": "node index.js",
+    "dry-run": "node index.js --dry-run",
+    "harvest": "node harvest.js",
     "test": "node --test \"test/**/*.test.js\""
   },
   "dependencies": {
-    "@botarmy/core": "*"
+    "@botarmy/core": "*",
+    "csv-parse": "^5.5.6",
+    "dotenv": "^18.0.4",
+    "googleapis": "^183.0.0"
   }
 }

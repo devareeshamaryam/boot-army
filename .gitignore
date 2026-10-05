@@ -2,4 +2,5 @@ node_modules/
 .env
 *.db
 *.sqlite
-logs/
+logs/secrets/
+*-key.json

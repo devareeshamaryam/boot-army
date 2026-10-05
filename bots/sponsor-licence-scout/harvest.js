@@ -11,6 +11,7 @@
  *
  * Runnable alone:  node bots/sponsor-licence-scout/harvest.js [--dry-run]
  */
+import { parse } from 'csv-parse/sync';
 import { http } from '@botarmy/core';
 
 export const SOURCE = 'uk-sponsor-register';
@@ -175,6 +176,23 @@ export async function harvest({ store, log, env = process.env }) {
   });
   log?.info(`${snapshot.isNew ? 'Stored new' : 'Unchanged'} snapshot ${snapshot.id} (${(snapshot.bytes / 1e6).toFixed(2)} MB)`);
   return { snapshot, source };
+}
+
+/* ------------------------------------------------------------------ rows */
+
+export const COLUMNS = ['Organisation Name', 'Town/City', 'County', 'Type & Rating', 'Route'];
+
+/**
+ * Parse the register CSV into rows with the five register columns.
+ * Throws if a column is missing, naming the columns actually found.
+ * @returns {{ 'Organisation Name': string, 'Town/City': string, County: string, 'Type & Rating': string, Route: string }[]}
+ */
+export function parseRows(csvText) {
+  const records = parse(csvText, { columns: true, bom: true, trim: true, skip_empty_lines: true, relax_column_count: true });
+  const found = records.length ? Object.keys(records[0]) : parse(csvText, { bom: true, to_line: 1 })[0] ?? [];
+  const missing = COLUMNS.filter((c) => !found.includes(c));
+  if (missing.length) throw new Error(`Register CSV is missing column(s): ${missing.join(', ')}. Found: ${found.join(', ') || '(none)'}`);
+  return records.map((r) => Object.fromEntries(COLUMNS.map((c) => [c, r[c] ?? ''])));
 }
 
 /* ---------------------------------------------------------- standalone run */

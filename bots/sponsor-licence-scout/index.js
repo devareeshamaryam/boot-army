@@ -5,105 +5,71 @@ loadEnv({ path: fileURLToPath(new URL('../../.env', import.meta.url)), quiet: tr
 /**
  * B1 Sponsor Licence Scout — entry point.
  *
+ * Daily: download the Home Office register CSV, keep every sponsor in the
+ * Google Sheet (tab "Sponsors"), append new ones, mark vanished ones Revoked,
+ * and send one Slack message.
+ *
  *   npm start -w bots/sponsor-licence-scout
- *   npm run dry-run -w bots/sponsor-licence-scout      # zero writes: no DB files, no Slack, no pings
- *   node bots/sponsor-licence-scout/index.js --from-snapshot 42   # re-process a stored snapshot
+ *   npm run dry-run -w bots/sponsor-licence-scout   # download + diff, print what would change; no Sheet writes, no Slack
  */
-import { existsSync, readFileSync } from 'node:fs';
-import { config, db as coreDb, health, logger, slack, snapshot, spine as coreSpine } from '@botarmy/core';
-import { harvest, SOURCE } from './harvest.js';
-import { AnomalyError, BOT, buildWatchMatcher, markNotified, pendingDiffs, processSnapshot } from './process.js';
-import { buildAnomalyAlert, buildDigest } from './digest.js';
+import { health, logger, slack, snapshot } from '@botarmy/core';
+import { harvest, parseRows } from './harvest.js';
+import { appendRows, diffSponsors, ensureTab, openSheets, readRows, updateRows } from './sheets.js';
 
-const args = process.argv.slice(2);
-const DRY_RUN = args.includes('--dry-run');
-const FROM_SNAPSHOT = args.includes('--from-snapshot') ? Number(args[args.indexOf('--from-snapshot') + 1]) : null;
+const BOT = 'sponsor-licence-scout';
+const DRY_RUN = process.argv.includes('--dry-run');
 const SLACK_CHANNEL = 'sponsors'; // SLACK_WEBHOOK_URL_SPONSORS, else SLACK_WEBHOOK_URL
+const LIST_LIMIT = 25;
 
 const log = logger.forBot(BOT);
 
-/** Read settings lazily, after dotenv has loaded. */
-function loadSettings() {
-  return {
-    minOrgs: config.number('SLS_MIN_ORGS', 1000),
-    maxDropRatio: config.number('SLS_MAX_DROP_RATIO', 0.1),
-    watchlistPath: config.optional('SLS_WATCHLIST', fileURLToPath(new URL('./watchlist.json', import.meta.url))),
-  };
+const esc = (s) => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+const line = (f) => `• ${esc(f[0])} — ${esc(f[1] || 'town not listed')} (${esc(f[4])})`;
+
+function section(title, rows) {
+  if (!rows.length) return [];
+  const shown = rows.slice(0, LIST_LIMIT).map(line);
+  if (rows.length > LIST_LIMIT) shown.push(`...and ${rows.length - LIST_LIMIT} more (see sheet)`);
+  return ['', `*${title}* (${rows.length})`, ...shown];
 }
 
-function loadWatchlist(path) {
-  if (!existsSync(path)) return { additionRoutes: [], match: () => null };
-  const raw = JSON.parse(readFileSync(path, 'utf8'));
-  return { additionRoutes: raw.additionRoutes ?? [], match: buildWatchMatcher(raw) };
-}
-
-async function deliver(message) {
-  if (DRY_RUN) {
-    console.log(JSON.stringify(message, null, 2));
-    return;
-  }
-  await slack.post(SLACK_CHANNEL, message);
+function message(d, today) {
+  if (d.blocked) return `:warning: Sponsor register ${today}: ${d.blocked}. Check the download.`;
+  if (d.baseline) return `Sponsor register ${today}: baseline loaded: ${d.appends.length} sponsors`;
+  return [
+    `Sponsor register ${today}: ${d.added.length} new, ${d.revoked.length} revoked, ${d.reinstated.length} reinstated · ${d.activeAfter} active`,
+    ...section('New sponsors (Ateca leads)', d.added),
+    ...section('Revoked (workers have ~60 days; Ateca candidates / Osbrooks clients)', d.revoked),
+  ].join('\n');
 }
 
 async function main() {
-  const settings = loadSettings();
   if (!DRY_RUN) slack.resolveWebhook(SLACK_CHANNEL); // fail fast, loudly, before any work
-  if (FROM_SNAPSHOT !== null && !Number.isInteger(FROM_SNAPSHOT)) throw new Error('--from-snapshot needs a numeric snapshot id');
-  const watchlist = loadWatchlist(settings.watchlistPath);
-
   const store = snapshot.openStore({ dryRun: DRY_RUN });
-  const db = coreDb.connect(BOT, { dryRun: DRY_RUN });
-  const spine = coreSpine.openSpine({ dryRun: DRY_RUN });
   try {
-    coreDb.migrate(db, new URL('./migrations/', import.meta.url), { namespace: BOT });
-    log.info(DRY_RUN ? 'Dry run: working on in-memory copies; nothing will be written' : 'Live run', { dataDir: config.dataDir() });
+    const today = new Date().toISOString().slice(0, 10);
+    const { snapshot: snap } = await harvest({ store, log });
+    const rows = parseRows(store.readRaw(snap.id));
+    log.info(`Register: ${rows.length} rows`);
 
-    // 1. Harvest (snapshot-first) or pick a stored snapshot.
-    let snapshotId;
-    if (FROM_SNAPSHOT !== null) {
-      const row = store.get(FROM_SNAPSHOT);
-      if (!row || row.source !== SOURCE) throw new Error(`Snapshot ${FROM_SNAPSHOT} is not a ${SOURCE} snapshot`);
-      snapshotId = FROM_SNAPSHOT;
-    } else {
-      snapshotId = (await harvest({ store, log })).snapshot.id;
-    }
+    const sheets = openSheets();
+    const hasTab = await ensureTab(sheets, { create: !DRY_RUN });
+    const sheetRows = hasTab ? await readRows(sheets) : [];
+    const d = diffSponsors(rows, sheetRows, today);
+    const text = message(d, today);
 
-    // 2. Process.
-    let result;
-    try {
-      result = processSnapshot({ db, spine, store, snapshotId, watchMatch: watchlist.match, settings, log });
-    } catch (err) {
-      if (err instanceof AnomalyError) {
-        log.error(`Snapshot rejected: ${err.message}`, err.details);
-        await deliver(buildAnomalyAlert({ reason: err.message, ...err.details }));
-        err.alerted = true;
-      }
-      throw err; // halt: health.run pings /fail and sets exit code 1
-    }
-    if (result.outcome === 'already-processed') {
-      log.info(`Snapshot ${snapshotId} already processed (${result.previousOutcome}); nothing new`);
-    }
-
-    // 3. Notify (includes diffs left over from an earlier failed post).
-    const pending = pendingDiffs(db);
-    if (!pending.length) {
-      log.info('No pending changes; no Slack message');
+    if (d.blocked) log.warn(d.blocked);
+    if (DRY_RUN) {
+      console.log(`DRY RUN — would append ${d.appends.length} rows and update ${d.updates.length} rows. Slack message would be:\n${text}`);
       return;
     }
-    const latest = pending.at(-1);
-    const suppressed = db.prepare(`SELECT kind, COUNT(*) AS n FROM suppressed_changes WHERE snapshot_id = ? GROUP BY kind`).all(snapshotId)
-      .reduce((acc, r) => ({ ...acc, [r.kind]: r.n }), {});
-    const orgCount = db.prepare(`SELECT COUNT(*) FROM sponsors WHERE active = 1`).pluck().get();
-    await deliver(buildDigest({
-      diffs: pending,
-      additionRoutes: watchlist.additionRoutes,
-      meta: { publishedDate: result.publishedDate ?? latest.published_date, orgCount, relocated: suppressed.RELOCATED ?? 0, renamed: suppressed.RENAMED ?? 0, sourceUrl: latest.source_url },
-    }));
-    if (!DRY_RUN) markNotified(db, pending.map((d) => d.id));
-    log.info(`${DRY_RUN ? 'Would post' : 'Posted'} digest with ${pending.length} changes`);
+    if (!d.blocked) {
+      await appendRows(sheets, d.appends);
+      await updateRows(sheets, d.updates);
+    }
+    await slack.post(SLACK_CHANNEL, text);
+    log.info(`Sheet updated: +${d.appends.length} rows, ${d.updates.length} status changes`);
   } finally {
-    db.close();
-    spine.close();
     store.close();
   }
 }
@@ -113,7 +79,7 @@ await health.run(BOT, main, {
   uuid: process.env.SLS_HC_UUID?.trim() || undefined, // legacy name; HC_UUID_SPONSOR_LICENCE_SCOUT also works
   log,
   onFailure: async (err) => {
-    if (DRY_RUN || err.alerted) return;
+    if (DRY_RUN) return;
     await slack.post(SLACK_CHANNEL, `:rotating_light: Sponsor Licence Scout failed: ${err.message}`);
   },
 });
