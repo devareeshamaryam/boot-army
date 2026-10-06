@@ -1,257 +1,168 @@
 /**
- * B3 scoring. Pure and deterministic: the same tender, profile, date and B6
- * lookup state always give the same score and the same reasons.
+ * Winnability score, 0-100. Pure: (notice, profile, context) -> result, no I/O.
  *
- * score = round(100 × Σ weight·factor / Σ weight), every factor 0–1:
- *   cpv                 how specifically the notice's CPV codes match the profile's prefixes
- *   keywords            keyword density: distinct capability phrases found (title hits count double)
- *   value               position of the contract value against the profile's band
- *   location            delivery location against the profile's locations
- *   deadline            time left to prepare a bid
- *   buyerConcentration  (B6) how open the buyer's past awards are: unconcentrated scores highest
- *   incumbent           (B6) whether one supplier holds the buyer's work, scaled by its share
+ * Components and their maximums come from profile.weights (default 40/20/20/15/5).
+ * A missing field is never scored as zero or guessed: it gets half the component's
+ * points and is listed in `gaps`, so the digest can say "value not published".
  *
- * Every factor reports its input, its value and the points it contributed, so
- * each point of the score is explained. Missing data is an explicit "unknown"
- * with a fixed neutral value; nothing is estimated.
- *
- * B6 factors are scored only when an available award-analytics lookup is
- * passed in. Without one (B6 not run, not installed, or failing) they are
- * listed in reasons.notScored with the reason, and the score is exactly what
- * it would be without B6. With one, both factors are weighted for every
- * tender; a buyer B6 knows too little about is an explicit unknown.
+ * Some notices are dropped before scoring (`excluded` is set, score 0): an excluded
+ * keyword or buyer, a deadline that has passed, or no keyword and no CPV match at all.
  */
-import { openAwardLookup } from 'award-analytics/analytics';
 
-export const DEFAULT_WEIGHTS = Object.freeze({ cpv: 30, keywords: 25, value: 15, location: 15, deadline: 15 });
-/** Weights for the B6 factors; used only when a B6 lookup is available. Override per profile via "weights". */
-export const B6_WEIGHTS = Object.freeze({ buyerConcentration: 10, incumbent: 10 });
-export const NOT_SCORED = Object.freeze(['buyerConcentration (needs B6 award analytics)', 'incumbent (needs B6 award analytics)']);
+import { regionMatches } from './regions.js';
 
-/** Neutral value for a B6 factor whose buyer has too little award history. */
-export const UNKNOWN_B6 = 0.5;
-export const CONCENTRATION_VALUES = Object.freeze({ unconcentrated: 0.9, moderate: 0.6, high: 0.3 });
+export const NEUTRAL = 0.5; // share of a component's points when its data is missing
 
-const UNKNOWN = Object.freeze({ cpv: 0.4, value: 0.5, location: 0.5, deadline: 0.4 });
-const DAY_MS = 86_400_000;
-const round2 = (n) => Math.round(n * 100) / 100;
-
-/** Strict number parse: null for empty, non-numeric or non-finite input. */
-export function toNumberOrNull(value) {
-  if (value === null || value === undefined) return null;
-  if (typeof value === 'number') return Number.isFinite(value) ? value : null;
-  const s = String(value).trim().replace(/,/g, '');
-  if (s === '' || !/^-?\d+(\.\d+)?$/.test(s)) return null;
-  const n = Number(s);
-  return Number.isFinite(n) ? n : null;
-}
-
-/** Whole days from `now` to `deadline` (negative when past); null if the deadline is unknown. */
-export function daysUntil(deadline, now) {
-  const d = Date.parse(deadline ?? '');
-  const n = Date.parse(now ?? '');
-  if (!Number.isFinite(d) || !Number.isFinite(n)) return null;
-  return Math.floor((d - n) / DAY_MS);
-}
-
-/** Longest matching CPV prefix across the notice's codes, or null. */
-export function bestCpvMatch(cpvCodes, prefixes) {
-  let best = null;
-  for (const code of cpvCodes ?? []) {
-    for (const p of prefixes ?? []) {
-      if (String(code).startsWith(p) && (!best || p.length > best.prefix.length)) best = { code, prefix: p };
-    }
-  }
-  return best;
-}
-
+const DAY = 86_400_000;
+const round1 = (n) => Math.round(n * 10) / 10;
 const escapeRe = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-const phraseRe = (phrase) => new RegExp(`(^|[^\\p{L}\\p{N}])${escapeRe(phrase.trim())}($|[^\\p{L}\\p{N}])`, 'iu');
+const matches = (text, phrase) => Boolean(text) && new RegExp(`\\b${escapeRe(phrase)}\\b`, 'i').test(text);
+const lower = (s) => String(s ?? '').trim().toLowerCase();
 
-/** Distinct profile phrases found in title (weight 2) and description (weight 1). */
-export function keywordHits(title, description, keywords) {
-  const hits = [];
-  for (const k of keywords ?? []) {
-    const re = phraseRe(k);
-    if (re.test(title ?? '')) hits.push({ keyword: k, where: 'title', weight: 2 });
-    else if (re.test(description ?? '')) hits.push({ keyword: k, where: 'description', weight: 1 });
+export function formatMoney(amount, currency = 'GBP') {
+  if (amount == null) return null;
+  const symbol = { GBP: '£', EUR: '€', USD: '$' }[currency ?? 'GBP'];
+  const n = Math.round(amount).toLocaleString('en-GB');
+  return symbol ? `${symbol}${n}` : `${n} ${currency}`;
+}
+
+/* ------------------------------------------------------------ components */
+
+function relevance(n, p, max, gaps) {
+  const include = p.keywords.include;
+  const inTitle = include.filter((k) => matches(n.title, k));
+  const inDesc = include.filter((k) => !inTitle.includes(k) && matches(n.description, k));
+  const kw = Math.min(1, (2 * inTitle.length + inDesc.length) / 3);
+
+  const cpvHits = n.cpv_codes.filter((c) => p.cpvPrefixes.some((pre) => c.startsWith(pre)));
+  let cpv;
+  let cpvReason;
+  if (!p.cpvPrefixes.length) { cpv = kw; cpvReason = null; }
+  else if (!n.cpv_codes.length) { cpv = NEUTRAL; cpvReason = 'CPV not published'; gaps.push('CPV code not published'); }
+  else if (cpvHits.length) { cpv = 1; cpvReason = `CPV ${cpvHits[0]} in your categories`; }
+  else { cpv = 0; cpvReason = `CPV ${n.cpv_codes[0]} outside your categories`; }
+
+  // No region (or one we cannot map) is a gap, never a mismatch.
+  let region = 1;
+  let regionReason = null;
+  if (p.regions.length) {
+    const raw = n.regions_raw ?? [];
+    if (!n.regions.length) {
+      region = NEUTRAL;
+      regionReason = raw.length ? `region not recognised (${raw.join(', ')})` : 'region not published';
+      gaps.push(regionReason);
+    } else if (n.regions.some((r) => p.regions.some((pr) => regionMatches(r, pr)))) regionReason = `in ${n.regions.join(', ')}`;
+    else { region = 0; regionReason = `region ${n.regions.join(', ')} not in your list`; }
   }
-  return hits;
-}
 
-/** True if any delivery location string mentions one of the profile's locations. */
-export function locationMatch(locations, profileLocations) {
-  if (!profileLocations?.length) return { status: 'any' };
-  if (!locations?.length) return { status: 'unknown' };
-  for (const want of profileLocations) {
-    const re = phraseRe(want);
-    const hit = locations.find((l) => re.test(l));
-    if (hit) return { status: 'match', matched: want, input: hit };
-  }
-  return { status: 'mismatch', input: locations.slice(0, 3) };
-}
-
-/* ------------------------------------------------------------- factors */
-
-function cpvFactor(tender, profile) {
-  if (!tender.cpv?.length) return { value: UNKNOWN.cpv, unknown: true, note: 'notice publishes no CPV codes' };
-  const m = bestCpvMatch(tender.cpv, profile.cpvPrefixes);
-  if (!m) return { value: 0, note: `CPV ${tender.cpv.slice(0, 3).join(', ')} outside profile prefixes` };
-  const value = m.prefix.length >= 5 ? 1 : m.prefix.length >= 3 ? 0.85 : 0.7;
-  return { value, input: m.code, matched: m.prefix, note: `CPV ${m.code} matches prefix ${m.prefix}` };
-}
-
-function keywordFactor(tender, profile) {
-  if (!profile.keywords?.length) return { value: 0.5, unknown: true, note: 'profile has no keywords' };
-  const hits = keywordHits(tender.title, tender.description, profile.keywords);
-  const weighted = hits.reduce((s, h) => s + h.weight, 0);
-  const target = Math.min(profile.keywords.length, 4) * 2; // two title hits on four phrases = full marks
+  const parts = [];
+  if (inTitle.length) parts.push(`"${inTitle.join('", "')}" in title`);
+  if (inDesc.length) parts.push(`"${inDesc.join('", "')}" in description`);
+  if (cpvReason) parts.push(cpvReason);
+  if (regionReason) parts.push(regionReason);
   return {
-    value: Math.min(1, weighted / target),
-    input: hits.map((h) => `${h.keyword} (${h.where})`),
-    note: hits.length ? `${hits.length} capability phrase(s) found` : 'no capability phrases found',
+    component: 'relevance', max, points: round1(max * (0.6 * kw + 0.3 * cpv + 0.1 * region)),
+    reason: parts.join('; ') || 'weak keyword match',
+    hits: inTitle.length + inDesc.length + cpvHits.length,
   };
 }
 
-function valueFactor(tender, profile) {
-  const value = toNumberOrNull(tender.valueMax) ?? toNumberOrNull(tender.valueMin);
-  if (value === null) return { value: UNKNOWN.value, unknown: true, note: 'value not published' };
-  if (profile.valueCurrency && tender.currency && tender.currency !== profile.valueCurrency) {
-    return { value: UNKNOWN.value, unknown: true, input: value, note: `value in ${tender.currency}, band in ${profile.valueCurrency}: not compared` };
+function valueFit(n, p, max, gaps) {
+  const { min, max: top } = p.value;
+  if (n.value_amount == null) {
+    const why = n.value_placeholder ? 'value published as a placeholder (e.g. £1)' : 'value not published';
+    gaps.push(why);
+    return { component: 'value', max, points: round1(max * NEUTRAL), reason: why };
   }
-  const min = toNumberOrNull(profile.valueMin);
-  const max = toNumberOrNull(profile.valueMax);
-  if (max !== null && value > max) return { value: 0.6, input: value, note: `above the ${max.toLocaleString('en-GB')} band ceiling (stretch)` };
-  if (min !== null && value < min) return { value: 0.3, input: value, note: `below the ${min.toLocaleString('en-GB')} floor` };
-  return { value: 1, input: value, note: 'within the profile value band' };
+  const v = formatMoney(n.value_amount, n.value_currency);
+  if (min == null && top == null) return { component: 'value', max, points: max, reason: `${v} (no value range set)` };
+  let share = 1;
+  let reason = `${v} within your range`;
+  if (min != null && n.value_amount < min) { share = n.value_amount / min; reason = `${v} below your minimum ${formatMoney(min)}`; }
+  if (top != null && n.value_amount > top) { share = top / n.value_amount; reason = `${v} above your maximum ${formatMoney(top)}`; }
+  return { component: 'value', max, points: round1(max * share), reason };
 }
 
-function locationFactor(tender, profile) {
-  const m = locationMatch(tender.locations, profile.locations);
-  if (m.status === 'any') return { value: 1, note: 'profile accepts any location' };
-  if (m.status === 'unknown') return { value: UNKNOWN.location, unknown: true, note: 'delivery location not published' };
-  if (m.status === 'match') return { value: 1, input: m.input, note: `delivery in ${m.matched}` };
-  return { value: 0.2, input: m.input, note: 'delivery outside profile locations' };
+function runway(n, p, max, gaps, now) {
+  if (!n.deadline) {
+    gaps.push('deadline not published');
+    return { component: 'deadline', max, points: round1(max * NEUTRAL), reason: 'deadline not published' };
+  }
+  const days = (Date.parse(n.deadline) - Date.parse(now)) / DAY;
+  const { minDays, fullDays } = p.runway;
+  const share = days < minDays ? 0 : Math.min(1, (days - minDays) / (fullDays - minDays));
+  const d = Math.floor(days);
+  const reason = days < minDays ? `only ${d} day${d === 1 ? '' : 's'} to bid` : `${d} days to bid`;
+  return { component: 'deadline', max, points: round1(max * share), reason };
 }
 
-function deadlineFactor(tender, profile, now) {
-  const days = daysUntil(tender.deadline, now);
-  if (days === null) return { value: UNKNOWN.deadline, unknown: true, note: 'deadline not published' };
-  const min = toNumberOrNull(profile.minDays) ?? 10;
-  if (days < min) return { value: 0, input: days, note: `${days} day(s) left, below the ${min}-day minimum` };
-  if (days < min + 7) return { value: 0.6, input: days, note: `${days} days left: tight` };
-  if (days <= 60) return { value: 1, input: days, note: `${days} days left` };
-  return { value: 0.8, input: days, note: `${days} days left: early` };
+function buyerFamiliarity(max, gaps, history) {
+  if (!history || history.total === 0) {
+    gaps.push('no award history for this buyer in our data');
+    return { component: 'buyer', max, points: round1(max * NEUTRAL), reason: 'buyer unknown: no award history yet' };
+  }
+  if (history.inCategory > 0) {
+    return {
+      component: 'buyer', max, points: round1(max * Math.min(1, 0.6 + 0.2 * history.inCategory)),
+      reason: `buyer has awarded ${history.inCategory} contract${history.inCategory === 1 ? '' : 's'} in your categories`,
+    };
+  }
+  return { component: 'buyer', max, points: round1(max * 0.4), reason: `buyer known (${history.total} awards), none in your categories` };
+}
+
+function recency(n, max, gaps, now) {
+  if (!n.published_at) {
+    gaps.push('publication date not published');
+    return { component: 'recency', max, points: round1(max * NEUTRAL), reason: 'publication date unknown' };
+  }
+  const hours = (Date.parse(now) - Date.parse(n.published_at)) / 3_600_000;
+  const share = hours <= 24 ? 1 : hours <= 72 ? 0.6 : hours <= 168 ? 0.3 : 0;
+  return { component: 'recency', max, points: round1(max * share), reason: hours <= 24 ? 'published in the last 24h' : `published ${Math.floor(hours / 24)} days ago` };
+}
+
+/* ------------------------------------------------------------------ main */
+
+/** Why a notice is dropped for this profile, or null. */
+export function exclusion(n, p, now) {
+  if (p.excludedBuyers.some((b) => lower(b) === lower(n.buyer_name))) return `excluded buyer: ${n.buyer_name}`;
+  const kw = p.keywords.exclude.find((k) => matches(n.title, k) || matches(n.description, k));
+  if (kw) return `excluded keyword: ${kw}`;
+  if (n.deadline && Date.parse(n.deadline) <= Date.parse(now)) return 'deadline has passed';
+  return null;
 }
 
 /**
- * @param {object} tender  { title, description, cpv, valueMin, valueMax, currency, locations, deadline }
- * @param {object} profile { cpvPrefixes, keywords, valueMin, valueMax, valueCurrency, locations, minDays, weights }
- * @param {string} now     ISO timestamp the score is computed for
- * @returns {{ score: number, reasons: object }}
+ * @param {object} notice   notices row (cpv_codes / regions as arrays)
+ * @param {object} profile  validated profile (profiles.js)
+ * @param {{ now: string, buyerHistory?: { total: number, inCategory: number } | null }} context
+ * @returns {{ score: number, breakdown: { component, points, max, reason }[], gaps: string[], excluded: string|null }}
  */
-/* ------------------------------------------------------------ B6 factors */
+export function score(notice, profile, { now, buyerHistory = null }) {
+  const excluded = exclusion(notice, profile, now);
+  if (excluded) return { score: 0, breakdown: [], gaps: [], excluded };
 
-/** Country key B6 uses for this tender's buyer: UK sources are UK; TED uses the notice's first location code. */
-export function buyerCountryOf(tender) {
-  if (tender.source !== 'ted') return 'UK';
-  return String(tender.locations?.[0] ?? 'EU').toUpperCase();
+  const w = profile.weights;
+  const gaps = [];
+  const rel = relevance(notice, profile, w.relevance, gaps);
+  if (rel.hits === 0) return { score: 0, breakdown: [], gaps: [], excluded: 'no keyword or CPV match' };
+  delete rel.hits;
+
+  const breakdown = [
+    rel,
+    valueFit(notice, profile, w.value, gaps),
+    runway(notice, profile, w.deadline, gaps, now),
+    buyerFamiliarity(w.buyer, gaps, buyerHistory),
+    recency(notice, w.recency, gaps, now),
+  ];
+  const total = Math.round(breakdown.reduce((sum, b) => sum + b.points, 0));
+  return { score: Math.max(0, Math.min(100, total)), breakdown, gaps, excluded: null };
 }
 
-/** Run a lookup call; a throwing lookup becomes an explicit unknown, never a crashed run. */
-function ask(fn, query) {
-  try {
-    return fn(query) ?? { available: false, reason: 'lookup returned nothing' };
-  } catch (err) {
-    return { available: false, reason: `lookup failed: ${err.message}` };
-  }
-}
-
-const unknownB6 = (reason) => ({ value: UNKNOWN_B6, unknown: true, input: null, note: `unknown: ${reason}` });
-
-export function concentrationFactor(res) {
-  if (!res?.available) return unknownB6(res?.reason ?? 'no award data for this buyer');
-  const value = CONCENTRATION_VALUES[res.concentration];
-  if (value === undefined) return unknownB6(`unrecognised concentration "${res.concentration}"`);
-  return {
-    value, unknown: false,
-    input: { concentration: res.concentration, hhi: res.hhi, awards: res.awards, scope: res.scope, windowMonths: res.windowMonths, topSupplier: res.topSupplier?.name ?? null },
-    note: `${res.concentration.replace('_', ' ')} buyer (HHI ${res.hhi}, ${res.awards} awards, ${res.scope})`,
-  };
-}
-
-export function incumbentFactor(res) {
-  if (!res?.available) return unknownB6(res?.reason ?? 'no award data for this buyer');
-  if (!res.incumbent) {
-    return { value: 0.85, unknown: false, input: { incumbent: null, awards: res.awards, scope: res.scope }, note: `no incumbent across ${res.awards} awards (${res.scope})` };
-  }
-  const share = toNumberOrNull(res.incumbent.share);
-  if (share === null || share < 0 || share > 1) return unknownB6('incumbent share not usable');
-  return {
-    value: round2(1 - 0.7 * share), unknown: false,
-    input: { incumbent: res.incumbent.name, wins: res.incumbent.wins, share, scope: res.scope },
-    note: `incumbent ${res.incumbent.name}: ${res.incumbent.wins} wins, ${Math.round(share * 100)}% of awards (${res.scope})`,
-  };
-}
-
-/**
- * Open the B6 lookup for scoring. Dry runs read an in-memory copy (nothing on
- * disk changes). Never throws: if award-analytics is missing or failing, the
- * result is an unavailable lookup and B3 scores without B6.
- */
-export function openAwardsForScoring({ dryRun = false, dataDir, log } = {}) {
-  try {
-    const lookup = openAwardLookup({ dryRun, ...(dataDir ? { dataDir } : {}) });
-    if (lookup.available) log?.info(`B6 award analytics available: scoring buyer concentration and incumbent${dryRun ? ' (read-only copy)' : ''}`);
-    else log?.info('B6 award analytics not available yet; buyer concentration and incumbent not scored');
-    return lookup;
-  } catch (err) {
-    log?.warn(`B6 award analytics lookup could not be opened: ${err.message}`);
-    return { available: false, reason: `lookup could not be opened: ${err.message}`, close() {} };
-  }
-}
-
-/* ----------------------------------------------------------------- score */
-
-/**
- * @param {object} tender
- * @param {object} profile
- * @param {string} now
- * @param {object|null} [awards]  award-analytics lookup (openAwardsForScoring); null = score without B6
- */
-export function scoreTender(tender, profile, now, awards = null) {
-  const weights = { ...DEFAULT_WEIGHTS, ...B6_WEIGHTS, ...(profile.weights ?? {}) };
-  const factors = {
-    cpv: cpvFactor(tender, profile),
-    keywords: keywordFactor(tender, profile),
-    value: valueFactor(tender, profile),
-    location: locationFactor(tender, profile),
-    deadline: deadlineFactor(tender, profile, now),
-  };
-
-  let notScored = [...NOT_SCORED];
-  if (awards?.available) {
-    if (!tender.buyer) {
-      factors.buyerConcentration = unknownB6('buyer not published on the notice');
-      factors.incumbent = unknownB6('buyer not published on the notice');
-    } else {
-      const query = { buyerName: tender.buyer, country: buyerCountryOf(tender), cpv: tender.cpv?.[0] ?? null };
-      factors.buyerConcentration = concentrationFactor(ask((q) => awards.buyerConcentration(q), query));
-      factors.incumbent = incumbentFactor(ask((q) => awards.incumbent(q), query));
-    }
-    notScored = [];
-  } else if (awards?.reason) {
-    notScored = NOT_SCORED.map((n) => `${n}: ${awards.reason}`);
-  }
-
-  const total = Object.keys(factors).reduce((sum, k) => sum + (weights[k] ?? 0), 0) || 1;
-  const reasons = {};
-  let raw = 0;
-  for (const [k, f] of Object.entries(factors)) {
-    const contribution = (100 * (weights[k] ?? 0) * f.value) / total;
-    raw += contribution;
-    reasons[k] = { ...f, value: round2(f.value), weight: weights[k] ?? 0, points: round2(contribution) };
-  }
-  reasons.notScored = notScored;
-  return { score: Math.max(0, Math.min(100, Math.round(raw))), reasons };
+/** The strongest components, for the digest: highest share of their maximum first. */
+export function topReasons(breakdown, n = 2) {
+  return [...breakdown]
+    .filter((b) => b.max > 0 && b.points > 0)
+    .sort((a, b) => b.points / b.max - a.points / a.max || b.max - a.max)
+    .slice(0, n)
+    .map((b) => b.reason);
 }

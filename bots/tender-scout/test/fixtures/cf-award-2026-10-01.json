@@ -1,0 +1,3109 @@
+{
+ "uri": "https://www.contractsfinder.service.gov.uk/Published/Notices/OCDS/Search?publishedFrom=2026-10-01T00:00:00Z&publishedTo=2026-10-02T00:00:00Z&stages=award&limit=100",
+ "version": "1.1",
+ "extensions": [
+  "https://standard.open-contracting.org/profiles/eu/master/en/extension.json",
+  "https://raw.githubusercontent.com/portaledcahn/ocds_tenderDatePublished_extension/master/extension.json",
+  "https://raw.githubusercontent.com/open-contracting-extensions/ocds_budget_breakdown_extension/master/extension.json",
+  "https://raw.githubusercontent.com/Crown-Commercial-Service/ocds_awards_datePublished_extension/main/extension.json",
+  "https://raw.githubusercontent.com/Crown-Commercial-Service/ocds_partyDetails_vcse_extension/main/extension.json",
+  "https://raw.githubusercontent.com/Crown-Commercial-Service/ocds_tender_suitability_extension/main/extension.json",
+  "https://raw.githubusercontent.com/open-contracting-extensions/ocds_pagination_extension/master/extension.json"
+ ],
+ "publishedDate": "2026-10-01T17:11:47+01:00",
+ "publisher": {
+  "name": "Cabinet Office",
+  "scheme": "GB-GOR",
+  "uid": "D2",
+  "uri": "https://www.gov.uk/government/organisations/cabinet-office"
+ },
+ "license": "http://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/",
+ "publicationPolicy": "https://www.gov.uk/government/publications/open-contracting",
+ "releases": [
+  {
+   "ocid": "ocds-b5fd17-c3380800-0df1-44f0-8fb2-a472706dc85b",
+   "id": "9793ce2b-670d-48e0-af90-522e08a71ece-916295",
+   "language": "en",
+   "date": "2026-10-01T17:11:46+01:00",
+   "tag": [
+    "award"
+   ],
+   "initiationType": "tender",
+   "tender": {
+    "id": "HCA001-DN831590-03213287",
+    "title": "Homes England - Birmingham City Hospital - Plot Sales",
+    "description": "Plots Sales at Birmingham City Hospital",
+    "status": "complete",
+    "classification": {
+     "scheme": "CPV",
+     "id": "70000000",
+     "description": "Real estate services"
+    },
+    "items": [
+     {
+      "id": "1",
+      "deliveryAddresses": [
+       {
+        "region": "England",
+        "countryName": "United Kingdom"
+       }
+      ]
+     }
+    ],
+    "value": {
+     "amount": 204100,
+     "currency": "GBP"
+    },
+    "procurementMethod": "open",
+    "procurementMethodDetails": "Open procedure",
+    "tenderPeriod": {
+     "endDate": "2026-09-30T23:59:00+01:00"
+    },
+    "contractPeriod": {
+     "startDate": "2026-10-07T00:00:00+01:00",
+     "endDate": "2031-03-01T23:59:59Z"
+    },
+    "suitability": {
+     "sme": true,
+     "vcse": false
+    },
+    "mainProcurementCategory": "services"
+   },
+   "parties": [
+    {
+     "id": "GB-CFS-170575",
+     "name": "Homes England (the name adopted by the Homes and Communities Agency)",
+     "identifier": {
+      "legalName": "Homes England (the name adopted by the Homes and Communities Agency)"
+     },
+     "address": {
+      "streetAddress": "The Lumen, St James Boulevard, Newcastle Helix",
+      "locality": "Newcastle upon Tyne",
+      "postalCode": "NE4 5BZ",
+      "countryName": "United Kingdom"
+     },
+     "contactPoint": {
+      "name": "Contact (anonymised)",
+      "email": "anonymised@example.invalid"
+     },
+     "roles": [
+      "buyer"
+     ]
+    },
+    {
+     "id": "ANON-SUPPLIER-1",
+     "name": "Sole Trader 1 (anonymised)",
+     "identifier": {
+      "legalName": "Sole Trader 1 (anonymised)"
+     },
+     "details": {
+      "scale": "large",
+      "vcse": false
+     },
+     "roles": [
+      "supplier"
+     ]
+    }
+   ],
+   "buyer": {
+    "id": "GB-CFS-170575",
+    "name": "Homes England (the name adopted by the Homes and Communities Agency)"
+   },
+   "awards": [
+    {
+     "id": "ocds-b5fd17-c3380800-0df1-44f0-8fb2-a472706dc85b-1",
+     "status": "active",
+     "date": "2026-10-01T00:00:00+01:00",
+     "datePublished": "2026-10-01T17:11:46+01:00",
+     "value": {
+      "amount": 204100,
+      "currency": "GBP"
+     },
+     "suppliers": [
+      {
+       "id": "ANON-SUPPLIER-1",
+       "name": "Sole Trader 1 (anonymised)"
+      }
+     ],
+     "contractPeriod": {
+      "startDate": "2026-10-07T00:00:00+01:00",
+      "endDate": "2031-03-01T23:59:59Z"
+     },
+     "documents": [
+      {
+       "id": "1",
+       "documentType": "awardNotice",
+       "description": "Awarded contract notice on Contracts Finder",
+       "url": "https://www.contractsfinder.service.gov.uk/Notice/9793ce2b-670d-48e0-af90-522e08a71ece",
+       "datePublished": "2026-10-01T17:11:46+01:00",
+       "format": "text/html",
+       "language": "en"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "ocid": "ocds-b5fd17-82bfa267-0cc1-4136-a115-066232ca0a4d",
+   "id": "613d0c30-4f4a-4237-aefd-bc71140f6013-916294",
+   "language": "en",
+   "date": "2026-10-01T17:05:15+01:00",
+   "tag": [
+    "award"
+   ],
+   "initiationType": "tender",
+   "tender": {
+    "id": "CF-0088300D24000000HFzAEAW",
+    "title": "WSCC Route 30015 - Lindfield to Woodlands Meed College - 4 Seats, 1 Passenger",
+    "description": "WSCC Route 30015 - Lindfield to Woodlands Meed College - 4 Seats, 1 Passenger",
+    "status": "complete",
+    "classification": {
+     "scheme": "CPV",
+     "id": "60120000",
+     "description": "Taxi services"
+    },
+    "items": [
+     {
+      "id": "1",
+      "deliveryAddresses": [
+       {
+        "postalCode": "PO19 1RQ"
+       },
+       {
+        "region": "South East",
+        "countryName": "United Kingdom"
+       }
+      ]
+     }
+    ],
+    "value": {
+     "amount": 52663.99,
+     "currency": "GBP"
+    },
+    "procurementMethod": "selective",
+    "procurementMethodDetails": "Call-off from a dynamic purchasing system",
+    "tenderPeriod": {
+     "endDate": "2026-08-10T12:00:00+01:00"
+    },
+    "contractPeriod": {
+     "startDate": "2026-08-24T00:00:00+01:00",
+     "endDate": "2027-07-31T23:59:59+01:00"
+    },
+    "suitability": {
+     "sme": true,
+     "vcse": false
+    },
+    "mainProcurementCategory": "services"
+   },
+   "parties": [
+    {
+     "id": "GB-CFS-244021",
+     "name": "West Sussex County Council",
+     "identifier": {
+      "legalName": "West Sussex County Council"
+     },
+     "address": {
+      "streetAddress": "West Street",
+      "locality": "Chichester",
+      "postalCode": "PO19 1RQ",
+      "countryName": "GB"
+     },
+     "contactPoint": {
+      "name": "Contact (anonymised)",
+      "email": "anonymised@example.invalid"
+     },
+     "roles": [
+      "buyer"
+     ]
+    },
+    {
+     "id": "GB-CFS-331096",
+     "name": "SUSSEX SCHOOL TRANSPORT LTD",
+     "identifier": {
+      "legalName": "SUSSEX SCHOOL TRANSPORT LTD"
+     },
+     "address": {
+      "streetAddress": "143 ORCHARD ROAD | BURGESS HILL RH15 9PJ"
+     },
+     "details": {
+      "scale": "sme"
+     },
+     "roles": [
+      "supplier"
+     ]
+    }
+   ],
+   "buyer": {
+    "id": "GB-CFS-244021",
+    "name": "West Sussex County Council"
+   },
+   "awards": [
+    {
+     "id": "ocds-b5fd17-82bfa267-0cc1-4136-a115-066232ca0a4d-1",
+     "status": "active",
+     "date": "2026-08-17T00:00:00+01:00",
+     "datePublished": "2026-10-01T17:05:15+01:00",
+     "value": {
+      "amount": 52663.99,
+      "currency": "GBP"
+     },
+     "suppliers": [
+      {
+       "id": "GB-CFS-331096",
+       "name": "SUSSEX SCHOOL TRANSPORT LTD"
+      }
+     ],
+     "contractPeriod": {
+      "startDate": "2026-08-24T00:00:00+01:00",
+      "endDate": "2027-07-31T23:59:59+01:00"
+     },
+     "documents": [
+      {
+       "id": "1",
+       "documentType": "awardNotice",
+       "description": "Awarded contract notice on Contracts Finder",
+       "url": "https://www.contractsfinder.service.gov.uk/Notice/613d0c30-4f4a-4237-aefd-bc71140f6013",
+       "datePublished": "2026-10-01T17:05:15+01:00",
+       "format": "text/html",
+       "language": "en"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "ocid": "ocds-b5fd17-16fdc760-7987-4be5-a9c7-76fda6aa8071",
+   "id": "adfe1254-94bb-471d-9f9e-6d0882f1c38d-916293",
+   "language": "en",
+   "date": "2026-10-01T16:47:11+01:00",
+   "tag": [
+    "award"
+   ],
+   "initiationType": "tender",
+   "tender": {
+    "id": "CF-3708700D0O000000rwimUAA",
+    "title": "The Provision of Specialist Building Management System (BMS) Maintenance",
+    "description": "The Authority requires a Contractor to provide specialist Building Management System (BMS)\r\nmaintenance services across the Trust estate. \r\n\r\nThe scope shall include, as a minimum:\r\n• Planned Preventative Maintenance (PPM): delivery of routine inspection, testing,\r\ncalibration and maintenance activities for all identified BMS assets in accordance with\r\nSFG20 guidance, manufacturer recommendations and statutory requirements.\r\n• Reactive maintenance and fault response: provision of reactive call-out services,\r\nfault diagnosis, repairs and system recovery support to maintain operational continuity\r\nacross critical engineering systems.\r\n• BMS controls and software support: maintenance and support of the Trust's Trend\r\nBMS infrastructure, including controllers, outstations, field devices, software platforms,\r\ngraphics, alarms and associated network interfaces.\r\n• System optimisation and performance monitoring: monitoring, adjustment and\r\noptimisation of BMS controls strategies to support operational efficiency, environmental\r\ncontrol and energy performance across the estate.\r\n• Asset information and reporting: maintenance and updating of BMS asset registers,\r\nmaintenance records, service reports and associated documentation to support\r\ncompliance and lifecycle management.\r\n• Technical support and specialist attendance: provision of suitably qualified BMS\r\nengineers to undertake specialist diagnostic investigations, technical advice and\r\nsupport for planned works, shutdowns and operational issues.",
+    "status": "complete",
+    "classification": {
+     "scheme": "CPV",
+     "id": "79993000",
+     "description": "Building and facilities management services"
+    },
+    "items": [
+     {
+      "id": "1",
+      "deliveryAddresses": [
+       {
+        "postalCode": "HA7 4LP"
+       },
+       {
+        "countryName": "United Kingdom"
+       }
+      ]
+     }
+    ],
+    "value": {
+     "amount": 400000,
+     "currency": "GBP"
+    },
+    "procurementMethod": "selective",
+    "procurementMethodDetails": "Call-off from a framework agreement",
+    "tenderPeriod": {
+     "endDate": "2026-07-27T12:00:00+01:00"
+    },
+    "contractPeriod": {
+     "startDate": "2026-10-01T00:00:00+01:00",
+     "endDate": "2029-09-30T23:59:59+01:00"
+    },
+    "suitability": {
+     "sme": false,
+     "vcse": false
+    },
+    "mainProcurementCategory": "services"
+   },
+   "parties": [
+    {
+     "id": "GB-CFS-300724",
+     "name": "Royal National Orthopaedic Hospital NHS Trust",
+     "identifier": {
+      "legalName": "Royal National Orthopaedic Hospital NHS Trust"
+     },
+     "address": {
+      "streetAddress": "Brockley Hill",
+      "locality": "Stanmore",
+      "postalCode": "HA7 4LP",
+      "countryName": "GB"
+     },
+     "contactPoint": {
+      "name": "Contact (anonymised)",
+      "email": "anonymised@example.invalid"
+     },
+     "roles": [
+      "buyer"
+     ]
+    },
+    {
+     "id": "GB-CFS-338881",
+     "name": "Powell System Engineering Ltd",
+     "identifier": {
+      "legalName": "Powell System Engineering Ltd"
+     },
+     "address": {
+      "streetAddress": "Unit 2 Fitzroy Business Park  Sandy Lane Sidcup, DA14 5NL"
+     },
+     "roles": [
+      "supplier"
+     ]
+    }
+   ],
+   "buyer": {
+    "id": "GB-CFS-300724",
+    "name": "Royal National Orthopaedic Hospital NHS Trust"
+   },
+   "awards": [
+    {
+     "id": "ocds-b5fd17-16fdc760-7987-4be5-a9c7-76fda6aa8071-1",
+     "status": "active",
+     "date": "2026-10-01T00:00:00+01:00",
+     "datePublished": "2026-10-01T16:47:10+01:00",
+     "value": {
+      "amount": 167750,
+      "currency": "GBP"
+     },
+     "suppliers": [
+      {
+       "id": "GB-CFS-338881",
+       "name": "Powell System Engineering Ltd"
+      }
+     ],
+     "contractPeriod": {
+      "startDate": "2026-10-01T00:00:00+01:00",
+      "endDate": "2029-09-30T23:59:59+01:00"
+     },
+     "documents": [
+      {
+       "id": "1",
+       "documentType": "awardNotice",
+       "description": "Awarded contract notice on Contracts Finder",
+       "url": "https://www.contractsfinder.service.gov.uk/Notice/adfe1254-94bb-471d-9f9e-6d0882f1c38d",
+       "datePublished": "2026-10-01T16:47:10+01:00",
+       "format": "text/html",
+       "language": "en"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "ocid": "ocds-b5fd17-2de8b01e-5340-4ac9-84cf-746d1fd6bce9",
+   "id": "009fe753-3a7f-4df2-a75a-3d45c4311411-916292",
+   "language": "en",
+   "date": "2026-10-01T16:46:04+01:00",
+   "tag": [
+    "award"
+   ],
+   "initiationType": "tender",
+   "tender": {
+    "id": "PRAPS120",
+    "title": "Refining Agricultural Land to Development Estimates in England Using Predictive Agricultural Land Classification (ALC) Mapping",
+    "description": "A desk-based review to gather evidence on the amount of agricultural land take occurring as a result of development, including an assessment of the recent loss of high quality agricultural land (i.e. Best and Most Versatile (BMV) agricultural land) using the recently published Predictive ALC map.",
+    "status": "complete",
+    "classification": {
+     "scheme": "CPV",
+     "id": "90712000",
+     "description": "Environmental planning"
+    },
+    "items": [
+     {
+      "id": "1",
+      "deliveryAddresses": [
+       {
+        "countryName": "United Kingdom"
+       }
+      ]
+     }
+    ],
+    "value": {
+     "amount": 19948,
+     "currency": "GBP"
+    },
+    "procurementMethod": "selective",
+    "procurementMethodDetails": "Call-off from a framework agreement",
+    "tenderPeriod": {
+     "endDate": "2026-07-24T12:00:00+01:00"
+    },
+    "contractPeriod": {
+     "startDate": "2026-08-16T00:00:00+01:00",
+     "endDate": "2027-03-26T23:59:59Z"
+    },
+    "suitability": {
+     "sme": true,
+     "vcse": false
+    },
+    "mainProcurementCategory": "services"
+   },
+   "parties": [
+    {
+     "id": "GB-SRS-sid4gov.cabinetoffice.gov.uk/hWvd872d",
+     "name": "Natural England",
+     "identifier": {
+      "legalName": "Natural England",
+      "scheme": "GB-SRS",
+      "id": "sid4gov.cabinetoffice.gov.uk/hWvd872d"
+     },
+     "address": {
+      "streetAddress": "Tyneside House, Skinnerburn Road",
+      "locality": "Newcastle",
+      "postalCode": "NE4 7AR",
+      "countryName": "England"
+     },
+     "contactPoint": {
+      "name": "Contact (anonymised)",
+      "email": "anonymised@example.invalid"
+     },
+     "roles": [
+      "buyer"
+     ]
+    },
+    {
+     "id": "GB-COH-10486936",
+     "name": "RSK ADAS LIMITED",
+     "identifier": {
+      "legalName": "RSK ADAS LIMITED",
+      "scheme": "GB-COH",
+      "id": "10486936"
+     },
+     "address": {
+      "streetAddress": "Spring Lodge, 172 Chester Road, Helsby, Cheshire, WA6 0AR"
+     },
+     "details": {
+      "scale": "large",
+      "vcse": false
+     },
+     "roles": [
+      "supplier"
+     ]
+    }
+   ],
+   "buyer": {
+    "id": "GB-SRS-sid4gov.cabinetoffice.gov.uk/hWvd872d",
+    "name": "Natural England"
+   },
+   "awards": [
+    {
+     "id": "ocds-b5fd17-2de8b01e-5340-4ac9-84cf-746d1fd6bce9-1",
+     "status": "active",
+     "date": "2026-08-14T00:00:00+01:00",
+     "datePublished": "2026-10-01T16:46:04+01:00",
+     "value": {
+      "amount": 19948,
+      "currency": "GBP"
+     },
+     "suppliers": [
+      {
+       "id": "GB-COH-10486936",
+       "name": "RSK ADAS LIMITED"
+      }
+     ],
+     "contractPeriod": {
+      "startDate": "2026-08-16T00:00:00+01:00",
+      "endDate": "2027-03-26T23:59:59Z"
+     },
+     "documents": [
+      {
+       "id": "1",
+       "documentType": "awardNotice",
+       "description": "Awarded contract notice on Contracts Finder",
+       "url": "https://www.contractsfinder.service.gov.uk/Notice/009fe753-3a7f-4df2-a75a-3d45c4311411",
+       "datePublished": "2026-10-01T16:46:04+01:00",
+       "format": "text/html",
+       "language": "en"
+      },
+      {
+       "id": "2",
+       "documentType": "contractSigned",
+       "url": "https://www.contractsfinder.service.gov.uk/Notice/Attachment/5270ea77-94c0-4b49-94b9-1a61e17cf64b",
+       "format": "application/pdf"
+      },
+      {
+       "id": "3",
+       "documentType": "contractSigned",
+       "url": "https://www.contractsfinder.service.gov.uk/Notice/SupplierAttachment/70ebdb22-5444-4c19-9894-e9e39ab0070a",
+       "format": "application/pdf"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "ocid": "ocds-b5fd17-326f5a2e-6437-4542-b42f-7ca8d8db67b9",
+   "id": "22e3e4ec-418e-48fb-82cb-1e9e3dc1d944-916291",
+   "language": "en",
+   "date": "2026-10-01T16:34:37+01:00",
+   "tag": [
+    "award"
+   ],
+   "initiationType": "tender",
+   "tender": {
+    "id": "IT-270-104-BNU-2604-361 - AWARD",
+    "title": "BNU-2604-361 Water Coolers - AWARD",
+    "description": "The provision of the rental including biannual service and maintenance of Water Coolers",
+    "status": "complete",
+    "classification": {
+     "scheme": "CPV",
+     "id": "31141000",
+     "description": "Water coolers"
+    },
+    "items": [
+     {
+      "id": "1",
+      "deliveryAddresses": [
+       {
+        "postalCode": "HP11 2JZ"
+       },
+       {
+        "countryName": "British Oversea Territories"
+       },
+       {
+        "countryName": "Channel Islands"
+       },
+       {
+        "countryName": "Europe"
+       },
+       {
+        "countryName": "Isle of Man"
+       },
+       {
+        "countryName": "Rest of the World"
+       },
+       {
+        "countryName": "United Kingdom"
+       }
+      ]
+     }
+    ],
+    "procurementMethodDetails": "Other - ",
+    "tenderPeriod": {
+     "endDate": "2026-07-15T16:05:00+01:00"
+    },
+    "contractPeriod": {
+     "startDate": "2026-10-01T01:00:00+01:00",
+     "endDate": "2029-07-31T23:59:59+01:00"
+    },
+    "suitability": {
+     "sme": false,
+     "vcse": false
+    },
+    "mainProcurementCategory": "services"
+   },
+   "parties": [
+    {
+     "id": "GB-CFS-171421",
+     "name": "Buckinghamshire New University",
+     "identifier": {
+      "legalName": "Buckinghamshire New University"
+     },
+     "address": {
+      "streetAddress": "High Wycombe, Bucks",
+      "locality": "***",
+      "postalCode": "HP11 2JZ",
+      "countryName": "United Kingdom"
+     },
+     "contactPoint": {
+      "name": "Contact (anonymised)",
+      "email": "anonymised@example.invalid"
+     },
+     "roles": [
+      "buyer"
+     ]
+    },
+    {
+     "id": "GB-CFS-338880",
+     "name": "BWT UK Ltd",
+     "identifier": {
+      "legalName": "BWT UK Ltd"
+     },
+     "address": {
+      "streetAddress": "BWT House, The Gateway Centre, Coronation Road, High Wycombe, Buckinghamshire, United Kingdom, HP12 3SU"
+     },
+     "roles": [
+      "supplier"
+     ]
+    }
+   ],
+   "buyer": {
+    "id": "GB-CFS-171421",
+    "name": "Buckinghamshire New University"
+   },
+   "awards": [
+    {
+     "id": "ocds-b5fd17-326f5a2e-6437-4542-b42f-7ca8d8db67b9-1",
+     "status": "active",
+     "date": "2026-10-01T00:00:00+01:00",
+     "datePublished": "2026-10-01T16:34:37+01:00",
+     "value": {
+      "amount": 0,
+      "currency": "GBP"
+     },
+     "suppliers": [
+      {
+       "id": "GB-CFS-338880",
+       "name": "BWT UK Ltd"
+      }
+     ],
+     "contractPeriod": {
+      "startDate": "2026-10-01T00:00:00+01:00",
+      "endDate": "2029-07-31T23:59:59+01:00"
+     },
+     "documents": [
+      {
+       "id": "1",
+       "documentType": "awardNotice",
+       "description": "Awarded contract notice on Contracts Finder",
+       "url": "https://www.contractsfinder.service.gov.uk/Notice/22e3e4ec-418e-48fb-82cb-1e9e3dc1d944",
+       "datePublished": "2026-10-01T16:34:37+01:00",
+       "format": "text/html",
+       "language": "en"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "ocid": "ocds-b5fd17-62b85ea6-b5e0-43e9-ac1a-eef1ea5dd363",
+   "id": "b3e0308d-ce1f-4e9d-bffe-7f9f86bbc495-916290",
+   "language": "en",
+   "date": "2026-10-01T16:32:49+01:00",
+   "tag": [
+    "award"
+   ],
+   "initiationType": "tender",
+   "tender": {
+    "id": "667CD463-2214-453F-8111-276675721B68",
+    "title": "Taxi and MPV (1-8 seats) Passenger Assistant - Taxi and MPV (1-8 seats) Passenger Assistant",
+    "description": "Vehicle type: Saloon\r\nPassenger Assistant Required: PA required\r\n\r\nProposed Taxi Route: \r\nFrom: TN22 3SP\r\nTo: Wallands Community Primary School, BN7 1PU\r\n\r\nFrequency: Monday to Friday\r\nDaily School Time: Mon-Fri 08:50-15:20\r\n\r\nComments for Operator: PA required, child locks on.\r\n\r\n This opportunity has been distributed on SProc.net",
+    "datePublished": "2026-09-25T16:26:48+01:00",
+    "status": "complete",
+    "classification": {
+     "scheme": "CPV",
+     "id": "60000000",
+     "description": "Transport services (excl. Waste transport)"
+    },
+    "items": [
+     {
+      "id": "1",
+      "deliveryAddresses": [
+       {
+        "countryName": "United Kingdom"
+       }
+      ]
+     }
+    ],
+    "procurementMethod": "selective",
+    "procurementMethodDetails": "Restricted procedure (above threshold)",
+    "tenderPeriod": {
+     "endDate": "2026-09-29T11:00:00+01:00"
+    },
+    "contractPeriod": {
+     "startDate": "2026-10-02T01:00:00+01:00",
+     "endDate": "2029-07-31T23:59:59+01:00"
+    },
+    "suitability": {
+     "sme": true,
+     "vcse": false
+    },
+    "mainProcurementCategory": "services"
+   },
+   "parties": [
+    {
+     "id": "GB-CFS-334419",
+     "name": "East Sussex County Council",
+     "identifier": {
+      "legalName": "East Sussex County Council"
+     },
+     "address": {
+      "streetAddress": "County Hall, St Anne's Crescent",
+      "locality": "Lewes",
+      "postalCode": "BN7 1UE",
+      "countryName": "United Kingdom"
+     },
+     "contactPoint": {
+      "name": "Contact (anonymised)",
+      "email": "anonymised@example.invalid"
+     },
+     "details": {
+      "url": "http://www.eastsussex.gov.uk"
+     },
+     "roles": [
+      "buyer"
+     ]
+    },
+    {
+     "id": "ANON-SUPPLIER-2",
+     "name": "Sole Trader 2 (anonymised)",
+     "identifier": {
+      "legalName": "Sole Trader 2 (anonymised)"
+     },
+     "details": {
+      "scale": "sme",
+      "vcse": false
+     },
+     "roles": [
+      "supplier"
+     ]
+    }
+   ],
+   "buyer": {
+    "id": "GB-CFS-334419",
+    "name": "East Sussex County Council"
+   },
+   "awards": [
+    {
+     "id": "ocds-b5fd17-62b85ea6-b5e0-43e9-ac1a-eef1ea5dd363-1",
+     "status": "active",
+     "date": "2026-09-29T00:00:00+01:00",
+     "datePublished": "2026-10-01T16:32:49+01:00",
+     "value": {
+      "amount": 143685,
+      "currency": "GBP"
+     },
+     "suppliers": [
+      {
+       "id": "ANON-SUPPLIER-2",
+       "name": "Sole Trader 2 (anonymised)"
+      }
+     ],
+     "contractPeriod": {
+      "startDate": "2026-10-02T00:00:00+01:00",
+      "endDate": "2029-07-31T23:59:59+01:00"
+     },
+     "documents": [
+      {
+       "id": "1",
+       "documentType": "awardNotice",
+       "description": "Awarded contract notice on Contracts Finder",
+       "url": "https://www.contractsfinder.service.gov.uk/Notice/b3e0308d-ce1f-4e9d-bffe-7f9f86bbc495",
+       "datePublished": "2026-10-01T16:32:49+01:00",
+       "format": "text/html",
+       "language": "en"
+      },
+      {
+       "id": "2",
+       "url": "https://www.sproc.net"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "ocid": "ocds-b5fd17-19d3143a-3abc-4eea-8ba6-8acb2e470d48",
+   "id": "a1f84aaa-de5c-4f6e-881b-8802f8bc5e1e-916288",
+   "language": "en",
+   "date": "2026-10-01T16:21:14+01:00",
+   "tag": [
+    "awardUpdate"
+   ],
+   "initiationType": "tender",
+   "tender": {
+    "id": "DN533246",
+    "title": "Skippers Lane Industrial Estate - Infrastructure consultancy",
+    "description": "Consultancy services for Skippers Lane Industrial Estate Allotment Site- on and offsite infrastructure works.  Call off from NHS Shared Business Services - Construction Consultancy Services 2 (SBS/17/NH/PZR/9256)",
+    "status": "complete",
+    "classification": {
+     "scheme": "CPV",
+     "id": "71300000",
+     "description": "Engineering services"
+    },
+    "items": [
+     {
+      "id": "1",
+      "deliveryAddresses": [
+       {
+        "region": "North East",
+        "countryName": "United Kingdom"
+       }
+      ]
+     }
+    ],
+    "value": {
+     "amount": 346421,
+     "currency": "GBP"
+    },
+    "procurementMethod": "selective",
+    "procurementMethodDetails": "Call-off from a framework agreement",
+    "tenderPeriod": {
+     "endDate": "2021-03-05T00:00:00Z"
+    },
+    "contractPeriod": {
+     "startDate": "2021-04-05T00:00:00+01:00",
+     "endDate": "2023-12-21T23:59:59Z"
+    },
+    "suitability": {
+     "sme": false,
+     "vcse": false
+    },
+    "mainProcurementCategory": "services"
+   },
+   "parties": [
+    {
+     "id": "GB-LAE-RCC",
+     "name": "Redcar & Cleveland Borough Council",
+     "identifier": {
+      "legalName": "Redcar & Cleveland Borough Council",
+      "scheme": "GB-LAE",
+      "id": "RCC"
+     },
+     "address": {
+      "streetAddress": "Redcar & Cleveland House,Kirkleatham Street",
+      "locality": "REDCAR",
+      "postalCode": "TS101RT",
+      "countryName": "England"
+     },
+     "contactPoint": {
+      "name": "Contact (anonymised)",
+      "email": "anonymised@example.invalid"
+     },
+     "roles": [
+      "buyer"
+     ]
+    },
+    {
+     "id": "GB-COH-02082106",
+     "name": "CAPITA PROPERTY AND INFRASTRUCTURE (STRUCTURES) LIMITED",
+     "identifier": {
+      "legalName": "CAPITA PROPERTY AND INFRASTRUCTURE (STRUCTURES) LIMITED",
+      "scheme": "GB-COH",
+      "id": "02082106"
+     },
+     "address": {
+      "streetAddress": "Oak House\nWD24 4QP\nGB"
+     },
+     "details": {
+      "scale": "large",
+      "vcse": false
+     },
+     "roles": [
+      "supplier"
+     ]
+    }
+   ],
+   "buyer": {
+    "id": "GB-LAE-RCC",
+    "name": "Redcar & Cleveland Borough Council"
+   },
+   "awards": [
+    {
+     "id": "ocds-b5fd17-19d3143a-3abc-4eea-8ba6-8acb2e470d48-1",
+     "status": "active",
+     "date": "2021-03-26T00:00:00Z",
+     "datePublished": "2021-05-14T15:41:25+01:00",
+     "value": {
+      "amount": 346421,
+      "currency": "GBP"
+     },
+     "suppliers": [
+      {
+       "id": "GB-COH-02082106",
+       "name": "CAPITA PROPERTY AND INFRASTRUCTURE (STRUCTURES) LIMITED"
+      }
+     ],
+     "contractPeriod": {
+      "startDate": "2021-04-05T00:00:00+01:00",
+      "endDate": "2026-10-30T23:59:59Z"
+     },
+     "documents": [
+      {
+       "id": "1",
+       "documentType": "awardNotice",
+       "description": "Awarded contract notice on Contracts Finder",
+       "url": "https://www.contractsfinder.service.gov.uk/Notice/a1f84aaa-de5c-4f6e-881b-8802f8bc5e1e",
+       "datePublished": "2021-05-14T15:41:25+01:00",
+       "dateModified": "2026-10-01T16:21:14+01:00",
+       "format": "text/html",
+       "language": "en"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "ocid": "ocds-b5fd17-4b42ecf8-d6a3-48a7-b90a-5034ce49aba0",
+   "id": "f2a954e9-b05a-4351-b58a-b7717ce1a2b6-916282",
+   "language": "en",
+   "date": "2026-10-01T16:20:51+01:00",
+   "tag": [
+    "award"
+   ],
+   "initiationType": "tender",
+   "tender": {
+    "id": "THIR 25 349",
+    "title": "Repairs & Maintenance - Wider Operating Areas",
+    "description": "To  provide a support only function for the provision of responsive repairs (including electrical repairs), void repairs, capital works and gas work to residential properties and commercial properties.",
+    "status": "complete",
+    "classification": {
+     "scheme": "CPV",
+     "id": "45210000",
+     "description": "Building construction work"
+    },
+    "additionalClassifications": [
+     {
+      "scheme": "CPV",
+      "id": "50000000",
+      "description": "Repair and maintenance services"
+     }
+    ],
+    "items": [
+     {
+      "id": "1",
+      "deliveryAddresses": [
+       {
+        "countryName": "United Kingdom"
+       }
+      ]
+     }
+    ],
+    "value": {
+     "amount": 5000000,
+     "currency": "GBP"
+    },
+    "procurementMethod": "selective",
+    "procurementMethodDetails": "Call-off from a framework agreement",
+    "tenderPeriod": {
+     "endDate": "2026-08-05T17:00:00+01:00"
+    },
+    "contractPeriod": {
+     "startDate": "2026-10-01T00:00:00+01:00",
+     "endDate": "2027-09-30T23:59:59+01:00"
+    },
+    "suitability": {
+     "sme": true,
+     "vcse": false
+    },
+    "mainProcurementCategory": "works"
+   },
+   "parties": [
+    {
+     "id": "GB-SRS-sid4gov.cabinetoffice.gov.uk/V3SG8j4A",
+     "name": "THIRTEEN HOUSING GROUP LIMITED",
+     "identifier": {
+      "legalName": "THIRTEEN HOUSING GROUP LIMITED",
+      "scheme": "GB-SRS",
+      "id": "sid4gov.cabinetoffice.gov.uk/V3SG8j4A"
+     },
+     "address": {
+      "streetAddress": "2 Hudson Quay",
+      "locality": "MIDDLESBROUGH",
+      "postalCode": "TS21QG",
+      "countryName": "England"
+     },
+     "contactPoint": {
+      "name": "Contact (anonymised)",
+      "email": "anonymised@example.invalid"
+     },
+     "roles": [
+      "buyer"
+     ]
+    },
+    {
+     "id": "GB-COH-08259035",
+     "name": "CITY WEST WORKS LIMITED",
+     "identifier": {
+      "legalName": "CITY WEST WORKS LIMITED",
+      "scheme": "GB-COH",
+      "id": "08259035"
+     },
+     "address": {
+      "streetAddress": "Eccles\nMANCHESTER\nM30 0BP\nGB"
+     },
+     "details": {
+      "scale": "large",
+      "vcse": false
+     },
+     "roles": [
+      "supplier"
+     ]
+    }
+   ],
+   "buyer": {
+    "id": "GB-SRS-sid4gov.cabinetoffice.gov.uk/V3SG8j4A",
+    "name": "THIRTEEN HOUSING GROUP LIMITED"
+   },
+   "awards": [
+    {
+     "id": "ocds-b5fd17-4b42ecf8-d6a3-48a7-b90a-5034ce49aba0-1",
+     "status": "active",
+     "date": "2026-08-05T00:00:00+01:00",
+     "datePublished": "2026-10-01T16:20:51+01:00",
+     "value": {
+      "amount": 5000000,
+      "currency": "GBP"
+     },
+     "suppliers": [
+      {
+       "id": "GB-COH-08259035",
+       "name": "CITY WEST WORKS LIMITED"
+      }
+     ],
+     "contractPeriod": {
+      "startDate": "2026-10-01T00:00:00+01:00",
+      "endDate": "2027-09-30T23:59:59+01:00"
+     },
+     "documents": [
+      {
+       "id": "1",
+       "documentType": "awardNotice",
+       "description": "Awarded contract notice on Contracts Finder",
+       "url": "https://www.contractsfinder.service.gov.uk/Notice/f2a954e9-b05a-4351-b58a-b7717ce1a2b6",
+       "datePublished": "2026-10-01T16:20:51+01:00",
+       "format": "text/html",
+       "language": "en"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "ocid": "ocds-b5fd17-16caf03b-2b59-41e4-a853-94843274c10e",
+   "id": "781d3298-5316-4671-bf6d-c30c4ca1aacd-916097",
+   "language": "en",
+   "date": "2026-10-01T16:09:41+01:00",
+   "tag": [
+    "award"
+   ],
+   "initiationType": "tender",
+   "tender": {
+    "id": "C474590",
+    "title": "Service Contract for the Maintenance of Ultrasonic Bronchoscopes",
+    "description": "County Durham & Darlington NHS Foundation Trust (CDDFT) have awarded a contract to Ergea UK and Ireland Limited through a call-off without competition via NHS Supply Chain Maintenance, Repair and Calibration of Medical Equipment Framework: 2021/S000-021535 (expiring 30th September 2028), URN: CQ-[phone removed] for a period of 36 months (extensions not applicable).",
+    "status": "complete",
+    "classification": {
+     "scheme": "CPV",
+     "id": "50421000",
+     "description": "Repair and maintenance services of medical equipment"
+    },
+    "items": [
+     {
+      "id": "1",
+      "deliveryAddresses": [
+       {
+        "region": "North East",
+        "countryName": "United Kingdom"
+       }
+      ]
+     }
+    ],
+    "value": {
+     "amount": 73755.08,
+     "currency": "GBP"
+    },
+    "procurementMethod": "selective",
+    "procurementMethodDetails": "Call-off from a framework agreement",
+    "tenderPeriod": {
+     "endDate": "2026-08-03T12:00:00+01:00"
+    },
+    "contractPeriod": {
+     "startDate": "2026-09-30T00:00:00+01:00",
+     "endDate": "2029-09-29T23:59:59+01:00"
+    },
+    "suitability": {
+     "sme": true,
+     "vcse": false
+    },
+    "mainProcurementCategory": "services"
+   },
+   "parties": [
+    {
+     "id": "GB-SRS-sid4gov.cabinetoffice.gov.uk/2v947A79",
+     "name": "County Durham and Darlington NHS Foundation Trust",
+     "identifier": {
+      "legalName": "County Durham and Darlington NHS Foundation Trust",
+      "scheme": "GB-SRS",
+      "id": "sid4gov.cabinetoffice.gov.uk/2v947A79"
+     },
+     "address": {
+      "streetAddress": "White House Business Park, Traynor Way",
+      "locality": "Peterlee",
+      "postalCode": "SR8 2RU",
+      "countryName": "England"
+     },
+     "contactPoint": {
+      "name": "Contact (anonymised)",
+      "email": "anonymised@example.invalid"
+     },
+     "roles": [
+      "buyer"
+     ]
+    },
+    {
+     "id": "GB-COH-04328629",
+     "name": "Ergea UK and Ireland Limited",
+     "identifier": {
+      "legalName": "Ergea UK and Ireland Limited",
+      "scheme": "GB-COH",
+      "id": "04328629"
+     },
+     "address": {
+      "streetAddress": "Unit 4 Ely Road, Theale, Reading, England, RG7 4BQ"
+     },
+     "details": {
+      "scale": "large",
+      "vcse": false
+     },
+     "roles": [
+      "supplier"
+     ]
+    }
+   ],
+   "buyer": {
+    "id": "GB-SRS-sid4gov.cabinetoffice.gov.uk/2v947A79",
+    "name": "County Durham and Darlington NHS Foundation Trust"
+   },
+   "awards": [
+    {
+     "id": "ocds-b5fd17-16caf03b-2b59-41e4-a853-94843274c10e-1",
+     "status": "active",
+     "date": "2026-09-28T00:00:00+01:00",
+     "datePublished": "2026-10-01T16:09:41+01:00",
+     "value": {
+      "amount": 73755.08,
+      "currency": "GBP"
+     },
+     "suppliers": [
+      {
+       "id": "GB-COH-04328629",
+       "name": "Ergea UK and Ireland Limited"
+      }
+     ],
+     "contractPeriod": {
+      "startDate": "2026-09-30T00:00:00+01:00",
+      "endDate": "2029-09-29T23:59:59+01:00"
+     },
+     "documents": [
+      {
+       "id": "1",
+       "documentType": "awardNotice",
+       "description": "Awarded contract notice on Contracts Finder",
+       "url": "https://www.contractsfinder.service.gov.uk/Notice/781d3298-5316-4671-bf6d-c30c4ca1aacd",
+       "datePublished": "2026-10-01T16:09:41+01:00",
+       "format": "text/html",
+       "language": "en"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "ocid": "ocds-b5fd17-d6a1d6db-94e5-486d-b5df-cd92c3fd7064",
+   "id": "63a12420-6e9a-4752-a00d-23f58921fc75-916275",
+   "language": "en",
+   "date": "2026-10-01T15:27:14+01:00",
+   "tag": [
+    "award"
+   ],
+   "initiationType": "tender",
+   "tender": {
+    "id": "CW93294",
+    "title": "GLA82818 Tax and Governance Review Services",
+    "description": "This contract seek a comprehensive review of the Greater London Authority's tax arrangements, governance processes and group structure, together with ongoing specialist tax advisory support covering corporation tax, VAT, SDLT, transfer pricing and related compliance matters.",
+    "status": "complete",
+    "classification": {
+     "scheme": "CPV",
+     "id": "79221000",
+     "description": "Tax consultancy services"
+    },
+    "items": [
+     {
+      "id": "1",
+      "deliveryAddresses": [
+       {
+        "postalCode": "E16 1ZE"
+       }
+      ]
+     }
+    ],
+    "value": {
+     "amount": 89845,
+     "currency": "GBP"
+    },
+    "procurementMethod": "selective",
+    "procurementMethodDetails": "Call-off from a framework agreement",
+    "tenderPeriod": {
+     "endDate": "2026-09-01T00:00:00+01:00"
+    },
+    "contractPeriod": {
+     "startDate": "2026-09-07T00:00:00+01:00",
+     "endDate": "2027-06-07T23:59:59+01:00"
+    },
+    "suitability": {
+     "sme": true,
+     "vcse": false
+    },
+    "mainProcurementCategory": "services"
+   },
+   "parties": [
+    {
+     "id": "GB-SRS-sid4gov.cabinetoffice.gov.uk/5WZu8KXU",
+     "name": "TRANSPORT FOR LONDON",
+     "identifier": {
+      "legalName": "TRANSPORT FOR LONDON",
+      "scheme": "GB-SRS",
+      "id": "sid4gov.cabinetoffice.gov.uk/5WZu8KXU"
+     },
+     "address": {
+      "streetAddress": "City Hall,, Kamal Chunchie Way",
+      "locality": "LONDON",
+      "postalCode": "E16 1ZE",
+      "countryName": "England"
+     },
+     "contactPoint": {
+      "name": "Contact (anonymised)",
+      "email": "anonymised@example.invalid"
+     },
+     "roles": [
+      "buyer"
+     ]
+    },
+    {
+     "id": "GB-COH-OC369631",
+     "name": "S&W Partners LLP",
+     "identifier": {
+      "legalName": "S&W Partners LLP",
+      "scheme": "GB-COH",
+      "id": "OC369631"
+     },
+     "address": {
+      "streetAddress": "45, Gresham Street, London, EC2V 7BG"
+     },
+     "details": {
+      "scale": "large",
+      "vcse": false
+     },
+     "roles": [
+      "supplier"
+     ]
+    }
+   ],
+   "buyer": {
+    "id": "GB-SRS-sid4gov.cabinetoffice.gov.uk/5WZu8KXU",
+    "name": "TRANSPORT FOR LONDON"
+   },
+   "awards": [
+    {
+     "id": "ocds-b5fd17-d6a1d6db-94e5-486d-b5df-cd92c3fd7064-1",
+     "status": "active",
+     "date": "2026-09-01T00:00:00+01:00",
+     "datePublished": "2026-10-01T15:27:14+01:00",
+     "value": {
+      "amount": 89845,
+      "currency": "GBP"
+     },
+     "suppliers": [
+      {
+       "id": "GB-COH-OC369631",
+       "name": "S&W Partners LLP"
+      }
+     ],
+     "contractPeriod": {
+      "startDate": "2026-09-07T00:00:00+01:00",
+      "endDate": "2027-06-07T23:59:59+01:00"
+     },
+     "documents": [
+      {
+       "id": "1",
+       "documentType": "awardNotice",
+       "description": "Awarded contract notice on Contracts Finder",
+       "url": "https://www.contractsfinder.service.gov.uk/Notice/63a12420-6e9a-4752-a00d-23f58921fc75",
+       "datePublished": "2026-10-01T15:27:14+01:00",
+       "format": "text/html",
+       "language": "en"
+      },
+      {
+       "id": "2",
+       "documentType": "contractSigned",
+       "url": "https://www.contractsfinder.service.gov.uk/Notice/Attachment/91d4d982-81de-457a-a531-91df6ceb56bb",
+       "format": "application/pdf"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "ocid": "ocds-b5fd17-a9151015-daed-42b3-be91-242793cd6b63",
+   "id": "3941d863-d74b-4fcd-a458-3fa9c7975acc-916254",
+   "language": "en",
+   "date": "2026-10-01T15:23:57+01:00",
+   "tag": [
+    "award"
+   ],
+   "initiationType": "tender",
+   "tender": {
+    "id": "SCC-2026-0075",
+    "title": "HSCCA Recruitment",
+    "description": "Search and selection supplier for the rapid recruitment of the initial wave of 25-40 roles (permanent and fixed term) into Hampshire and the Solent Combined County",
+    "status": "complete",
+    "classification": {
+     "scheme": "CPV",
+     "id": "79600000",
+     "description": "Recruitment services"
+    },
+    "items": [
+     {
+      "id": "1",
+      "deliveryAddresses": [
+       {
+        "countryName": "United Kingdom"
+       }
+      ]
+     }
+    ],
+    "value": {
+     "amount": 252764,
+     "currency": "GBP"
+    },
+    "procurementMethod": "selective",
+    "procurementMethodDetails": "Call-off from a framework agreement",
+    "tenderPeriod": {
+     "endDate": "2026-06-17T12:00:00+01:00"
+    },
+    "contractPeriod": {
+     "startDate": "2026-09-14T00:00:00+01:00",
+     "endDate": "2027-07-20T23:59:59+01:00"
+    },
+    "suitability": {
+     "sme": true,
+     "vcse": false
+    },
+    "mainProcurementCategory": "services"
+   },
+   "parties": [
+    {
+     "id": "GB-SRS-sid4gov.cabinetoffice.gov.uk/jxfb36Bw",
+     "name": "Southampton City Council",
+     "identifier": {
+      "legalName": "Southampton City Council",
+      "scheme": "GB-SRS",
+      "id": "sid4gov.cabinetoffice.gov.uk/jxfb36Bw"
+     },
+     "address": {
+      "streetAddress": "CITY TREASURY",
+      "locality": "SOUTHAMPTON",
+      "postalCode": "SO147LY",
+      "countryName": "England"
+     },
+     "contactPoint": {
+      "name": "Contact (anonymised)",
+      "email": "anonymised@example.invalid"
+     },
+     "roles": [
+      "buyer"
+     ]
+    },
+    {
+     "id": "GB-COH-06903140",
+     "name": "Reed Specialist Recruitment Ltd",
+     "identifier": {
+      "legalName": "Reed Specialist Recruitment Ltd",
+      "scheme": "GB-COH",
+      "id": "06903140"
+     },
+     "address": {
+      "streetAddress": "Academy Court, 94 Chancery Lane, London, WC2A 1DT, England"
+     },
+     "details": {
+      "scale": "large",
+      "vcse": false
+     },
+     "roles": [
+      "supplier"
+     ]
+    }
+   ],
+   "buyer": {
+    "id": "GB-SRS-sid4gov.cabinetoffice.gov.uk/jxfb36Bw",
+    "name": "Southampton City Council"
+   },
+   "awards": [
+    {
+     "id": "ocds-b5fd17-a9151015-daed-42b3-be91-242793cd6b63-1",
+     "status": "active",
+     "date": "2026-09-14T00:00:00+01:00",
+     "datePublished": "2026-10-01T15:23:57+01:00",
+     "value": {
+      "amount": 252764,
+      "currency": "GBP"
+     },
+     "suppliers": [
+      {
+       "id": "GB-COH-06903140",
+       "name": "Reed Specialist Recruitment Ltd"
+      }
+     ],
+     "contractPeriod": {
+      "startDate": "2026-09-14T00:00:00+01:00",
+      "endDate": "2027-07-20T23:59:59+01:00"
+     },
+     "documents": [
+      {
+       "id": "1",
+       "documentType": "awardNotice",
+       "description": "Awarded contract notice on Contracts Finder",
+       "url": "https://www.contractsfinder.service.gov.uk/Notice/3941d863-d74b-4fcd-a458-3fa9c7975acc",
+       "datePublished": "2026-10-01T15:23:57+01:00",
+       "format": "text/html",
+       "language": "en"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "ocid": "ocds-b5fd17-99bdfb74-334b-40ec-9e60-d389955e92ba",
+   "id": "208d5dbf-421d-46e6-96de-3b6870bb180e-916272",
+   "language": "en",
+   "date": "2026-10-01T15:06:45+01:00",
+   "tag": [
+    "award"
+   ],
+   "initiationType": "tender",
+   "tender": {
+    "id": "E0F50F30-7183-4EAE-8E91-997D4F1A5F03",
+    "title": "Taxi and MPV (1-8 seats) Passenger Assistant - Taxi and MPV (1-8 seats) Passenger Assistant",
+    "description": "Vehicle type: Saloon\r\nPassenger Assistant Required: 1:1 PA required\r\n\r\nProposed Taxi Route: \r\nFrom: BN21 4LG\r\nTo: St Johns College, Brighton BN2 0AF\r\n\r\nFrequency: Monday to Friday\r\nDaily School Time: Mon-Thurs 09:00-16:05 and Fri 09:00-15:05\r\n\r\nComments for Operator: 1:1 PA required\r\n This opportunity has been distributed on SProc.net",
+    "datePublished": "2026-09-18T16:22:44+01:00",
+    "status": "complete",
+    "classification": {
+     "scheme": "CPV",
+     "id": "60000000",
+     "description": "Transport services (excl. Waste transport)"
+    },
+    "items": [
+     {
+      "id": "1",
+      "deliveryAddresses": [
+       {
+        "countryName": "United Kingdom"
+       }
+      ]
+     }
+    ],
+    "procurementMethod": "selective",
+    "procurementMethodDetails": "Restricted procedure (above threshold)",
+    "tenderPeriod": {
+     "endDate": "2026-09-22T10:00:00+01:00"
+    },
+    "contractPeriod": {
+     "startDate": "2026-09-25T01:00:00+01:00",
+     "endDate": "2029-07-31T23:59:59+01:00"
+    },
+    "suitability": {
+     "sme": true,
+     "vcse": false
+    },
+    "mainProcurementCategory": "services"
+   },
+   "parties": [
+    {
+     "id": "GB-CFS-334419",
+     "name": "East Sussex County Council",
+     "identifier": {
+      "legalName": "East Sussex County Council"
+     },
+     "address": {
+      "streetAddress": "County Hall, St Anne's Crescent",
+      "locality": "Lewes",
+      "postalCode": "BN7 1UE",
+      "countryName": "United Kingdom"
+     },
+     "contactPoint": {
+      "name": "Contact (anonymised)",
+      "email": "anonymised@example.invalid"
+     },
+     "details": {
+      "url": "http://www.eastsussex.gov.uk"
+     },
+     "roles": [
+      "buyer"
+     ]
+    },
+    {
+     "id": "GB-COH-13868223",
+     "name": "Brighton Taxi Company",
+     "identifier": {
+      "legalName": "Brighton Taxi Company",
+      "scheme": "GB-COH",
+      "id": "13868223"
+     },
+     "address": {
+      "streetAddress": "122 Downsway, Southwick, Brighton, West Sussex, BN424WD"
+     },
+     "details": {
+      "scale": "sme",
+      "vcse": false
+     },
+     "roles": [
+      "supplier"
+     ]
+    }
+   ],
+   "buyer": {
+    "id": "GB-CFS-334419",
+    "name": "East Sussex County Council"
+   },
+   "awards": [
+    {
+     "id": "ocds-b5fd17-99bdfb74-334b-40ec-9e60-d389955e92ba-1",
+     "status": "active",
+     "date": "2026-09-22T00:00:00+01:00",
+     "datePublished": "2026-10-01T15:06:45+01:00",
+     "value": {
+      "amount": 156450,
+      "currency": "GBP"
+     },
+     "suppliers": [
+      {
+       "id": "GB-COH-13868223",
+       "name": "Brighton Taxi Company"
+      }
+     ],
+     "contractPeriod": {
+      "startDate": "2026-09-25T00:00:00+01:00",
+      "endDate": "2029-07-31T23:59:59+01:00"
+     },
+     "documents": [
+      {
+       "id": "1",
+       "documentType": "awardNotice",
+       "description": "Awarded contract notice on Contracts Finder",
+       "url": "https://www.contractsfinder.service.gov.uk/Notice/208d5dbf-421d-46e6-96de-3b6870bb180e",
+       "datePublished": "2026-10-01T15:06:45+01:00",
+       "format": "text/html",
+       "language": "en"
+      },
+      {
+       "id": "2",
+       "url": "https://www.sproc.net"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "ocid": "ocds-b5fd17-10b9d7a6-6fc1-466e-a21a-7954ad01176a",
+   "id": "5b41f784-02bb-406b-a204-4ff169e697d7-916271",
+   "language": "en",
+   "date": "2026-10-01T15:06:40+01:00",
+   "tag": [
+    "award"
+   ],
+   "initiationType": "tender",
+   "tender": {
+    "id": "IT-368-21128-QOC962 - AWARD",
+    "title": "QOC962 09:00 2026-10-01 Worlingworth to Grants School, Linton, Cambs - 6-seater Manual Wheelchair vehicle required and a Passenger Assistant - AWARD",
+    "description": "Suffolk County Council is seeking a mini competition against the following Dynamic Purchasing System: `The supply of Passenger Transport Services`, OJEU Notice Id: 2018/S 031-067685.\r\n      \r\n      QOC962 09:00 2026-10-01 Worlingworth to Grants School, Linton, Cambs - 6-seater Manual Wheelchair vehicle required and a Passenger Assistant\r\n      \r\n      Further details can be found in the 'Tenders / My Tenders' area of this website, by selecting the 'View Details' button for this project.\r\n      \r\n      The deadline for returned submissions is 09:00 2026-10-01 Please note late returns will NOT be permitted.\r\n      \r\n      The deadline for clarification questions is 09:00 2026-09-30 which must be generated via the correspondence option on the website.",
+    "status": "complete",
+    "classification": {
+     "scheme": "CPV",
+     "id": "60000000",
+     "description": "Transport services (excl. Waste transport)"
+    },
+    "items": [
+     {
+      "id": "1",
+      "deliveryAddresses": [
+       {
+        "postalCode": "IP1 2BX"
+       },
+       {
+        "countryName": "British Oversea Territories"
+       },
+       {
+        "countryName": "Channel Islands"
+       },
+       {
+        "countryName": "Europe"
+       },
+       {
+        "countryName": "Isle of Man"
+       },
+       {
+        "countryName": "Rest of the World"
+       },
+       {
+        "countryName": "United Kingdom"
+       }
+      ]
+     }
+    ],
+    "procurementMethodDetails": "Not specified",
+    "tenderPeriod": {
+     "endDate": "2026-10-01T09:00:00+01:00"
+    },
+    "contractPeriod": {
+     "startDate": "2026-10-05T01:00:00+01:00",
+     "endDate": "2031-07-31T23:59:59+01:00"
+    },
+    "suitability": {
+     "sme": false,
+     "vcse": false
+    },
+    "mainProcurementCategory": "services"
+   },
+   "parties": [
+    {
+     "id": "GB-CFS-154927",
+     "name": "Suffolk County Council Passenger Transport",
+     "identifier": {
+      "legalName": "Suffolk County Council Passenger Transport"
+     },
+     "address": {
+      "streetAddress": "Russell Road, Ipswich",
+      "locality": "Suffolk",
+      "postalCode": "IP1 2BX",
+      "countryName": "United Kingdom"
+     },
+     "contactPoint": {
+      "name": "Contact (anonymised)",
+      "email": "anonymised@example.invalid"
+     },
+     "details": {
+      "url": "https://www.suffolk.gov.uk/business/tenders-and-supplying-us"
+     },
+     "roles": [
+      "buyer"
+     ]
+    },
+    {
+     "id": "GB-CFS-126626",
+     "name": "All Travel Services LTD",
+     "identifier": {
+      "legalName": "All Travel Services LTD"
+     },
+     "address": {
+      "streetAddress": "111 Lindbergh Road, Ipswich, Suffolk, United Kingdom, IP3 9RA"
+     },
+     "roles": [
+      "supplier"
+     ]
+    }
+   ],
+   "buyer": {
+    "id": "GB-CFS-154927",
+    "name": "Suffolk County Council Passenger Transport"
+   },
+   "awards": [
+    {
+     "id": "ocds-b5fd17-10b9d7a6-6fc1-466e-a21a-7954ad01176a-1",
+     "status": "active",
+     "date": "2026-10-01T00:00:00+01:00",
+     "datePublished": "2026-10-01T15:06:40+01:00",
+     "value": {
+      "amount": 358444.12,
+      "currency": "GBP"
+     },
+     "suppliers": [
+      {
+       "id": "GB-CFS-126626",
+       "name": "All Travel Services LTD"
+      }
+     ],
+     "contractPeriod": {
+      "startDate": "2026-10-05T00:00:00+01:00",
+      "endDate": "2031-07-31T23:59:59+01:00"
+     },
+     "documents": [
+      {
+       "id": "1",
+       "documentType": "awardNotice",
+       "description": "Awarded contract notice on Contracts Finder",
+       "url": "https://www.contractsfinder.service.gov.uk/Notice/5b41f784-02bb-406b-a204-4ff169e697d7",
+       "datePublished": "2026-10-01T15:06:40+01:00",
+       "format": "text/html",
+       "language": "en"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "ocid": "ocds-b5fd17-18dabae9-6aee-4336-8f27-463a28525bf2",
+   "id": "de7f3850-57dd-493d-9ebf-3cfc317f0ae6-916270",
+   "language": "en",
+   "date": "2026-10-01T15:04:45+01:00",
+   "tag": [
+    "award"
+   ],
+   "initiationType": "tender",
+   "tender": {
+    "id": "AED4B95C-860B-4E95-8F0B-A840146C1FA4",
+    "title": "Taxi and MPV (1-8 seats) - Taxi and MPV (1-8 seats)",
+    "description": "Vehicle type: Saloon\r\nPassenger Assistant Required: No PA required\r\n\r\nProposed Taxi Route: \r\nFrom: TN38 0FS\r\nTo: St Johns College, Brighton BN2 0AF\r\n\r\nFrequency: Monday to Friday\r\nDaily School Time: Mon-Thurs 09:00-16:05 and Fri 09:00-15:05\r\n\r\nComments for Operator: No PA required\r\n This opportunity has been distributed on SProc.net",
+    "datePublished": "2026-09-24T10:38:45+01:00",
+    "status": "complete",
+    "classification": {
+     "scheme": "CPV",
+     "id": "60000000",
+     "description": "Transport services (excl. Waste transport)"
+    },
+    "items": [
+     {
+      "id": "1",
+      "deliveryAddresses": [
+       {
+        "countryName": "United Kingdom"
+       }
+      ]
+     }
+    ],
+    "procurementMethod": "selective",
+    "procurementMethodDetails": "Restricted procedure (above threshold)",
+    "tenderPeriod": {
+     "endDate": "2026-09-28T11:00:00+01:00"
+    },
+    "contractPeriod": {
+     "startDate": "2026-09-30T01:00:00+01:00",
+     "endDate": "2029-07-31T23:59:59+01:00"
+    },
+    "suitability": {
+     "sme": true,
+     "vcse": false
+    },
+    "mainProcurementCategory": "services"
+   },
+   "parties": [
+    {
+     "id": "GB-CFS-334419",
+     "name": "East Sussex County Council",
+     "identifier": {
+      "legalName": "East Sussex County Council"
+     },
+     "address": {
+      "streetAddress": "County Hall, St Anne's Crescent",
+      "locality": "Lewes",
+      "postalCode": "BN7 1UE",
+      "countryName": "United Kingdom"
+     },
+     "contactPoint": {
+      "name": "Contact (anonymised)",
+      "email": "anonymised@example.invalid"
+     },
+     "details": {
+      "url": "http://www.eastsussex.gov.uk"
+     },
+     "roles": [
+      "buyer"
+     ]
+    },
+    {
+     "id": "GB-COH-13868223",
+     "name": "Brighton Taxi Company",
+     "identifier": {
+      "legalName": "Brighton Taxi Company",
+      "scheme": "GB-COH",
+      "id": "13868223"
+     },
+     "address": {
+      "streetAddress": "122 Downsway, Southwick, Brighton, West Sussex, BN424WD"
+     },
+     "details": {
+      "scale": "sme",
+      "vcse": false
+     },
+     "roles": [
+      "supplier"
+     ]
+    }
+   ],
+   "buyer": {
+    "id": "GB-CFS-334419",
+    "name": "East Sussex County Council"
+   },
+   "awards": [
+    {
+     "id": "ocds-b5fd17-18dabae9-6aee-4336-8f27-463a28525bf2-1",
+     "status": "active",
+     "date": "2026-09-28T00:00:00+01:00",
+     "datePublished": "2026-10-01T15:04:45+01:00",
+     "value": {
+      "amount": 120620,
+      "currency": "GBP"
+     },
+     "suppliers": [
+      {
+       "id": "GB-COH-13868223",
+       "name": "Brighton Taxi Company"
+      }
+     ],
+     "contractPeriod": {
+      "startDate": "2026-09-30T00:00:00+01:00",
+      "endDate": "2029-07-31T23:59:59+01:00"
+     },
+     "documents": [
+      {
+       "id": "1",
+       "documentType": "awardNotice",
+       "description": "Awarded contract notice on Contracts Finder",
+       "url": "https://www.contractsfinder.service.gov.uk/Notice/de7f3850-57dd-493d-9ebf-3cfc317f0ae6",
+       "datePublished": "2026-10-01T15:04:45+01:00",
+       "format": "text/html",
+       "language": "en"
+      },
+      {
+       "id": "2",
+       "url": "https://www.sproc.net"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "ocid": "ocds-b5fd17-51d64964-4323-4063-a541-573176442a9e",
+   "id": "52a0639a-665a-4ac1-b089-4ec8f25f0657-916255",
+   "language": "en",
+   "date": "2026-10-01T14:36:16+01:00",
+   "tag": [
+    "awardUpdate"
+   ],
+   "initiationType": "tender",
+   "tender": {
+    "id": "GSS24443- The Provision of Occupational Health",
+    "title": "GSS24443- The Provision of Occupational Health",
+    "description": "***Please note this is an award notice, not a call for competition*** UK Shared Business Services (UKSBS) had a requirement for a partner to provide occupational health .This procurement has been concluded as a competitive quotation (below threshold)",
+    "status": "complete",
+    "classification": {
+     "scheme": "CPV",
+     "id": "85100000",
+     "description": "Health services"
+    },
+    "items": [
+     {
+      "id": "1",
+      "deliveryAddresses": [
+       {
+        "countryName": "United Kingdom"
+       }
+      ]
+     }
+    ],
+    "value": {
+     "amount": 45000,
+     "currency": "GBP"
+    },
+    "procurementMethod": "limited",
+    "procurementMethodDetails": "Competitive quotation (below threshold)",
+    "tenderPeriod": {
+     "endDate": "2024-09-06T11:00:00+01:00"
+    },
+    "contractPeriod": {
+     "startDate": "2024-10-03T00:00:00+01:00",
+     "endDate": "2027-03-30T23:59:59+01:00"
+    },
+    "suitability": {
+     "sme": true,
+     "vcse": false
+    },
+    "mainProcurementCategory": "goods"
+   },
+   "parties": [
+    {
+     "id": "GB-SRS-sid4gov.cabinetoffice.gov.uk/dXGP288m",
+     "name": "UK SHARED BUSINESS SERVICES LIMITED",
+     "identifier": {
+      "legalName": "UK SHARED BUSINESS SERVICES LIMITED",
+      "scheme": "GB-SRS",
+      "id": "sid4gov.cabinetoffice.gov.uk/dXGP288m"
+     },
+     "address": {
+      "streetAddress": "Polaris House,North Star Avenue",
+      "locality": "SWINDON",
+      "postalCode": "SN21UH",
+      "countryName": "England"
+     },
+     "contactPoint": {
+      "name": "Contact (anonymised)",
+      "email": "anonymised@example.invalid"
+     },
+     "roles": [
+      "buyer"
+     ]
+    },
+    {
+     "id": "GB-CFS-297571",
+     "name": "Cordell Health limited",
+     "identifier": {
+      "legalName": "Cordell Health limited"
+     },
+     "address": {
+      "streetAddress": "Unit 13 Acorn Business Park,\r\nNortharbour Road,\r\nCosham,\r\nPortsmouth \r\nPO6 3TH"
+     },
+     "details": {
+      "scale": "sme",
+      "vcse": false
+     },
+     "roles": [
+      "supplier"
+     ]
+    }
+   ],
+   "buyer": {
+    "id": "GB-SRS-sid4gov.cabinetoffice.gov.uk/dXGP288m",
+    "name": "UK SHARED BUSINESS SERVICES LIMITED"
+   },
+   "awards": [
+    {
+     "id": "ocds-b5fd17-51d64964-4323-4063-a541-573176442a9e-2",
+     "status": "active",
+     "date": "2024-09-06T00:00:00+01:00",
+     "datePublished": "2025-06-16T11:21:26+01:00",
+     "value": {
+      "amount": 45000,
+      "currency": "GBP"
+     },
+     "suppliers": [
+      {
+       "id": "GB-CFS-297571",
+       "name": "Cordell Health limited"
+      }
+     ],
+     "contractPeriod": {
+      "startDate": "2024-10-03T00:00:00+01:00",
+      "endDate": "2027-03-30T23:59:59+01:00"
+     },
+     "documents": [
+      {
+       "id": "3",
+       "documentType": "awardNotice",
+       "description": "Awarded contract notice on Contracts Finder",
+       "url": "https://www.contractsfinder.service.gov.uk/Notice/52a0639a-665a-4ac1-b089-4ec8f25f0657",
+       "datePublished": "2025-06-16T11:21:26+01:00",
+       "dateModified": "2026-10-01T14:36:16+01:00",
+       "format": "text/html",
+       "language": "en"
+      },
+      {
+       "id": "2",
+       "documentType": "contractSigned",
+       "url": "https://www.contractsfinder.service.gov.uk/Notice/Attachment/4dab7400-425f-4250-a3d1-6dc2010556b4",
+       "format": "application/pdf"
+      },
+      {
+       "id": "4",
+       "documentType": "contractSigned",
+       "description": "GSS24443 - Redacted Contract Variation (001) - Fully signed.",
+       "url": "https://www.contractsfinder.service.gov.uk/Notice/Attachment/26636f3c-2335-427b-a728-0279e5ec0f65",
+       "format": "application/pdf"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "ocid": "ocds-b5fd17-828afc4d-1a25-4cc4-b3e4-4894ea6a64d4",
+   "id": "541bfa44-466d-4b8e-a8cf-d905fb00b230-916251",
+   "language": "en",
+   "date": "2026-10-01T14:31:04+01:00",
+   "tag": [
+    "awardUpdate"
+   ],
+   "initiationType": "tender",
+   "tender": {
+    "id": "18399",
+    "title": "Ratton School Specialist Base - Project Manager, Technical Advisor  Consultancy Services",
+    "description": "East Sussex County Council (ESCC) requires the appointment of an independent Project Manager and Technical Advisor (PM/TA) to support the delivery of a school project utilising a Modern Methods of Construction (MMC) solution. The PM/TA will provide overall project management, governance, programme management, stakeholder engagement, risk and change management, together with independent technical assurance throughout the design, manufacture, construction, commissioning and defects phases of the project.\r\n\r\nThe requirement is needed to ensure ESCC acts as an informed client and receives objective, evidence-based advice throughout the project lifecycle. Given the specialist nature of MMC delivery and the need to maintain robust oversight of programme, quality, statutory compliance, design development and construction activities, ESCC requires an experienced consultant capable of providing both project management leadership and independent technical assurance.\r\n\r\nThe key objectives of the procurement were to:\r\n\r\n•\tAppoint a suitably qualified and experienced consultant with expertise in project management and technical assurance for MMC projects.\r\n•\tProvide ESCC with independent oversight and challenge of design, manufacturing and construction activities.\r\n•\tEnsure compliance with statutory requirements, Building Regulations, fire safety, accessibility standards and SEND-specific requirements.\r\n•\tSupport effective project governance, stakeholder engagement, risk management and decision-making.\r\n•\tProtect the Council's interests by providing quality assurance, programme monitoring and independent technical advice throughout project delivery.\r\n•\tDeliver value for money whilst ensuring successful project outcomes and minimising project risk.",
+    "status": "complete",
+    "classification": {
+     "scheme": "CPV",
+     "id": "71315200",
+     "description": "Building consultancy services"
+    },
+    "items": [
+     {
+      "id": "1",
+      "deliveryAddresses": [
+       {
+        "region": "South East",
+        "countryName": "United Kingdom"
+       }
+      ]
+     }
+    ],
+    "value": {
+     "amount": 37501.67,
+     "currency": "GBP"
+    },
+    "procurementMethod": "limited",
+    "procurementMethodDetails": "Competitive quotation (below threshold)",
+    "tenderPeriod": {
+     "endDate": "2026-09-18T16:00:00+01:00"
+    },
+    "contractPeriod": {
+     "startDate": "2026-10-13T00:00:00+01:00",
+     "endDate": "2027-10-14T23:59:59+01:00"
+    },
+    "suitability": {
+     "sme": true,
+     "vcse": true
+    },
+    "mainProcurementCategory": "services"
+   },
+   "parties": [
+    {
+     "id": "GB-LAE-ESX",
+     "name": "East Sussex County Council",
+     "identifier": {
+      "legalName": "East Sussex County Council",
+      "scheme": "GB-LAE",
+      "id": "ESX"
+     },
+     "address": {
+      "streetAddress": "PROCUREMENT, COUNTY HALL",
+      "locality": "LEWES",
+      "postalCode": "BN7 1UE",
+      "countryName": "England"
+     },
+     "contactPoint": {
+      "name": "Contact (anonymised)",
+      "email": "anonymised@example.invalid"
+     },
+     "roles": [
+      "buyer"
+     ]
+    },
+    {
+     "id": "GB-COH-05694657",
+     "name": "Norse Group Limited",
+     "identifier": {
+      "legalName": "Norse Group Limited",
+      "scheme": "GB-COH",
+      "id": "05694657"
+     },
+     "address": {
+      "streetAddress": "280 Fifers Lane, Norwich, Norfolk, United Kingdom, NR6 6EQ"
+     },
+     "details": {
+      "scale": "sme",
+      "vcse": false
+     },
+     "roles": [
+      "supplier"
+     ]
+    }
+   ],
+   "buyer": {
+    "id": "GB-LAE-ESX",
+    "name": "East Sussex County Council"
+   },
+   "awards": [
+    {
+     "id": "ocds-b5fd17-828afc4d-1a25-4cc4-b3e4-4894ea6a64d4-1",
+     "status": "active",
+     "date": "2026-10-01T00:00:00+01:00",
+     "datePublished": "2026-10-01T13:23:01+01:00",
+     "value": {
+      "amount": 37501.67,
+      "currency": "GBP"
+     },
+     "suppliers": [
+      {
+       "id": "GB-COH-05694657",
+       "name": "Norse Group Limited"
+      }
+     ],
+     "contractPeriod": {
+      "startDate": "2026-10-13T00:00:00+01:00",
+      "endDate": "2027-10-14T23:59:59+01:00"
+     },
+     "documents": [
+      {
+       "id": "1",
+       "documentType": "awardNotice",
+       "description": "Awarded contract notice on Contracts Finder",
+       "url": "https://www.contractsfinder.service.gov.uk/Notice/541bfa44-466d-4b8e-a8cf-d905fb00b230",
+       "datePublished": "2026-10-01T13:23:01+01:00",
+       "dateModified": "2026-10-01T14:31:04+01:00",
+       "format": "text/html",
+       "language": "en"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "ocid": "ocds-b5fd17-3153045d-2cdd-45db-ab2b-9ebb62f4d39a",
+   "id": "c388c27a-c22b-4cb6-a49e-fc95987a0a1c-916249",
+   "language": "en",
+   "date": "2026-10-01T14:22:35+01:00",
+   "tag": [
+    "award"
+   ],
+   "initiationType": "tender",
+   "tender": {
+    "id": "CF-3697800D0O000000rwimUAA",
+    "title": "C469292 - Cambridge Replacement Hologic Panther & upgrade",
+    "description": "Refresh of Hologic Panther with a Panther fusion, upgrades to waste management and introduction of Vlink software for improved of management of consumables.",
+    "status": "complete",
+    "classification": {
+     "scheme": "CPV",
+     "id": "38434000",
+     "description": "Analysers"
+    },
+    "items": [
+     {
+      "id": "1",
+      "deliveryAddresses": [
+       {
+        "postalCode": "CB2 0QQ"
+       },
+       {
+        "region": "England",
+        "countryName": "United Kingdom"
+       }
+      ]
+     }
+    ],
+    "value": {
+     "amount": 451814.63,
+     "currency": "GBP"
+    },
+    "procurementMethod": "selective",
+    "procurementMethodDetails": "Call-off from a framework agreement",
+    "tenderPeriod": {
+     "endDate": "2026-09-04T12:00:00+01:00"
+    },
+    "contractPeriod": {
+     "startDate": "2026-09-18T00:00:00+01:00",
+     "endDate": "2031-12-22T23:59:59Z"
+    },
+    "suitability": {
+     "sme": true,
+     "vcse": false
+    }
+   },
+   "parties": [
+    {
+     "id": "GB-CFS-254798",
+     "name": "UK Health Security Agency",
+     "identifier": {
+      "legalName": "UK Health Security Agency"
+     },
+     "address": {
+      "streetAddress": "10 South Colonnade",
+      "locality": "London",
+      "postalCode": "E14 4PU",
+      "countryName": "GB"
+     },
+     "contactPoint": {
+      "name": "Contact (anonymised)",
+      "email": "anonymised@example.invalid"
+     },
+     "roles": [
+      "buyer"
+     ]
+    },
+    {
+     "id": "GB-CFS-313729",
+     "name": "Hologic LTD.",
+     "identifier": {
+      "legalName": "Hologic LTD."
+     },
+     "address": {
+      "streetAddress": "the Oaks Business Park, Crewe Road Wythenshawe, Manchester M23 9HZ"
+     },
+     "details": {
+      "scale": "large"
+     },
+     "roles": [
+      "supplier"
+     ]
+    }
+   ],
+   "buyer": {
+    "id": "GB-CFS-254798",
+    "name": "UK Health Security Agency"
+   },
+   "awards": [
+    {
+     "id": "ocds-b5fd17-3153045d-2cdd-45db-ab2b-9ebb62f4d39a-2",
+     "status": "active",
+     "date": "2026-09-18T00:00:00+01:00",
+     "datePublished": "2026-10-01T14:22:35+01:00",
+     "value": {
+      "amount": 451814.63,
+      "currency": "GBP"
+     },
+     "suppliers": [
+      {
+       "id": "GB-CFS-313729",
+       "name": "Hologic LTD."
+      }
+     ],
+     "contractPeriod": {
+      "startDate": "2026-09-18T00:00:00+01:00",
+      "endDate": "2031-12-22T23:59:59Z"
+     },
+     "documents": [
+      {
+       "id": "3",
+       "documentType": "awardNotice",
+       "description": "Awarded contract notice on Contracts Finder",
+       "url": "https://www.contractsfinder.service.gov.uk/Notice/c388c27a-c22b-4cb6-a49e-fc95987a0a1c",
+       "datePublished": "2026-10-01T14:22:35+01:00",
+       "format": "text/html",
+       "language": "en"
+      },
+      {
+       "id": "4",
+       "description": "C469292 - Hologic Contract - FULLY SIGNED_Redacted",
+       "url": "https://www.contractsfinder.service.gov.uk/Notice/Attachment/ed2b33cf-7762-4c17-851c-36c4f032eedc",
+       "format": "application/pdf"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "ocid": "ocds-b5fd17-3153045d-2cdd-45db-ab2b-9ebb62f4d39a",
+   "id": "4c4899d7-4f4c-487f-99ff-a420d17d0f31-916248",
+   "language": "en",
+   "date": "2026-10-01T14:22:07+01:00",
+   "tag": [
+    "award"
+   ],
+   "initiationType": "tender",
+   "tender": {
+    "id": "CF-3697800D0O000000rwimUAA",
+    "title": "C469292 - Cambridge Replacement Hologic Panther & upgrade",
+    "description": "Refresh of Hologic Panther with a Panther fusion, upgrades to waste management and introduction of Vlink software for improved of management of consumables.",
+    "status": "complete",
+    "classification": {
+     "scheme": "CPV",
+     "id": "38434000",
+     "description": "Analysers"
+    },
+    "items": [
+     {
+      "id": "1",
+      "deliveryAddresses": [
+       {
+        "postalCode": "CB2 0QQ"
+       },
+       {
+        "region": "England",
+        "countryName": "United Kingdom"
+       }
+      ]
+     }
+    ],
+    "value": {
+     "amount": 451814.63,
+     "currency": "GBP"
+    },
+    "procurementMethod": "selective",
+    "procurementMethodDetails": "Call-off from a framework agreement",
+    "tenderPeriod": {
+     "endDate": "2026-09-04T12:00:00+01:00"
+    },
+    "contractPeriod": {
+     "startDate": "2026-09-18T00:00:00+01:00",
+     "endDate": "2031-12-22T23:59:59Z"
+    },
+    "suitability": {
+     "sme": true,
+     "vcse": false
+    }
+   },
+   "parties": [
+    {
+     "id": "GB-CFS-254798",
+     "name": "UK Health Security Agency",
+     "identifier": {
+      "legalName": "UK Health Security Agency"
+     },
+     "address": {
+      "streetAddress": "10 South Colonnade",
+      "locality": "London",
+      "postalCode": "E14 4PU",
+      "countryName": "GB"
+     },
+     "contactPoint": {
+      "name": "Contact (anonymised)",
+      "email": "anonymised@example.invalid"
+     },
+     "roles": [
+      "buyer"
+     ]
+    },
+    {
+     "id": "GB-CFS-313729",
+     "name": "Hologic LTD.",
+     "identifier": {
+      "legalName": "Hologic LTD."
+     },
+     "address": {
+      "streetAddress": "the Oaks Business Park, Crewe Road Wythenshawe, Manchester M23 9HZ"
+     },
+     "details": {
+      "scale": "large"
+     },
+     "roles": [
+      "supplier"
+     ]
+    }
+   ],
+   "buyer": {
+    "id": "GB-CFS-254798",
+    "name": "UK Health Security Agency"
+   },
+   "awards": [
+    {
+     "id": "ocds-b5fd17-3153045d-2cdd-45db-ab2b-9ebb62f4d39a-1",
+     "status": "active",
+     "date": "2026-09-18T00:00:00+01:00",
+     "datePublished": "2026-10-01T14:22:07+01:00",
+     "value": {
+      "amount": 451814.63,
+      "currency": "GBP"
+     },
+     "suppliers": [
+      {
+       "id": "GB-CFS-313729",
+       "name": "Hologic LTD."
+      }
+     ],
+     "contractPeriod": {
+      "startDate": "2026-09-18T00:00:00+01:00",
+      "endDate": "2031-12-22T23:59:59Z"
+     },
+     "documents": [
+      {
+       "id": "1",
+       "documentType": "awardNotice",
+       "description": "Awarded contract notice on Contracts Finder",
+       "url": "https://www.contractsfinder.service.gov.uk/Notice/4c4899d7-4f4c-487f-99ff-a420d17d0f31",
+       "datePublished": "2026-10-01T14:22:07+01:00",
+       "format": "text/html",
+       "language": "en"
+      },
+      {
+       "id": "2",
+       "description": "C469292 - Hologic Contract - FULLY SIGNED_Redacted",
+       "url": "https://www.contractsfinder.service.gov.uk/Notice/Attachment/95396afa-ce7d-4713-b145-8633b4589c5a",
+       "format": "application/pdf"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "ocid": "ocds-b5fd17-828afc4d-1a25-4cc4-b3e4-4894ea6a64d4",
+   "id": "541bfa44-466d-4b8e-a8cf-d905fb00b230-916213",
+   "language": "en",
+   "date": "2026-10-01T13:24:29+01:00",
+   "tag": [
+    "awardUpdate"
+   ],
+   "initiationType": "tender",
+   "tender": {
+    "id": "18399",
+    "title": "Ratton School Specialist Base - Quantity Surveyor Consultancy Services",
+    "description": "East Sussex County Council (ESCC) requires the appointment of an independent Project Manager and Technical Advisor (PM/TA) to support the delivery of a school project utilising a Modern Methods of Construction (MMC) solution. The PM/TA will provide overall project management, governance, programme management, stakeholder engagement, risk and change management, together with independent technical assurance throughout the design, manufacture, construction, commissioning and defects phases of the project.\r\n\r\nThe requirement is needed to ensure ESCC acts as an informed client and receives objective, evidence-based advice throughout the project lifecycle. Given the specialist nature of MMC delivery and the need to maintain robust oversight of programme, quality, statutory compliance, design development and construction activities, ESCC requires an experienced consultant capable of providing both project\r\nmanagement leadership and independent technical assurance.\r\n\r\nThe key objectives of the procurement were to:\r\n\r\n• Appoint a suitably qualified and experienced consultant with expertise in project management and technical assurance for MMC projects.\r\n• Provide ESCC with independent oversight and challenge of design,\r\nmanufacturing and construction activities.\r\n• Ensure compliance with statutory requirements, Building Regulations, fire safety, accessibility standards and SEND-specific requirements.\r\n• Support effective project governance, stakeholder engagement, risk management and decision-making.\r\n• Protect the Council's interests by providing quality assurance, programme monitoring and independent technical advice throughout project delivery.\r\n• Deliver value for money whilst ensuring successful project outcomes and minimising project risk.",
+    "status": "complete",
+    "classification": {
+     "scheme": "CPV",
+     "id": "71315200",
+     "description": "Building consultancy services"
+    },
+    "items": [
+     {
+      "id": "1",
+      "deliveryAddresses": [
+       {
+        "region": "South East",
+        "countryName": "United Kingdom"
+       }
+      ]
+     }
+    ],
+    "value": {
+     "amount": 37501.67,
+     "currency": "GBP"
+    },
+    "procurementMethod": "limited",
+    "procurementMethodDetails": "Competitive quotation (below threshold)",
+    "tenderPeriod": {
+     "endDate": "2026-09-18T16:00:00+01:00"
+    },
+    "contractPeriod": {
+     "startDate": "2026-10-13T00:00:00+01:00",
+     "endDate": "2027-10-14T23:59:59+01:00"
+    },
+    "suitability": {
+     "sme": true,
+     "vcse": true
+    },
+    "mainProcurementCategory": "services"
+   },
+   "parties": [
+    {
+     "id": "GB-LAE-ESX",
+     "name": "East Sussex County Council",
+     "identifier": {
+      "legalName": "East Sussex County Council",
+      "scheme": "GB-LAE",
+      "id": "ESX"
+     },
+     "address": {
+      "streetAddress": "PROCUREMENT, COUNTY HALL",
+      "locality": "LEWES",
+      "postalCode": "BN7 1UE",
+      "countryName": "England"
+     },
+     "contactPoint": {
+      "name": "Contact (anonymised)",
+      "email": "anonymised@example.invalid"
+     },
+     "roles": [
+      "buyer"
+     ]
+    },
+    {
+     "id": "GB-COH-05694657",
+     "name": "Norse Group Limited",
+     "identifier": {
+      "legalName": "Norse Group Limited",
+      "scheme": "GB-COH",
+      "id": "05694657"
+     },
+     "address": {
+      "streetAddress": "280 Fifers Lane, Norwich, Norfolk, United Kingdom, NR6 6EQ"
+     },
+     "details": {
+      "scale": "sme",
+      "vcse": false
+     },
+     "roles": [
+      "supplier"
+     ]
+    }
+   ],
+   "buyer": {
+    "id": "GB-LAE-ESX",
+    "name": "East Sussex County Council"
+   },
+   "awards": [
+    {
+     "id": "ocds-b5fd17-828afc4d-1a25-4cc4-b3e4-4894ea6a64d4-1",
+     "status": "active",
+     "date": "2026-10-01T00:00:00+01:00",
+     "datePublished": "2026-10-01T13:23:01+01:00",
+     "value": {
+      "amount": 37501.67,
+      "currency": "GBP"
+     },
+     "suppliers": [
+      {
+       "id": "GB-COH-05694657",
+       "name": "Norse Group Limited"
+      }
+     ],
+     "contractPeriod": {
+      "startDate": "2026-10-13T00:00:00+01:00",
+      "endDate": "2027-10-14T23:59:59+01:00"
+     },
+     "documents": [
+      {
+       "id": "1",
+       "documentType": "awardNotice",
+       "description": "Awarded contract notice on Contracts Finder",
+       "url": "https://www.contractsfinder.service.gov.uk/Notice/541bfa44-466d-4b8e-a8cf-d905fb00b230",
+       "datePublished": "2026-10-01T13:23:01+01:00",
+       "dateModified": "2026-10-01T13:24:29+01:00",
+       "format": "text/html",
+       "language": "en"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "ocid": "ocds-b5fd17-828afc4d-1a25-4cc4-b3e4-4894ea6a64d4",
+   "id": "541bfa44-466d-4b8e-a8cf-d905fb00b230-916204",
+   "language": "en",
+   "date": "2026-10-01T13:23:01+01:00",
+   "tag": [
+    "award"
+   ],
+   "initiationType": "tender",
+   "tender": {
+    "id": "18399",
+    "title": "Ratton School Specialist Base - Quantity Surveyor Consultancy Services",
+    "description": "East Sussex County Council (ESCC) requires the appointment of an independent Project Manager and Technical Advisor (PM/TA) to support the delivery of a school project utilising a Modern Methods of Construction (MMC) solution. The PM/TA will provide overall project management, governance, programme management, stakeholder engagement, risk and change management, together with independent technical assurance throughout the design, manufacture, construction, commissioning and defects phases of the project.\r\n\r\nThe requirement is needed to ensure ESCC acts as an informed client and receives objective, evidence-based advice throughout the project lifecycle. Given the specialist nature of MMC delivery and the need to maintain robust oversight of programme, quality, statutory compliance, design development and construction activities, ESCC requires an experienced consultant capable of providing both project\r\nmanagement leadership and independent technical assurance.\r\n\r\nThe key objectives of the procurement were to:\r\n\r\n• Appoint a suitably qualified and experienced consultant with expertise in project management and technical assurance for MMC projects.\r\n• Provide ESCC with independent oversight and challenge of design,\r\nmanufacturing and construction activities.\r\n• Ensure compliance with statutory requirements, Building Regulations, fire safety, accessibility standards and SEND-specific requirements.\r\n• Support effective project governance, stakeholder engagement, risk management and decision-making.\r\n• Protect the Council's interests by providing quality assurance, programme monitoring and independent technical advice throughout project delivery.\r\n• Deliver value for money whilst ensuring successful project outcomes and minimising project risk.",
+    "status": "complete",
+    "classification": {
+     "scheme": "CPV",
+     "id": "71315200",
+     "description": "Building consultancy services"
+    },
+    "items": [
+     {
+      "id": "1",
+      "deliveryAddresses": [
+       {
+        "region": "South East",
+        "countryName": "United Kingdom"
+       }
+      ]
+     }
+    ],
+    "minValue": {
+     "amount": 37501.67,
+     "currency": "GBP"
+    },
+    "value": {
+     "amount": 75412.5,
+     "currency": "GBP"
+    },
+    "procurementMethod": "limited",
+    "procurementMethodDetails": "Competitive quotation (below threshold)",
+    "tenderPeriod": {
+     "endDate": "2026-09-18T16:00:00+01:00"
+    },
+    "contractPeriod": {
+     "startDate": "2026-10-13T00:00:00+01:00",
+     "endDate": "2027-10-14T23:59:59+01:00"
+    },
+    "suitability": {
+     "sme": true,
+     "vcse": true
+    },
+    "mainProcurementCategory": "services"
+   },
+   "parties": [
+    {
+     "id": "GB-LAE-ESX",
+     "name": "East Sussex County Council",
+     "identifier": {
+      "legalName": "East Sussex County Council",
+      "scheme": "GB-LAE",
+      "id": "ESX"
+     },
+     "address": {
+      "streetAddress": "PROCUREMENT, COUNTY HALL",
+      "locality": "LEWES",
+      "postalCode": "BN7 1UE",
+      "countryName": "England"
+     },
+     "contactPoint": {
+      "name": "Contact (anonymised)",
+      "email": "anonymised@example.invalid"
+     },
+     "roles": [
+      "buyer"
+     ]
+    },
+    {
+     "id": "GB-COH-05694657",
+     "name": "Norse Group Limited",
+     "identifier": {
+      "legalName": "Norse Group Limited",
+      "scheme": "GB-COH",
+      "id": "05694657"
+     },
+     "address": {
+      "streetAddress": "280 Fifers Lane, Norwich, Norfolk, United Kingdom, NR6 6EQ"
+     },
+     "details": {
+      "scale": "sme",
+      "vcse": false
+     },
+     "roles": [
+      "supplier"
+     ]
+    }
+   ],
+   "buyer": {
+    "id": "GB-LAE-ESX",
+    "name": "East Sussex County Council"
+   },
+   "awards": [
+    {
+     "id": "ocds-b5fd17-828afc4d-1a25-4cc4-b3e4-4894ea6a64d4-1",
+     "status": "active",
+     "date": "2026-10-01T00:00:00+01:00",
+     "datePublished": "2026-10-01T13:23:01+01:00",
+     "value": {
+      "amount": 37501.67,
+      "currency": "GBP"
+     },
+     "suppliers": [
+      {
+       "id": "GB-COH-05694657",
+       "name": "Norse Group Limited"
+      }
+     ],
+     "contractPeriod": {
+      "startDate": "2026-10-13T00:00:00+01:00",
+      "endDate": "2027-10-14T23:59:59+01:00"
+     },
+     "documents": [
+      {
+       "id": "1",
+       "documentType": "awardNotice",
+       "description": "Awarded contract notice on Contracts Finder",
+       "url": "https://www.contractsfinder.service.gov.uk/Notice/541bfa44-466d-4b8e-a8cf-d905fb00b230",
+       "datePublished": "2026-10-01T13:23:01+01:00",
+       "format": "text/html",
+       "language": "en"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "ocid": "ocds-b5fd17-37a02f97-bb85-4fd9-b296-62d539473925",
+   "id": "4d014d3e-ce44-4399-82b9-0fe13ea4e8d1-916155",
+   "language": "en",
+   "date": "2026-10-01T11:19:07+01:00",
+   "tag": [
+    "awardUpdate"
+   ],
+   "initiationType": "tender",
+   "tender": {
+    "id": "tender_528094/1609086",
+    "title": "DDaT26266 - Data Analytics and Processing Platform",
+    "description": "***Please note this is an award notice, not a call for competition***\r\n\r\n\r\nDepartment for Energy Security and Net Zero (DESNZ) had a requirement for the provision of supplying a learning platform.\r\n\r\nThis procurement is being concluded under the CCS G-Cloud 14 (RM1557.14) framework.",
+    "status": "complete",
+    "classification": {
+     "scheme": "CPV",
+     "id": "48810000",
+     "description": "Information systems"
+    },
+    "items": [
+     {
+      "id": "1",
+      "deliveryAddresses": [
+       {
+        "postalCode": "SW1A 2HP"
+       },
+       {
+        "countryName": "British Oversea Territories"
+       },
+       {
+        "countryName": "Channel Islands"
+       },
+       {
+        "countryName": "Europe"
+       },
+       {
+        "countryName": "Isle of Man"
+       },
+       {
+        "countryName": "Rest of the World"
+       },
+       {
+        "countryName": "United Kingdom"
+       }
+      ]
+     }
+    ],
+    "value": {
+     "amount": 118560,
+     "currency": "GBP"
+    },
+    "procurementMethod": "selective",
+    "procurementMethodDetails": "Call-off from a framework agreement",
+    "tenderPeriod": {
+     "endDate": "2026-09-07T11:00:00+01:00"
+    },
+    "contractPeriod": {
+     "startDate": "2026-09-09T00:00:00+01:00",
+     "endDate": "2028-09-08T23:59:59+01:00"
+    },
+    "suitability": {
+     "sme": true,
+     "vcse": false
+    },
+    "mainProcurementCategory": "services"
+   },
+   "parties": [
+    {
+     "id": "GB-CFS-314890",
+     "name": "ICS on behalf of DSIT and DESNZ",
+     "identifier": {
+      "legalName": "ICS on behalf of DSIT and DESNZ"
+     },
+     "address": {
+      "streetAddress": "Polaris House, North Star Avenue,",
+      "locality": "Swindon",
+      "postalCode": "SN2 1FF",
+      "countryName": "England"
+     },
+     "contactPoint": {
+      "name": "Contact (anonymised)",
+      "email": "anonymised@example.invalid"
+     },
+     "roles": [
+      "buyer"
+     ]
+    },
+    {
+     "id": "GB-CFS-338345",
+     "name": "The Information Lab Ltd",
+     "identifier": {
+      "legalName": "The Information Lab Ltd"
+     },
+     "address": {
+      "streetAddress": "25 Watling Street London England EC4M 9BR"
+     },
+     "details": {
+      "scale": "sme",
+      "vcse": false
+     },
+     "roles": [
+      "supplier"
+     ]
+    }
+   ],
+   "buyer": {
+    "id": "GB-CFS-314890",
+    "name": "ICS on behalf of DSIT and DESNZ"
+   },
+   "awards": [
+    {
+     "id": "ocds-b5fd17-37a02f97-bb85-4fd9-b296-62d539473925-1",
+     "status": "active",
+     "date": "2026-09-08T00:00:00+01:00",
+     "datePublished": "2026-09-15T10:47:24+01:00",
+     "value": {
+      "amount": 118560,
+      "currency": "GBP"
+     },
+     "suppliers": [
+      {
+       "id": "GB-CFS-338345",
+       "name": "The Information Lab Ltd"
+      }
+     ],
+     "contractPeriod": {
+      "startDate": "2026-09-09T00:00:00+01:00",
+      "endDate": "2028-09-08T23:59:59+01:00"
+     },
+     "documents": [
+      {
+       "id": "1",
+       "documentType": "awardNotice",
+       "description": "Awarded contract notice on Contracts Finder",
+       "url": "https://www.contractsfinder.service.gov.uk/Notice/4d014d3e-ce44-4399-82b9-0fe13ea4e8d1",
+       "datePublished": "2026-09-15T10:47:24+01:00",
+       "dateModified": "2026-10-01T11:19:07+01:00",
+       "format": "text/html",
+       "language": "en"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "ocid": "ocds-b5fd17-ba515957-9d7f-43b0-951d-83f3c912fcae",
+   "id": "dfd7e71b-ff44-490e-9324-66784a1a832a-916148",
+   "language": "en",
+   "date": "2026-10-01T10:50:46+01:00",
+   "tag": [
+    "awardUpdate"
+   ],
+   "initiationType": "tender",
+   "tender": {
+    "id": "C1002",
+    "title": "Money and Pensions Service - Workforce Solutions",
+    "description": "The Money & Pensions Service (MaPS) Pensions Dashboard has an ongoing requirement for contingent labour and services to undertake professional services for the organisation.\r\n \r\nTo that end, MaPS Pensions Dashboard has contracted with Alexander Mann Solutions Limited (AMS) via the Crown Commercial Service Workforce Solutions framework (RM6288).",
+    "status": "complete",
+    "classification": {
+     "scheme": "CPV",
+     "id": "79620000",
+     "description": "Supply services of personnel including temporary staff"
+    },
+    "items": [
+     {
+      "id": "1",
+      "deliveryAddresses": [
+       {
+        "countryName": "United Kingdom"
+       }
+      ]
+     }
+    ],
+    "value": {
+     "amount": 5000000,
+     "currency": "GBP"
+    },
+    "procurementMethod": "selective",
+    "procurementMethodDetails": "Call-off from a framework agreement",
+    "tenderPeriod": {
+     "endDate": "2025-01-30T17:00:00Z"
+    },
+    "contractPeriod": {
+     "startDate": "2025-03-17T00:00:00Z",
+     "endDate": "2027-03-16T23:59:59Z"
+    },
+    "suitability": {
+     "sme": false,
+     "vcse": false
+    },
+    "mainProcurementCategory": "services"
+   },
+   "parties": [
+    {
+     "id": "GB-SRS-supplierregistration.cabinetoffice.gov.uk/naZq3B5Q",
+     "name": "Money and Pensions Service",
+     "identifier": {
+      "legalName": "Money and Pensions Service",
+      "scheme": "GB-SRS",
+      "id": "supplierregistration.cabinetoffice.gov.uk/naZq3B5Q"
+     },
+     "address": {
+      "streetAddress": "Borough Hall",
+      "locality": "BEDFORD",
+      "postalCode": "EC1N2TD",
+      "countryName": "England"
+     },
+     "contactPoint": {
+      "name": "Contact (anonymised)",
+      "email": "anonymised@example.invalid"
+     },
+     "roles": [
+      "buyer"
+     ]
+    },
+    {
+     "id": "GB-COH-02073305",
+     "name": "Alexander Mann Solutions Limited",
+     "identifier": {
+      "legalName": "Alexander Mann Solutions Limited",
+      "scheme": "GB-COH",
+      "id": "02073305"
+     },
+     "address": {
+      "streetAddress": "60 London Wall, 2nd Floor\r\nLondon\r\nEC2M 5TQ"
+     },
+     "details": {
+      "scale": "large",
+      "vcse": false
+     },
+     "roles": [
+      "supplier"
+     ]
+    }
+   ],
+   "buyer": {
+    "id": "GB-SRS-supplierregistration.cabinetoffice.gov.uk/naZq3B5Q",
+    "name": "Money and Pensions Service"
+   },
+   "awards": [
+    {
+     "id": "ocds-b5fd17-ba515957-9d7f-43b0-951d-83f3c912fcae-1",
+     "status": "active",
+     "date": "2025-03-17T00:00:00Z",
+     "datePublished": "2026-02-12T11:30:43Z",
+     "value": {
+      "amount": 5000000,
+      "currency": "GBP"
+     },
+     "suppliers": [
+      {
+       "id": "GB-COH-02073305",
+       "name": "Alexander Mann Solutions Limited"
+      }
+     ],
+     "contractPeriod": {
+      "startDate": "2025-03-17T00:00:00Z",
+      "endDate": "2027-03-16T23:59:59Z"
+     },
+     "documents": [
+      {
+       "id": "1",
+       "documentType": "awardNotice",
+       "description": "Awarded contract notice on Contracts Finder",
+       "url": "https://www.contractsfinder.service.gov.uk/Notice/dfd7e71b-ff44-490e-9324-66784a1a832a",
+       "datePublished": "2026-02-12T11:30:43Z",
+       "dateModified": "2026-10-01T10:50:46+01:00",
+       "format": "text/html",
+       "language": "en"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "ocid": "ocds-b5fd17-83af6453-620f-4d6c-b260-20ec076f24b6",
+   "id": "8dd803f1-6e2f-4f88-81f2-0babeff79f3f-916093",
+   "language": "en",
+   "date": "2026-10-01T08:15:00+01:00",
+   "tag": [
+    "awardUpdate"
+   ],
+   "initiationType": "tender",
+   "tender": {
+    "id": "CCZZ26A09.",
+    "title": "Provision of Research Specification for Communications and Marketing Campaign",
+    "description": "The purpose of this requirement is to appoint one research Supplier to carry out insight gathering and evaluation of paid-for marketing campaigns run by HMRC over the duration of the agreement, as well as more general research projects to benefit HMRC",
+    "status": "complete",
+    "classification": {
+     "scheme": "CPV",
+     "id": "73110000",
+     "description": "Research services"
+    },
+    "items": [
+     {
+      "id": "1",
+      "deliveryAddresses": [
+       {
+        "region": "North East",
+        "countryName": "United Kingdom"
+       },
+       {
+        "region": "North West",
+        "countryName": "United Kingdom"
+       },
+       {
+        "region": "Yorkshire and the Humber",
+        "countryName": "United Kingdom"
+       },
+       {
+        "region": "East Midlands",
+        "countryName": "United Kingdom"
+       },
+       {
+        "region": "West Midlands",
+        "countryName": "United Kingdom"
+       },
+       {
+        "region": "East of England",
+        "countryName": "United Kingdom"
+       },
+       {
+        "region": "London",
+        "countryName": "United Kingdom"
+       },
+       {
+        "region": "South East",
+        "countryName": "United Kingdom"
+       },
+       {
+        "region": "South West",
+        "countryName": "United Kingdom"
+       },
+       {
+        "region": "Scotland",
+        "countryName": "United Kingdom"
+       },
+       {
+        "region": "Wales",
+        "countryName": "United Kingdom"
+       }
+      ]
+     }
+    ],
+    "value": {
+     "amount": 7225000,
+     "currency": "GBP"
+    },
+    "procurementMethod": "selective",
+    "procurementMethodDetails": "Call-off from a framework agreement",
+    "tenderPeriod": {
+     "endDate": "2026-07-03T00:00:00+01:00"
+    },
+    "contractPeriod": {
+     "startDate": "2026-08-02T00:00:00+01:00",
+     "endDate": "2029-08-19T23:59:59+01:00"
+    },
+    "suitability": {
+     "sme": true,
+     "vcse": false
+    },
+    "mainProcurementCategory": "goods"
+   },
+   "parties": [
+    {
+     "id": "GB-SRS-supplierregistration.cabinetoffice.gov.uk/6sQD8uds",
+     "name": "Government Commercial Agency",
+     "identifier": {
+      "legalName": "Government Commercial Agency",
+      "scheme": "GB-SRS",
+      "id": "supplierregistration.cabinetoffice.gov.uk/6sQD8uds"
+     },
+     "address": {
+      "streetAddress": "Floor 9, The Capital Building, Old Hall Street",
+      "locality": "Liverpool",
+      "postalCode": "L3 9PP",
+      "countryName": "England"
+     },
+     "contactPoint": {
+      "name": "Contact (anonymised)",
+      "email": "anonymised@example.invalid"
+     },
+     "details": {
+      "url": "https://www.gov.uk/government/organisations/crown-commercial-service"
+     },
+     "roles": [
+      "buyer"
+     ]
+    },
+    {
+     "id": "GB-CFS-331786",
+     "name": "IPSOS (MARKET RESEARCH) LTD",
+     "identifier": {
+      "legalName": "IPSOS (MARKET RESEARCH) LTD"
+     },
+     "address": {
+      "streetAddress": "CFO-IPSOS MORI, 3 Thomas More Square E1W 1YW London United Kingdom"
+     },
+     "details": {
+      "scale": "large",
+      "vcse": false
+     },
+     "roles": [
+      "supplier"
+     ]
+    }
+   ],
+   "buyer": {
+    "id": "GB-SRS-supplierregistration.cabinetoffice.gov.uk/6sQD8uds",
+    "name": "Government Commercial Agency"
+   },
+   "awards": [
+    {
+     "id": "ocds-b5fd17-83af6453-620f-4d6c-b260-20ec076f24b6-1",
+     "status": "active",
+     "date": "2026-08-14T00:00:00+01:00",
+     "datePublished": "2026-09-17T11:09:55+01:00",
+     "value": {
+      "amount": 7225000,
+      "currency": "GBP"
+     },
+     "suppliers": [
+      {
+       "id": "GB-CFS-331786",
+       "name": "IPSOS (MARKET RESEARCH) LTD"
+      }
+     ],
+     "contractPeriod": {
+      "startDate": "2026-08-24T00:00:00+01:00",
+      "endDate": "2029-08-23T23:59:59+01:00"
+     },
+     "documents": [
+      {
+       "id": "1",
+       "documentType": "awardNotice",
+       "description": "Awarded contract notice on Contracts Finder",
+       "url": "https://www.contractsfinder.service.gov.uk/Notice/8dd803f1-6e2f-4f88-81f2-0babeff79f3f",
+       "datePublished": "2026-09-17T11:09:55+01:00",
+       "dateModified": "2026-10-01T08:15:00+01:00",
+       "format": "text/html",
+       "language": "en"
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

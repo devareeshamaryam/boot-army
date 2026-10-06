@@ -2,5 +2,7 @@ node_modules/
 .env
 *.db
 *.sqlite
-logs/secrets/
+logs/
+secrets/
 *-key.json
+.http-throttle/

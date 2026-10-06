@@ -164,6 +164,56 @@ describe('http', () => {
     assert.ok(Date.now() - t0 >= 380);
   });
 
+  test('host policy: a shared floor applies even when the caller asks for no delay', async () => {
+    process.env.BOTARMY_THROTTLE_DIR = tmp();
+    chttp.setHostPolicy('shared.test', { minIntervalMs: 200 });
+    try {
+      chttp.setFetch(async () => new Response('ok'));
+      const t0 = Date.now();
+      for (let i = 0; i < 3; i++) await chttp.fetch('https://shared.test/a', { minIntervalMs: 0 });
+      assert.ok(Date.now() - t0 >= 380);
+      assert.ok(existsSync(path.join(process.env.BOTARMY_THROTTLE_DIR, 'shared.test.next')));
+    } finally {
+      chttp.setHostPolicy('shared.test', null);
+      delete process.env.BOTARMY_THROTTLE_DIR;
+    }
+  });
+
+  test('host policy: a slot reserved by another process is respected', async () => {
+    const dir = tmp();
+    process.env.BOTARMY_THROTTLE_DIR = dir;
+    chttp.setHostPolicy('other.test', { minIntervalMs: 50 });
+    try {
+      // Another bot has reserved the host until 400ms from now.
+      writeFileSync(path.join(dir, 'other.test.next'), String(Date.now() + 400));
+      chttp.setFetch(async () => new Response('ok'));
+      const t0 = Date.now();
+      await chttp.fetch('https://other.test/a');
+      assert.ok(Date.now() - t0 >= 350);
+    } finally {
+      chttp.setHostPolicy('other.test', null);
+      delete process.env.BOTARMY_THROTTLE_DIR;
+    }
+  });
+
+  test('host policy: a 429 pushes the shared slot back for every process', async () => {
+    const dir = tmp();
+    process.env.BOTARMY_THROTTLE_DIR = dir;
+    chttp.setHostPolicy('busy.test', { minIntervalMs: 10 });
+    try {
+      let calls = 0;
+      chttp.setFetch(async () => (++calls === 1 ? new Response('slow', { status: 429, headers: { 'retry-after': '1' } }) : new Response('ok')));
+      const before = Date.now();
+      await chttp.fetch('https://busy.test/a', { retries: 1 });
+      assert.equal(calls, 2);
+      // The 429 wrote "keep off for 1s" for others; our own retry then reserved the next slot after it.
+      assert.ok(Number(readFileSync(path.join(dir, 'busy.test.next'), 'utf8')) >= before + 1000);
+    } finally {
+      chttp.setHostPolicy('busy.test', null);
+      delete process.env.BOTARMY_THROTTLE_DIR;
+    }
+  });
+
   test('records fixtures and replays them without the network', async () => {
     const dir = tmp();
     chttp.setFetch(async () => new Response('recorded body', { status: 200, headers: { 'content-type': 'text/plain' } }));

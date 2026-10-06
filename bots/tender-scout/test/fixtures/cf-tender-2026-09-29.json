@@ -1,0 +1,3052 @@
+{
+ "uri": "https://www.contractsfinder.service.gov.uk/Published/Notices/OCDS/Search?publishedFrom=2026-09-29T00:00:00Z&publishedTo=2026-10-02T00:00:00Z&stages=tender&limit=100",
+ "version": "1.1",
+ "extensions": [
+  "https://standard.open-contracting.org/profiles/eu/master/en/extension.json",
+  "https://raw.githubusercontent.com/portaledcahn/ocds_tenderDatePublished_extension/master/extension.json",
+  "https://raw.githubusercontent.com/open-contracting-extensions/ocds_budget_breakdown_extension/master/extension.json",
+  "https://raw.githubusercontent.com/Crown-Commercial-Service/ocds_awards_datePublished_extension/main/extension.json",
+  "https://raw.githubusercontent.com/Crown-Commercial-Service/ocds_partyDetails_vcse_extension/main/extension.json",
+  "https://raw.githubusercontent.com/Crown-Commercial-Service/ocds_tender_suitability_extension/main/extension.json",
+  "https://raw.githubusercontent.com/open-contracting-extensions/ocds_pagination_extension/master/extension.json"
+ ],
+ "publishedDate": "2026-10-01T20:32:52+01:00",
+ "publisher": {
+  "name": "Cabinet Office",
+  "scheme": "GB-GOR",
+  "uid": "D2",
+  "uri": "https://www.gov.uk/government/organisations/cabinet-office"
+ },
+ "license": "http://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/",
+ "publicationPolicy": "https://www.gov.uk/government/publications/open-contracting",
+ "releases": [
+  {
+   "ocid": "ocds-b5fd17-ad2aa9a1-e9fd-4109-a88d-457080163247",
+   "id": "91ac2c18-297c-4746-a349-4c78d487a796-916299",
+   "language": "en",
+   "date": "2026-10-01T20:32:52+01:00",
+   "tag": [
+    "tender"
+   ],
+   "initiationType": "tender",
+   "tender": {
+    "id": "57615D87-0065-40FB-ACCE-E811CF6F650C",
+    "title": "Taxi and MPV (1-8 seats) Passenger Assistant - Taxi and MPV (1-8 seats) Passenger Assistant",
+    "description": "Vehicle type: 6 seater\r\nPassenger Assistant Required: Shared PA.\r\n\r\nProposed Taxi Route: \r\nFrom: BN27 2LX and BN27 1GU\r\nTo: Flagship School, TN34 2AE \r\n\r\nFrequency: Monday to Friday\r\nDaily School Time: Mon- Fri 08:50-114:30\r\n\r\nComments for Operator: Shared PA for both children.\r\n This opportunity has been distributed on SProc.net",
+    "datePublished": "2026-10-01T20:32:52+01:00",
+    "status": "active",
+    "classification": {
+     "scheme": "CPV",
+     "id": "60000000",
+     "description": "Transport services (excl. Waste transport)"
+    },
+    "items": [
+     {
+      "id": "1",
+      "deliveryAddresses": [
+       {
+        "countryName": "United Kingdom"
+       }
+      ]
+     }
+    ],
+    "procurementMethod": "selective",
+    "procurementMethodDetails": "Restricted procedure (above threshold)",
+    "tenderPeriod": {
+     "endDate": "2026-10-05T11:00:00+01:00"
+    },
+    "contractPeriod": {
+     "startDate": "2026-10-08T01:00:00+01:00",
+     "endDate": "2029-07-31T23:59:59+01:00"
+    },
+    "suitability": {
+     "sme": true,
+     "vcse": false
+    },
+    "mainProcurementCategory": "services",
+    "documents": [
+     {
+      "id": "1",
+      "documentType": "tenderNotice",
+      "description": "Opportunity notice on Contracts Finder",
+      "url": "https://www.contractsfinder.service.gov.uk/Notice/91ac2c18-297c-4746-a349-4c78d487a796",
+      "datePublished": "2026-10-01T20:32:52+01:00",
+      "format": "text/html",
+      "language": "en"
+     },
+     {
+      "id": "2",
+      "url": "https://www.sproc.net"
+     }
+    ]
+   },
+   "parties": [
+    {
+     "id": "GB-CFS-334419",
+     "name": "East Sussex County Council",
+     "identifier": {
+      "legalName": "East Sussex County Council"
+     },
+     "address": {
+      "streetAddress": "County Hall, St Anne's Crescent",
+      "locality": "Lewes",
+      "postalCode": "BN7 1UE",
+      "countryName": "United Kingdom"
+     },
+     "contactPoint": {
+      "name": "Contact (anonymised)",
+      "email": "anonymised@example.invalid"
+     },
+     "details": {
+      "url": "http://www.eastsussex.gov.uk"
+     },
+     "roles": [
+      "buyer"
+     ]
+    }
+   ],
+   "buyer": {
+    "id": "GB-CFS-334419",
+    "name": "East Sussex County Council"
+   }
+  },
+  {
+   "ocid": "ocds-b5fd17-4fbbe950-0878-4b90-ba4d-76d11b288f0d",
+   "id": "e40809d8-e69e-4485-b112-bbc4a9541c5e-916298",
+   "language": "en",
+   "date": "2026-10-01T20:28:51+01:00",
+   "tag": [
+    "tender"
+   ],
+   "initiationType": "tender",
+   "tender": {
+    "id": "7328CD4C-9D64-41AF-8395-1BBA7FA90982",
+    "title": "Taxi and MPV (1-8 seats) Passenger Assistant - Taxi and MPV (1-8 seats) Passenger Assistant",
+    "description": "Vehicle type: 8 seater\r\nPassenger Assistant Required: Shared PA.\r\n\r\nProposed Taxi Route: \r\nFrom: TN38 9UD, TN38 0DD and TN37 6EH\r\nTo: Flagship School, TN34 2AE \r\n\r\nFrequency: Monday to Friday\r\nDaily School Time: Mon- Fri 08:50-114:30\r\n\r\nComments for Operator: Shared PA for all children with space around.\r\n This opportunity has been distributed on SProc.net",
+    "datePublished": "2026-10-01T20:28:51+01:00",
+    "status": "active",
+    "classification": {
+     "scheme": "CPV",
+     "id": "60000000",
+     "description": "Transport services (excl. Waste transport)"
+    },
+    "items": [
+     {
+      "id": "1",
+      "deliveryAddresses": [
+       {
+        "countryName": "United Kingdom"
+       }
+      ]
+     }
+    ],
+    "procurementMethod": "selective",
+    "procurementMethodDetails": "Restricted procedure (above threshold)",
+    "tenderPeriod": {
+     "endDate": "2026-10-05T10:15:00+01:00"
+    },
+    "contractPeriod": {
+     "startDate": "2026-10-08T01:00:00+01:00",
+     "endDate": "2029-07-31T23:59:59+01:00"
+    },
+    "suitability": {
+     "sme": true,
+     "vcse": false
+    },
+    "mainProcurementCategory": "services",
+    "documents": [
+     {
+      "id": "1",
+      "documentType": "tenderNotice",
+      "description": "Opportunity notice on Contracts Finder",
+      "url": "https://www.contractsfinder.service.gov.uk/Notice/e40809d8-e69e-4485-b112-bbc4a9541c5e",
+      "datePublished": "2026-10-01T20:28:51+01:00",
+      "format": "text/html",
+      "language": "en"
+     },
+     {
+      "id": "2",
+      "url": "https://www.sproc.net"
+     }
+    ]
+   },
+   "parties": [
+    {
+     "id": "GB-CFS-334419",
+     "name": "East Sussex County Council",
+     "identifier": {
+      "legalName": "East Sussex County Council"
+     },
+     "address": {
+      "streetAddress": "County Hall, St Anne's Crescent",
+      "locality": "Lewes",
+      "postalCode": "BN7 1UE",
+      "countryName": "United Kingdom"
+     },
+     "contactPoint": {
+      "name": "Contact (anonymised)",
+      "email": "anonymised@example.invalid"
+     },
+     "details": {
+      "url": "http://www.eastsussex.gov.uk"
+     },
+     "roles": [
+      "buyer"
+     ]
+    }
+   ],
+   "buyer": {
+    "id": "GB-CFS-334419",
+    "name": "East Sussex County Council"
+   }
+  },
+  {
+   "ocid": "ocds-b5fd17-abbf35d1-9093-41e9-8a43-1e4babc2c895",
+   "id": "ab17cab9-1af7-4da1-8b38-b15d13c1bcf2-916297",
+   "language": "en",
+   "date": "2026-10-01T20:24:51+01:00",
+   "tag": [
+    "tender"
+   ],
+   "initiationType": "tender",
+   "tender": {
+    "id": "370F1767-B95C-4B2A-92A2-0E6537E6C035",
+    "title": "Taxi and MPV (1-8 seats) Passenger Assistant - Taxi and MPV (1-8 seats) Passenger Assistant",
+    "description": "Vehicle type: Saloon\r\nPassenger Assistant Required:  Yes\r\n\r\nProposed Taxi Route:\r\nFrom:  BN23 8EQ\r\nTo:   BN7 2XH\r\n\r\nFrequency: Monday and Wednesday only\r\nDaily School Time: 12:30 to 15:30 both days\r\n\r\n Comments: Social, Emotional & Mental Health (SEMH),   Autism Spectrum Disorder (ASD), Chron's disease, PICA\r\n This opportunity has been distributed on SProc.net",
+    "datePublished": "2026-10-01T20:24:51+01:00",
+    "status": "active",
+    "classification": {
+     "scheme": "CPV",
+     "id": "60000000",
+     "description": "Transport services (excl. Waste transport)"
+    },
+    "items": [
+     {
+      "id": "1",
+      "deliveryAddresses": [
+       {
+        "countryName": "United Kingdom"
+       }
+      ]
+     }
+    ],
+    "procurementMethod": "selective",
+    "procurementMethodDetails": "Restricted procedure (above threshold)",
+    "tenderPeriod": {
+     "endDate": "2026-10-05T10:00:00+01:00"
+    },
+    "contractPeriod": {
+     "startDate": "2026-10-07T01:00:00+01:00",
+     "endDate": "2029-07-31T23:59:59+01:00"
+    },
+    "suitability": {
+     "sme": true,
+     "vcse": false
+    },
+    "mainProcurementCategory": "services",
+    "documents": [
+     {
+      "id": "1",
+      "documentType": "tenderNotice",
+      "description": "Opportunity notice on Contracts Finder",
+      "url": "https://www.contractsfinder.service.gov.uk/Notice/ab17cab9-1af7-4da1-8b38-b15d13c1bcf2",
+      "datePublished": "2026-10-01T20:24:51+01:00",
+      "format": "text/html",
+      "language": "en"
+     },
+     {
+      "id": "2",
+      "url": "https://www.sproc.net"
+     }
+    ]
+   },
+   "parties": [
+    {
+     "id": "GB-CFS-334419",
+     "name": "East Sussex County Council",
+     "identifier": {
+      "legalName": "East Sussex County Council"
+     },
+     "address": {
+      "streetAddress": "County Hall, St Anne's Crescent",
+      "locality": "Lewes",
+      "postalCode": "BN7 1UE",
+      "countryName": "United Kingdom"
+     },
+     "contactPoint": {
+      "name": "Contact (anonymised)",
+      "email": "anonymised@example.invalid"
+     },
+     "details": {
+      "url": "http://www.eastsussex.gov.uk"
+     },
+     "roles": [
+      "buyer"
+     ]
+    }
+   ],
+   "buyer": {
+    "id": "GB-CFS-334419",
+    "name": "East Sussex County Council"
+   }
+  },
+  {
+   "ocid": "ocds-b5fd17-22c262e6-9f52-43d3-9054-6fec036fe46d",
+   "id": "cd451c25-8c25-46cb-9107-65eeb575e6f7-916296",
+   "language": "en",
+   "date": "2026-10-01T17:45:40+01:00",
+   "tag": [
+    "tenderAmendment"
+   ],
+   "initiationType": "tender",
+   "tender": {
+    "id": "Radford House - 07",
+    "title": "Radford House - Internal Refurbishment (Change of Use)",
+    "description": "Ramsgate Town Council will be appointing a contractor to undertake internal refurbishment and alteration works to at Radford House.\r\n\r\nThe works are located at the public facility in Ramsgate - previously the Old Fire Station, at 18-20 Effingham Street, Ramsgate, CT11 9AT. The internal works are part of a wider redevelopment of the site, which includes external alterations to the building, and temporary technicians accommodation (externals ongoing - internals to follow)\r\n\r\nThe refurbishment is required to undertake repairs, and implement change of use from former fire station to public facillity. \r\n\r\nThe contractor is to undertake refurbishment works as listed within the attached documents. All works shall be undertaken in accordance with the client's consultant's approval.\r\n\r\nThe works need to be undertaken by an experienced contractor that have the necessary skills and experience to undertake the works as required.\r\n\r\nThe contractor will need to demonstrate their experience as part of their tender return.",
+    "datePublished": "2026-09-09T17:55:42+01:00",
+    "status": "active",
+    "classification": {
+     "scheme": "CPV",
+     "id": "45000000",
+     "description": "Construction work"
+    },
+    "items": [
+     {
+      "id": "1",
+      "deliveryAddresses": [
+       {
+        "postalCode": "CT119AT"
+       }
+      ]
+     }
+    ],
+    "minValue": {
+     "amount": 350000,
+     "currency": "GBP"
+    },
+    "value": {
+     "amount": 500000,
+     "currency": "GBP"
+    },
+    "procurementMethod": "open",
+    "procurementMethodDetails": "Open procedure (above threshold)",
+    "tenderPeriod": {
+     "endDate": "2026-10-14T23:00:00+01:00"
+    },
+    "contractPeriod": {
+     "startDate": "2026-11-09T00:00:00Z",
+     "endDate": "2027-04-30T23:59:59+01:00"
+    },
+    "suitability": {
+     "sme": true,
+     "vcse": false
+    },
+    "mainProcurementCategory": "works",
+    "documents": [
+     {
+      "id": "1",
+      "documentType": "tenderNotice",
+      "description": "Opportunity notice on Contracts Finder",
+      "url": "https://www.contractsfinder.service.gov.uk/Notice/cd451c25-8c25-46cb-9107-65eeb575e6f7",
+      "datePublished": "2026-09-09T17:55:42+01:00",
+      "dateModified": "2026-10-01T17:45:40+01:00",
+      "format": "text/html",
+      "language": "en"
+     },
+     {
+      "id": "4",
+      "documentType": "biddingDocuments",
+      "url": "https://www.contractsfinder.service.gov.uk/Notice/Attachment/482e9310-646c-4614-b424-a39d21be72f8",
+      "format": "application/pdf"
+     },
+     {
+      "id": "7",
+      "documentType": "submissionDocuments",
+      "url": "https://www.contractsfinder.service.gov.uk/Notice/Attachment/b558e5bc-1f1a-4c6c-a86a-da3d54c26bd9",
+      "format": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+     },
+     {
+      "id": "8",
+      "documentType": "submissionDocuments",
+      "url": "https://www.contractsfinder.service.gov.uk/Notice/Attachment/2ae361e1-d6cf-49b4-aeb6-9866d5663072",
+      "format": "application/zip"
+     }
+    ]
+   },
+   "parties": [
+    {
+     "id": "GB-SRS-supplierregistration.cabinetoffice.gov.uk/dFpd73Ha",
+     "name": "Ramsgate Town Council",
+     "identifier": {
+      "legalName": "Ramsgate Town Council",
+      "scheme": "GB-SRS",
+      "id": "supplierregistration.cabinetoffice.gov.uk/dFpd73Ha"
+     },
+     "address": {
+      "streetAddress": "CUSTOMS HOUSE",
+      "locality": "RAMSGATE",
+      "postalCode": "CT118LP",
+      "countryName": "England"
+     },
+     "contactPoint": {
+      "name": "Contact (anonymised)",
+      "email": "anonymised@example.invalid"
+     },
+     "roles": [
+      "buyer"
+     ]
+    }
+   ],
+   "buyer": {
+    "id": "GB-SRS-supplierregistration.cabinetoffice.gov.uk/dFpd73Ha",
+    "name": "Ramsgate Town Council"
+   }
+  },
+  {
+   "ocid": "ocds-b5fd17-5a9ec7f8-a2f8-455f-9c1f-3d7a6dd4ddb9",
+   "id": "12f64315-e80b-4070-8d3f-08816bd8e838-916280",
+   "language": "en",
+   "date": "2026-10-01T15:49:55+01:00",
+   "tag": [
+    "tender"
+   ],
+   "initiationType": "tender",
+   "tender": {
+    "id": "Repair Works to Heritage Site",
+    "title": "Repair Works to Heritage Site - Ellesmere Yard",
+    "description": "The project involves the refurbishment and repair of several historic buildings within Ellesmere Yard, together with construction of new facilities and extensive public realm improvements. \r\n\r\nThe Trust are looking for a full turnkey solution, the works involve, roofing, joinery, internal fit outs, landscaping, new build workshop & M&E.\r\n\r\nRefer to attached brief summary which includes procurement restrictions/requirements",
+    "datePublished": "2026-10-01T15:49:55+01:00",
+    "status": "active",
+    "classification": {
+     "scheme": "CPV",
+     "id": "45212350",
+     "description": "Buildings of particular historical or architectural interest"
+    },
+    "items": [
+     {
+      "id": "1",
+      "deliveryAddresses": [
+       {
+        "postalCode": "SY12 9AA"
+       }
+      ]
+     }
+    ],
+    "minValue": {
+     "amount": 3000000,
+     "currency": "GBP"
+    },
+    "value": {
+     "amount": 4000000,
+     "currency": "GBP"
+    },
+    "procurementMethod": "limited",
+    "procurementMethodDetails": "Negotiated procedure without prior publication (above threshold)",
+    "tenderPeriod": {
+     "endDate": "2026-10-16T17:00:00+01:00"
+    },
+    "contractPeriod": {
+     "startDate": "2027-06-01T00:00:00+01:00",
+     "endDate": "2030-05-30T23:59:59+01:00"
+    },
+    "suitability": {
+     "sme": true,
+     "vcse": false
+    },
+    "mainProcurementCategory": "works",
+    "documents": [
+     {
+      "id": "1",
+      "documentType": "tenderNotice",
+      "description": "Opportunity notice on Contracts Finder",
+      "url": "https://www.contractsfinder.service.gov.uk/Notice/12f64315-e80b-4070-8d3f-08816bd8e838",
+      "datePublished": "2026-10-01T15:49:55+01:00",
+      "format": "text/html",
+      "language": "en"
+     },
+     {
+      "id": "2",
+      "documentType": "technicalSpecifications",
+      "description": "Brief summary of requirements",
+      "url": "https://www.contractsfinder.service.gov.uk/Notice/Attachment/99bc3138-5129-4d9b-8d0a-d6b2334d53e9",
+      "format": "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+     }
+    ]
+   },
+   "parties": [
+    {
+     "id": "GB-SRS-sid4gov.cabinetoffice.gov.uk/ZADM3fyN",
+     "name": "Canal & River Trust",
+     "identifier": {
+      "legalName": "Canal & River Trust",
+      "scheme": "GB-SRS",
+      "id": "sid4gov.cabinetoffice.gov.uk/ZADM3fyN"
+     },
+     "address": {
+      "streetAddress": "500 Elder Gate",
+      "locality": "MILTON KEYNES",
+      "postalCode": "MK91BB",
+      "countryName": "England"
+     },
+     "contactPoint": {
+      "name": "Contact (anonymised)",
+      "email": "anonymised@example.invalid"
+     },
+     "roles": [
+      "buyer"
+     ]
+    }
+   ],
+   "buyer": {
+    "id": "GB-SRS-sid4gov.cabinetoffice.gov.uk/ZADM3fyN",
+    "name": "Canal & River Trust"
+   }
+  },
+  {
+   "ocid": "ocds-b5fd17-f79c0dd3-9eb9-45c9-93e3-cdc9f700c2d9",
+   "id": "61bb3edd-7604-41d4-8f58-db6d43e1069d-916256",
+   "language": "en",
+   "date": "2026-10-01T14:30:24+01:00",
+   "tag": [
+    "tender"
+   ],
+   "initiationType": "tender",
+   "tender": {
+    "id": "6f470fd8-0a4a-4f65-af95-d0df6cd711e7",
+    "title": "CA18515 - RFQ 2026/38 - NMANDD PEACEPLUS \"Thriving Together\" - Shared History & Culture Program - Hanna's Close",
+    "description": "Competent consultancy companies are hereby invited to tender to design, develop and deliver a shared history and culture programme that will increase participants' knowledge and understanding of individual, family and collective history through the exploration of Hanna's Close, a preserved Ulster-Scots clachan (settlement) in Aughnahoory, Kilkeel. The programme will place a particular emphasis on genealogy; tracing family connections linked to Hanna's Close and examining patterns of emigration from the settlement. Participants will explore how generations of local families established new lives across the world and consider the social, economic and cultural impact these individuals and their descendants have had on communities both locally and internationally.\r\n\r\nTo access this competition: \r\n\r\nRegistered:\r\nLogin to https://suppliers.multiquote.com and view the opportunity CA18515.\r\n\r\nNot registered:\r\nVisit https://suppliers.multiquote.com then register and quote CA18515 as the reason for registration. \r\n\r\n Any queries please contact MultiQuote on [phone removed].",
+    "datePublished": "2026-10-01T14:30:24+01:00",
+    "status": "active",
+    "classification": {
+     "scheme": "CPV",
+     "id": "98000000",
+     "description": "Other community, social and personal services"
+    },
+    "additionalClassifications": [
+     {
+      "scheme": "CPV",
+      "id": "80000000",
+      "description": "Education and training services"
+     },
+     {
+      "scheme": "CPV",
+      "id": "92000000",
+      "description": "Recreational, cultural and sporting services"
+     }
+    ],
+    "items": [
+     {
+      "id": "1",
+      "deliveryAddresses": [
+       {
+        "postalCode": "BT34 2QU"
+       },
+       {
+        "countryName": "British Oversea Territories"
+       },
+       {
+        "countryName": "Channel Islands"
+       },
+       {
+        "countryName": "Europe"
+       },
+       {
+        "countryName": "Isle of Man"
+       },
+       {
+        "countryName": "Rest of the World"
+       },
+       {
+        "countryName": "United Kingdom"
+       }
+      ]
+     }
+    ],
+    "value": {
+     "amount": 8099,
+     "currency": "GBP"
+    },
+    "procurementMethod": "open",
+    "procurementMethodDetails": "Open procedure",
+    "tenderPeriod": {
+     "endDate": "2026-10-29T12:00:00Z"
+    },
+    "contractPeriod": {
+     "startDate": "2026-11-16T00:00:00Z",
+     "endDate": "2027-06-30T23:59:59+01:00"
+    },
+    "suitability": {
+     "sme": true,
+     "vcse": false
+    },
+    "mainProcurementCategory": "services",
+    "documents": [
+     {
+      "id": "1",
+      "documentType": "tenderNotice",
+      "description": "Opportunity notice on Contracts Finder",
+      "url": "https://www.contractsfinder.service.gov.uk/Notice/61bb3edd-7604-41d4-8f58-db6d43e1069d",
+      "datePublished": "2026-10-01T14:30:24+01:00",
+      "format": "text/html",
+      "language": "en"
+     }
+    ]
+   },
+   "parties": [
+    {
+     "id": "GB-CFS-333373",
+     "name": "Newry, Mourne and Down District Council (NMD)",
+     "identifier": {
+      "legalName": "Newry, Mourne and Down District Council (NMD)"
+     },
+     "address": {
+      "streetAddress": "Unit 19 Rampart Road, Greenbank Industrial Estate",
+      "locality": "Newry",
+      "postalCode": "BT34 2QU",
+      "countryName": "England"
+     },
+     "contactPoint": {
+      "name": "Contact (anonymised)",
+      "email": "anonymised@example.invalid"
+     },
+     "details": {
+      "url": "https://suppliers.multiquote.com"
+     },
+     "roles": [
+      "buyer"
+     ]
+    }
+   ],
+   "buyer": {
+    "id": "GB-CFS-333373",
+    "name": "Newry, Mourne and Down District Council (NMD)"
+   }
+  },
+  {
+   "ocid": "ocds-b5fd17-d8f8c702-7a71-4bb6-b5d0-0e37dd5f290b",
+   "id": "b9747333-1b24-4edc-ab1b-297c93d2b1aa-916202",
+   "language": "en",
+   "date": "2026-10-01T13:01:59+01:00",
+   "tag": [
+    "tender"
+   ],
+   "initiationType": "tender",
+   "tender": {
+    "id": "DVNCC001-DN831223-35766016",
+    "title": "CP2825-26b Wheelchair Accessible Buses",
+    "description": "Purchase of 6 wheelchair accessible buses",
+    "datePublished": "2026-10-01T13:01:59+01:00",
+    "status": "active",
+    "classification": {
+     "scheme": "CPV",
+     "id": "34114000",
+     "description": "Specialist vehicles"
+    },
+    "items": [
+     {
+      "id": "1",
+      "deliveryAddresses": [
+       {
+        "region": "England",
+        "countryName": "United Kingdom"
+       }
+      ]
+     }
+    ],
+    "value": {
+     "amount": 468234,
+     "currency": "GBP"
+    },
+    "procurementMethodDetails": "Other - ",
+    "tenderPeriod": {
+     "endDate": "2026-10-01T13:25:00+01:00"
+    },
+    "contractPeriod": {
+     "startDate": "2026-10-06T00:00:00+01:00",
+     "endDate": "2027-03-01T23:59:59Z"
+    },
+    "suitability": {
+     "sme": true,
+     "vcse": false
+    },
+    "mainProcurementCategory": "goods",
+    "documents": [
+     {
+      "id": "1",
+      "documentType": "tenderNotice",
+      "description": "Opportunity notice on Contracts Finder",
+      "url": "https://www.contractsfinder.service.gov.uk/Notice/b9747333-1b24-4edc-ab1b-297c93d2b1aa",
+      "datePublished": "2026-10-01T13:01:59+01:00",
+      "format": "text/html",
+      "language": "en"
+     }
+    ]
+   },
+   "parties": [
+    {
+     "id": "GB-CFS-49287",
+     "name": "Devon County Council",
+     "identifier": {
+      "legalName": "Devon County Council"
+     },
+     "address": {
+      "streetAddress": "County Hall, Topsham Road",
+      "locality": "Exeter",
+      "postalCode": "EX2 4QD",
+      "countryName": "England"
+     },
+     "contactPoint": {
+      "name": "Contact (anonymised)",
+      "email": "anonymised@example.invalid"
+     },
+     "details": {
+      "url": "https://www.devon.gov.uk"
+     },
+     "roles": [
+      "buyer"
+     ]
+    }
+   ],
+   "buyer": {
+    "id": "GB-CFS-49287",
+    "name": "Devon County Council"
+   }
+  },
+  {
+   "ocid": "ocds-b5fd17-b09fdf45-800d-4f98-b1ad-82687ce146c3",
+   "id": "afaeb174-0015-4426-abcb-a3133c4cfd46-916170",
+   "language": "en",
+   "date": "2026-10-01T11:55:50+01:00",
+   "tag": [
+    "tender"
+   ],
+   "initiationType": "tender",
+   "tender": {
+    "id": "WIRLC001-DN814242-93906547",
+    "title": "ACORN GEODEMOGRAPHICS TOOL",
+    "description": "ACORN GEODEMOGRAPHICS TOOL",
+    "status": "active",
+    "classification": {
+     "scheme": "CPV",
+     "id": "72000000",
+     "description": "IT services: consulting, software development, Internet and support"
+    },
+    "items": [
+     {
+      "id": "1",
+      "deliveryAddresses": [
+       {
+        "region": "North East",
+        "countryName": "United Kingdom"
+       },
+       {
+        "region": "North West",
+        "countryName": "United Kingdom"
+       },
+       {
+        "region": "Yorkshire and the Humber",
+        "countryName": "United Kingdom"
+       },
+       {
+        "region": "East Midlands",
+        "countryName": "United Kingdom"
+       },
+       {
+        "region": "West Midlands",
+        "countryName": "United Kingdom"
+       },
+       {
+        "region": "East of England",
+        "countryName": "United Kingdom"
+       },
+       {
+        "region": "London",
+        "countryName": "United Kingdom"
+       },
+       {
+        "region": "South East",
+        "countryName": "United Kingdom"
+       },
+       {
+        "region": "South West",
+        "countryName": "United Kingdom"
+       }
+      ]
+     }
+    ],
+    "value": {
+     "amount": 77217,
+     "currency": "GBP"
+    },
+    "procurementMethodDetails": "Other - ",
+    "tenderPeriod": {
+     "endDate": "2026-09-25T12:00:00+01:00"
+    },
+    "contractPeriod": {
+     "startDate": "2027-01-26T00:00:00Z",
+     "endDate": "2030-01-25T23:59:59Z"
+    },
+    "suitability": {
+     "sme": false,
+     "vcse": false
+    },
+    "mainProcurementCategory": "goods",
+    "documents": [
+     {
+      "id": "1",
+      "documentType": "tenderNotice",
+      "description": "Opportunity notice on Contracts Finder",
+      "url": "https://www.contractsfinder.service.gov.uk/Notice/afaeb174-0015-4426-abcb-a3133c4cfd46",
+      "datePublished": "2026-10-01T08:53:51+01:00",
+      "dateModified": "2026-10-01T11:55:50+01:00",
+      "format": "text/html",
+      "language": "en"
+     }
+    ]
+   },
+   "parties": [
+    {
+     "id": "GB-CFS-283655",
+     "name": "Wirral Borough Council",
+     "identifier": {
+      "legalName": "Wirral Borough Council"
+     },
+     "address": {
+      "streetAddress": "Mallory Building, 2 Alice Kerr Square",
+      "locality": "Birkenhead",
+      "postalCode": "CH41 2AB",
+      "countryName": "England"
+     },
+     "contactPoint": {
+      "name": "Contact (anonymised)",
+      "email": "anonymised@example.invalid"
+     },
+     "details": {
+      "url": "http://www.wirral.gov.uk/"
+     },
+     "roles": [
+      "buyer"
+     ]
+    }
+   ],
+   "buyer": {
+    "id": "GB-CFS-283655",
+    "name": "Wirral Borough Council"
+   }
+  },
+  {
+   "ocid": "ocds-b5fd17-e069e9c0-f569-4d01-b215-2df11bd03b37",
+   "id": "6b5c21b2-b019-4ac6-9681-bafc5ccfb3c2-916120",
+   "language": "en",
+   "date": "2026-10-01T09:36:58+01:00",
+   "tag": [
+    "tender"
+   ],
+   "initiationType": "tender",
+   "tender": {
+    "id": "LBSUT001-DN826363-17434231",
+    "title": "Finance, HR and Corporate Systems Discovery",
+    "description": "Awarded",
+    "datePublished": "2026-10-01T09:36:58+01:00",
+    "status": "active",
+    "classification": {
+     "scheme": "CPV",
+     "id": "72221000",
+     "description": "Business analysis consultancy services"
+    },
+    "additionalClassifications": [
+     {
+      "scheme": "CPV",
+      "id": "72224000",
+      "description": "Project management consultancy services"
+     },
+     {
+      "scheme": "CPV",
+      "id": "72227000",
+      "description": "Software integration consultancy services"
+     },
+     {
+      "scheme": "CPV",
+      "id": "72226000",
+      "description": "System software acceptance testing consultancy services"
+     }
+    ],
+    "items": [
+     {
+      "id": "1",
+      "deliveryAddresses": [
+       {
+        "region": "England",
+        "countryName": "United Kingdom"
+       }
+      ]
+     }
+    ],
+    "value": {
+     "amount": 50000,
+     "currency": "GBP"
+    },
+    "procurementMethodDetails": "Other - ",
+    "tenderPeriod": {
+     "endDate": "2026-10-01T23:59:00+01:00"
+    },
+    "contractPeriod": {
+     "startDate": "2026-10-12T00:00:00+01:00",
+     "endDate": "2027-10-11T23:59:59+01:00"
+    },
+    "suitability": {
+     "sme": false,
+     "vcse": false
+    },
+    "mainProcurementCategory": "services",
+    "documents": [
+     {
+      "id": "1",
+      "documentType": "tenderNotice",
+      "description": "Opportunity notice on Contracts Finder",
+      "url": "https://www.contractsfinder.service.gov.uk/Notice/6b5c21b2-b019-4ac6-9681-bafc5ccfb3c2",
+      "datePublished": "2026-10-01T09:36:58+01:00",
+      "format": "text/html",
+      "language": "en"
+     }
+    ]
+   },
+   "parties": [
+    {
+     "id": "GB-CFS-49569",
+     "name": "London Borough of Sutton",
+     "identifier": {
+      "legalName": "London Borough of Sutton"
+     },
+     "address": {
+      "streetAddress": "Civic Offices, St Nicholas Way",
+      "locality": "Sutton",
+      "postalCode": "SM1 1EA",
+      "countryName": "United Kingdom"
+     },
+     "contactPoint": {
+      "name": "Contact (anonymised)",
+      "email": "anonymised@example.invalid"
+     },
+     "details": {
+      "url": "http://www.sutton.gov.uk/"
+     },
+     "roles": [
+      "buyer"
+     ]
+    }
+   ],
+   "buyer": {
+    "id": "GB-CFS-49569",
+    "name": "London Borough of Sutton"
+   }
+  },
+  {
+   "ocid": "ocds-b5fd17-b52efa2b-a940-4304-a4b2-9b83003e7313",
+   "id": "1c2bcadf-423b-4a5e-8f37-8e6a44f6de00-916095",
+   "language": "en",
+   "date": "2026-10-01T08:19:48+01:00",
+   "tag": [
+    "tender"
+   ],
+   "initiationType": "tender",
+   "tender": {
+    "id": "6A739074-484C-4D0D-8EB0-E8D8592A7322",
+    "title": "Arboricultural services - Tree works operations",
+    "description": "13680 EST Multi site x 14 to 25.09.26\r\nAd-hoc maintenance This opportunity has been distributed on adamprocure.co.uk",
+    "datePublished": "2026-10-01T08:19:48+01:00",
+    "status": "active",
+    "classification": {
+     "scheme": "CPV",
+     "id": "50000000",
+     "description": "Repair and maintenance services"
+    },
+    "items": [
+     {
+      "id": "1",
+      "deliveryAddresses": [
+       {
+        "countryName": "United Kingdom"
+       }
+      ]
+     }
+    ],
+    "procurementMethod": "selective",
+    "procurementMethodDetails": "Restricted procedure (above threshold)",
+    "tenderPeriod": {
+     "endDate": "2026-10-09T12:29:00+01:00"
+    },
+    "contractPeriod": {
+     "startDate": "2026-10-12T01:00:00+01:00",
+     "endDate": "2026-11-20T23:59:59Z"
+    },
+    "suitability": {
+     "sme": true,
+     "vcse": false
+    },
+    "mainProcurementCategory": "services",
+    "documents": [
+     {
+      "id": "1",
+      "documentType": "tenderNotice",
+      "description": "Opportunity notice on Contracts Finder",
+      "url": "https://www.contractsfinder.service.gov.uk/Notice/1c2bcadf-423b-4a5e-8f37-8e6a44f6de00",
+      "datePublished": "2026-10-01T08:19:48+01:00",
+      "format": "text/html",
+      "language": "en"
+     },
+     {
+      "id": "2",
+      "url": "https://www.adamprocure.co.uk"
+     }
+    ]
+   },
+   "parties": [
+    {
+     "id": "GB-CFS-178013",
+     "name": "London Borough Of Islington",
+     "identifier": {
+      "legalName": "London Borough Of Islington"
+     },
+     "address": {
+      "streetAddress": "1 cottage road, London",
+      "locality": "Islington",
+      "postalCode": "N7  8TP",
+      "countryName": "United Kingdom"
+     },
+     "contactPoint": {
+      "name": "Contact (anonymised)",
+      "email": "anonymised@example.invalid"
+     },
+     "details": {
+      "url": "https://www.islington.gov.uk/"
+     },
+     "roles": [
+      "buyer"
+     ]
+    }
+   ],
+   "buyer": {
+    "id": "GB-CFS-178013",
+    "name": "London Borough Of Islington"
+   }
+  },
+  {
+   "ocid": "ocds-b5fd17-00983290-593e-4cc5-a4e0-9faa9e384f31",
+   "id": "95e596ab-9aab-4d48-b574-c74fe81141b5-916094",
+   "language": "en",
+   "date": "2026-10-01T08:19:45+01:00",
+   "tag": [
+    "tender"
+   ],
+   "initiationType": "tender",
+   "tender": {
+    "id": "4B86A0FA-FF4B-444A-BCB3-F02FBD7E832C",
+    "title": "Arboricultural services - Tree works operations",
+    "description": "13660 Manchester Mns\r\nGeneral maintenance  This opportunity has been distributed on adamprocure.co.uk",
+    "datePublished": "2026-10-01T08:19:45+01:00",
+    "status": "active",
+    "classification": {
+     "scheme": "CPV",
+     "id": "50000000",
+     "description": "Repair and maintenance services"
+    },
+    "items": [
+     {
+      "id": "1",
+      "deliveryAddresses": [
+       {
+        "countryName": "United Kingdom"
+       }
+      ]
+     }
+    ],
+    "procurementMethod": "selective",
+    "procurementMethodDetails": "Restricted procedure (above threshold)",
+    "tenderPeriod": {
+     "endDate": "2026-10-09T12:14:00+01:00"
+    },
+    "contractPeriod": {
+     "startDate": "2026-10-12T01:00:00+01:00",
+     "endDate": "2026-11-20T23:59:59Z"
+    },
+    "suitability": {
+     "sme": true,
+     "vcse": false
+    },
+    "mainProcurementCategory": "services",
+    "documents": [
+     {
+      "id": "1",
+      "documentType": "tenderNotice",
+      "description": "Opportunity notice on Contracts Finder",
+      "url": "https://www.contractsfinder.service.gov.uk/Notice/95e596ab-9aab-4d48-b574-c74fe81141b5",
+      "datePublished": "2026-10-01T08:19:45+01:00",
+      "format": "text/html",
+      "language": "en"
+     },
+     {
+      "id": "2",
+      "url": "https://www.adamprocure.co.uk"
+     }
+    ]
+   },
+   "parties": [
+    {
+     "id": "GB-CFS-178013",
+     "name": "London Borough Of Islington",
+     "identifier": {
+      "legalName": "London Borough Of Islington"
+     },
+     "address": {
+      "streetAddress": "1 cottage road, London",
+      "locality": "Islington",
+      "postalCode": "N7  8TP",
+      "countryName": "United Kingdom"
+     },
+     "contactPoint": {
+      "name": "Contact (anonymised)",
+      "email": "anonymised@example.invalid"
+     },
+     "details": {
+      "url": "https://www.islington.gov.uk/"
+     },
+     "roles": [
+      "buyer"
+     ]
+    }
+   ],
+   "buyer": {
+    "id": "GB-CFS-178013",
+    "name": "London Borough Of Islington"
+   }
+  },
+  {
+   "ocid": "ocds-b5fd17-057d7830-e222-4563-b5f7-a5a6797e780d",
+   "id": "470b4da0-d0d5-4aab-a53b-f5ceb7575193-916048",
+   "language": "en",
+   "date": "2026-09-30T15:10:12+01:00",
+   "tag": [
+    "tender"
+   ],
+   "initiationType": "tender",
+   "tender": {
+    "id": "C4N120091192",
+    "title": "Manchester International Airport - OLE Phase 3 Works",
+    "description": "The planned introduction of longer train services to the Airport in response to future demand growth will mean that double stacking arrangements of trains as currently used will no longer be viable. Through the project's Delivery Steering Group, Northern and TransPennine Express have carried out analysis which has identified that additional platform capacity is needed at the airport in order to realise the full benefit of longer train services serving the airport.\r\n      \r\n      The scheme is part of a package of proposed measures in the Manchester area that are being designed/planned to boost capacity and resilience, emanating from the Cross Manchester Capacity and Reliability Improvement Study. Improving the operation of train services in the centre of Manchester and providing further capacity at Manchester Airport station, aligns with the strategic aims of Network Rail, TfGM, TfN and the wider industry.  This project in in Tranche 1 of the Manchester and North West Transformation Programme (MNTP):\r\n       \r\n      A remodelling of the station at Manchester Airport, specifically a platform addition or extension of multiple platforms, or provision of a new turnback facility, will be essential to accommodate the planned implementation of longer rolling stock services.\r\n           \r\n      The redevelopment of these platforms will enable permissive working of two 6x24m (144m) trains, in two of the four platforms at the Airport Station. This will allow for the unaltered retention of all existing TOC services both originating and terminating at the Airport Station under 'double-stacking' conditions.\r\n      \r\n      The scope areas for this package are as follows:\r\n      - OLE Specialist Works for Manchester Airport Station Remodelling",
+    "datePublished": "2026-09-30T15:10:12+01:00",
+    "status": "active",
+    "classification": {
+     "scheme": "CPV",
+     "id": "45234116",
+     "description": "Track construction works"
+    },
+    "additionalClassifications": [
+     {
+      "scheme": "CPV",
+      "id": "45232210",
+      "description": "Overhead line construction"
+     },
+     {
+      "scheme": "CPV",
+      "id": "45234000",
+      "description": "Construction work for railways and cable transport systems"
+     }
+    ],
+    "items": [
+     {
+      "id": "1",
+      "deliveryAddresses": [
+       {
+        "region": "North West",
+        "countryName": "United Kingdom"
+       },
+       {
+        "countryName": "British Oversea Territories"
+       },
+       {
+        "countryName": "Channel Islands"
+       },
+       {
+        "countryName": "Europe"
+       },
+       {
+        "countryName": "Isle of Man"
+       },
+       {
+        "countryName": "Rest of the World"
+       },
+       {
+        "countryName": "United Kingdom"
+       }
+      ]
+     }
+    ],
+    "minValue": {
+     "amount": 1000000,
+     "currency": "GBP"
+    },
+    "value": {
+     "amount": 2500000,
+     "currency": "GBP"
+    },
+    "procurementMethodDetails": "",
+    "tenderPeriod": {
+     "endDate": "2026-10-09T17:00:00+01:00"
+    },
+    "contractPeriod": {
+     "startDate": "2027-03-27T00:00:00Z",
+     "endDate": "2028-04-01T23:59:59+01:00"
+    },
+    "suitability": {
+     "sme": true,
+     "vcse": false
+    },
+    "mainProcurementCategory": "works",
+    "documents": [
+     {
+      "id": "1",
+      "documentType": "tenderNotice",
+      "description": "Opportunity notice on Contracts Finder",
+      "url": "https://www.contractsfinder.service.gov.uk/Notice/470b4da0-d0d5-4aab-a53b-f5ceb7575193",
+      "datePublished": "2026-09-30T15:10:12+01:00",
+      "format": "text/html",
+      "language": "en"
+     },
+     {
+      "id": "2",
+      "documentType": "tenderNotice",
+      "description": "Please follow this link to view the notice.",
+      "url": "https://www.competefor.co.uk/business/viewOpportunityDetailsSupplier.html?id=120091205"
+     }
+    ]
+   },
+   "parties": [
+    {
+     "id": "GB-CFS-294297",
+     "name": "Kier Transportation - CP7 NWC",
+     "identifier": {
+      "legalName": "Kier Transportation - CP7 NWC"
+     },
+     "address": {
+      "streetAddress": "2nd Floor Optimum House",
+      "locality": "Clippers Quay",
+      "postalCode": "M503XP",
+      "countryName": "UK"
+     },
+     "contactPoint": {
+      "name": "Contact (anonymised)",
+      "email": "anonymised@example.invalid"
+     },
+     "roles": [
+      "buyer"
+     ]
+    }
+   ],
+   "buyer": {
+    "id": "GB-CFS-294297",
+    "name": "Kier Transportation - CP7 NWC"
+   }
+  },
+  {
+   "ocid": "ocds-b5fd17-20900e61-d608-40ed-adea-031baf8c6675",
+   "id": "a6c1f4e3-982a-43d7-aa2e-9130658973e2-916042",
+   "language": "en",
+   "date": "2026-09-30T14:53:18+01:00",
+   "tag": [
+    "tender"
+   ],
+   "initiationType": "tender",
+   "tender": {
+    "id": "MRTN001-DN826866-15996654",
+    "title": "Graffiti removal",
+    "description": "The contract includes cyclical and reactive removal services, rapid response for offensive graffiti and structured performance management arrangements including SLAs and KPIs.",
+    "datePublished": "2026-09-30T14:53:18+01:00",
+    "status": "active",
+    "classification": {
+     "scheme": "CPV",
+     "id": "90690000",
+     "description": "Graffiti removal services"
+    },
+    "items": [
+     {
+      "id": "1",
+      "deliveryAddresses": [
+       {
+        "region": "London",
+        "countryName": "United Kingdom"
+       }
+      ]
+     }
+    ],
+    "procurementMethod": "open",
+    "procurementMethodDetails": "Open procedure (above threshold)",
+    "tenderPeriod": {
+     "endDate": "2026-11-05T12:00:00Z"
+    },
+    "contractPeriod": {
+     "startDate": "2027-04-28T00:00:00+01:00",
+     "endDate": "2029-04-27T23:59:59+01:00"
+    },
+    "suitability": {
+     "sme": true,
+     "vcse": true
+    },
+    "mainProcurementCategory": "services",
+    "documents": [
+     {
+      "id": "1",
+      "documentType": "tenderNotice",
+      "description": "Opportunity notice on Contracts Finder",
+      "url": "https://www.contractsfinder.service.gov.uk/Notice/a6c1f4e3-982a-43d7-aa2e-9130658973e2",
+      "datePublished": "2026-09-30T14:53:18+01:00",
+      "format": "text/html",
+      "language": "en"
+     }
+    ]
+   },
+   "parties": [
+    {
+     "id": "GB-CFS-18525",
+     "name": "London Borough of Merton",
+     "identifier": {
+      "legalName": "London Borough of Merton"
+     },
+     "address": {
+      "streetAddress": "Civic Centre, London Rd",
+      "locality": "Morden",
+      "postalCode": "SM4 5DX",
+      "countryName": "England"
+     },
+     "contactPoint": {
+      "name": "Contact (anonymised)",
+      "email": "anonymised@example.invalid"
+     },
+     "details": {
+      "url": "http://www.merton.gov.uk/"
+     },
+     "roles": [
+      "buyer"
+     ]
+    }
+   ],
+   "buyer": {
+    "id": "GB-CFS-18525",
+    "name": "London Borough of Merton"
+   }
+  },
+  {
+   "ocid": "ocds-b5fd17-596600fb-5d53-4d2c-b149-4c178f4596b6",
+   "id": "4067df44-204c-433b-89bf-e6dfb4a00bfd-916040",
+   "language": "en",
+   "date": "2026-09-30T14:53:00+01:00",
+   "tag": [
+    "tender"
+   ],
+   "initiationType": "tender",
+   "tender": {
+    "id": "RA360604",
+    "title": "RA360604 - Purchase of Melex N20",
+    "description": "Betsi Cadwaladr University Health Board requires one electric response vehicle to support the operation of the helipad at Ysbyty Gwynedd.\r\n\r\nThe vehicle will transport clinicians, equipment and patients between the helipad and the hospital/road access. It must be suitable for use with a range of existing stretchers and patient platforms.\r\n - Must be delivered no later than 31st January 2027. - To access this competition: login to https://suppliers.multiquote.com and view the opportunity RA360604. Not registered on MultiQuote - visit https://suppliers.multiquote.com then register and quote RA360604 as the reason for registration. Any queries please contact MultiQuote on [phone removed].",
+    "datePublished": "2026-09-30T14:53:00+01:00",
+    "status": "active",
+    "classification": {
+     "scheme": "CPV",
+     "id": "34000000",
+     "description": "Transport equipment and auxiliary products to transportation"
+    },
+    "items": [
+     {
+      "id": "1",
+      "deliveryAddresses": [
+       {
+        "postalCode": "LL17 0JL"
+       },
+       {
+        "countryName": "British Oversea Territories"
+       },
+       {
+        "countryName": "Channel Islands"
+       },
+       {
+        "countryName": "Europe"
+       },
+       {
+        "countryName": "Isle of Man"
+       },
+       {
+        "countryName": "Rest of the World"
+       },
+       {
+        "countryName": "United Kingdom"
+       }
+      ]
+     }
+    ],
+    "procurementMethod": "open",
+    "procurementMethodDetails": "Open procedure",
+    "tenderPeriod": {
+     "endDate": "2026-10-06T12:00:00+01:00"
+    },
+    "contractPeriod": {
+     "startDate": "2026-10-07T12:00:00+01:00",
+     "endDate": "2027-01-31T23:59:59Z"
+    },
+    "suitability": {
+     "sme": true,
+     "vcse": false
+    },
+    "mainProcurementCategory": "goods",
+    "documents": [
+     {
+      "id": "1",
+      "documentType": "tenderNotice",
+      "description": "Opportunity notice on Contracts Finder",
+      "url": "https://www.contractsfinder.service.gov.uk/Notice/4067df44-204c-433b-89bf-e6dfb4a00bfd",
+      "datePublished": "2026-09-30T14:53:00+01:00",
+      "format": "text/html",
+      "language": "en"
+     }
+    ]
+   },
+   "parties": [
+    {
+     "id": "GB-CFS-64498",
+     "name": "Betsi Cadwaladr University Health Board",
+     "identifier": {
+      "legalName": "Betsi Cadwaladr University Health Board"
+     },
+     "address": {
+      "streetAddress": "Alder House, Alder Court",
+      "locality": "St Asaph",
+      "postalCode": "LL17 0JL",
+      "countryName": "England"
+     },
+     "contactPoint": {
+      "name": "Contact (anonymised)",
+      "email": "anonymised@example.invalid"
+     },
+     "details": {
+      "url": "https://suppliers.multiquote.com"
+     },
+     "roles": [
+      "buyer"
+     ]
+    }
+   ],
+   "buyer": {
+    "id": "GB-CFS-64498",
+    "name": "Betsi Cadwaladr University Health Board"
+   }
+  },
+  {
+   "ocid": "ocds-b5fd17-ca55f98c-34ef-4cbe-b8cc-df90f65c491b",
+   "id": "9c6f4687-4df9-405d-be58-e4d18b1fcf2d-916022",
+   "language": "en",
+   "date": "2026-09-30T09:20:14+01:00",
+   "tag": [
+    "tenderAmendment"
+   ],
+   "initiationType": "tender",
+   "tender": {
+    "id": "PFRU2-2025-779.6",
+    "title": "Procurement of Solar Power Systems",
+    "description": "Partnership Fund for a Resilient Ukraine Phase 2 (PFRU-2) is a multi-year, multi-donor-funded programme managed by the UK's Foreign, Commonwealth and Development Office.\r\nAs part of its project activities, PFRU-2 is seeking an organization to supply the Solar Power Systems.\r\n\r\nPlease note the following important tender provisions:\r\n•\tthe deadline for submitting proposals is October 15, 2026, at 15:00 Kyiv time;\r\n•\tall questions regarding the tender conditions must be submitted no later than October 09, 2026, at 18:00 Kyiv time;\r\n•\tPrice proposals must be submitted either in Ukrainian or English;\r\n•\tAll tender-related communication must be conducted exclusively in writing via email at anonymised@example.invalid;\r\n•\tThe PFRU-2 project is exempt from taxes, fees, and VAT in the partner country. Therefore, PFRU-2 will make payments for services excluding VAT;\r\n•\tEmail for submitting proposals: anonymised@example.invalid;\r\n•\tWhen sending proposals or inquiries via email, it is mandatory to include the tender number PFRU2-2025-779.6 in the email subject line.\r\n\r\nProposal Submission Instructions:\r\n\r\nITT_PFRU2-2025-779.6 - review the tender conditions;\r\nVolume 3_Terms of Reference - complete the document and sign the original scan/convert to PDF and sign electronically and submit the completed Excel file and the signed document as part of the proposal.\r\nAnnex 1 - complete either the English or Ukrainian version and sign the original and scan/convert to PDF and sign electronically and include it in the proposal submission.\r\n\r\nRegistration documents that follow the laws of your country must be part of the proposal.",
+    "datePublished": "2026-09-30T08:24:33+01:00",
+    "status": "active",
+    "classification": {
+     "scheme": "CPV",
+     "id": "09330000",
+     "description": "Solar energy"
+    },
+    "additionalClassifications": [
+     {
+      "scheme": "CPV",
+      "id": "31155000",
+      "description": "Inverters"
+     },
+     {
+      "scheme": "CPV",
+      "id": "31440000",
+      "description": "Batteries"
+     }
+    ],
+    "items": [
+     {
+      "id": "1",
+      "deliveryAddresses": [
+       {
+        "countryName": "Ukraine"
+       }
+      ]
+     }
+    ],
+    "value": {
+     "amount": 1,
+     "currency": "GBP"
+    },
+    "procurementMethod": "open",
+    "procurementMethodDetails": "Open procedure (above threshold)",
+    "tenderPeriod": {
+     "endDate": "2026-10-15T10:00:00+01:00"
+    },
+    "contractPeriod": {
+     "startDate": "2026-10-29T20:00:00Z",
+     "endDate": "2026-12-31T18:59:59Z"
+    },
+    "suitability": {
+     "sme": true,
+     "vcse": false
+    },
+    "mainProcurementCategory": "goods",
+    "documents": [
+     {
+      "id": "1",
+      "documentType": "tenderNotice",
+      "description": "Opportunity notice on Contracts Finder",
+      "url": "https://www.contractsfinder.service.gov.uk/Notice/9c6f4687-4df9-405d-be58-e4d18b1fcf2d",
+      "datePublished": "2026-09-30T08:24:33+01:00",
+      "dateModified": "2026-09-30T09:20:14+01:00",
+      "format": "text/html",
+      "language": "en"
+     },
+     {
+      "id": "2",
+      "documentType": "tenderNotice",
+      "url": "https://www.contractsfinder.service.gov.uk/Notice/Attachment/83eead40-7f6a-4075-8811-1c30d44ca654",
+      "format": "application/pdf"
+     },
+     {
+      "id": "3",
+      "documentType": "eligibilityCriteria",
+      "url": "https://www.contractsfinder.service.gov.uk/Notice/Attachment/8ba4637d-813c-4984-baf2-1f8f7f8418cd",
+      "format": "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+     },
+     {
+      "id": "4",
+      "documentType": "biddingDocuments",
+      "url": "https://www.contractsfinder.service.gov.uk/Notice/Attachment/c909b5ee-b213-4123-91d2-da7d18d559ac",
+      "format": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+     },
+     {
+      "id": "5",
+      "documentType": "procurementPlan",
+      "url": "https://www.contractsfinder.service.gov.uk/Notice/Attachment/5af44e15-014b-47c8-a703-b77b28e2378d",
+      "format": "application/zip"
+     }
+    ]
+   },
+   "relatedProcesses": [
+    {
+     "id": "1",
+     "relationship": [
+      "parent"
+     ]
+    }
+   ],
+   "parties": [
+    {
+     "id": "GB-SRS-sid4gov.cabinetoffice.gov.uk/kg2DT6UE",
+     "name": "Chemonics International, Inc.",
+     "identifier": {
+      "legalName": "Chemonics International, Inc.",
+      "scheme": "GB-SRS",
+      "id": "sid4gov.cabinetoffice.gov.uk/kg2DT6UE"
+     },
+     "address": {
+      "streetAddress": "Ukraine",
+      "locality": "Kyiv",
+      "postalCode": "EC1M 5QL",
+      "countryName": "England"
+     },
+     "contactPoint": {
+      "name": "Contact (anonymised)",
+      "email": "anonymised@example.invalid"
+     },
+     "roles": [
+      "buyer"
+     ]
+    }
+   ],
+   "buyer": {
+    "id": "GB-SRS-sid4gov.cabinetoffice.gov.uk/kg2DT6UE",
+    "name": "Chemonics International, Inc."
+   }
+  },
+  {
+   "ocid": "ocds-b5fd17-ca55f98c-34ef-4cbe-b8cc-df90f65c491b",
+   "id": "9c6f4687-4df9-405d-be58-e4d18b1fcf2d-916002",
+   "language": "en",
+   "date": "2026-09-30T08:24:33+01:00",
+   "tag": [
+    "tender"
+   ],
+   "initiationType": "tender",
+   "tender": {
+    "id": "PFRU2-2025-779.6",
+    "title": "Procurement of Solar Power Systems",
+    "description": "Partnership Fund for a Resilient Ukraine Phase 2 (PFRU-2) is a multi-year, multi-donor-funded programme managed by the UK's Foreign, Commonwealth and Development Office.\r\nAs part of its project activities, PFRU-2 is seeking an organization to supply the Solar Power Systems.\r\n\r\nPlease note the following important tender provisions:\r\n•\tthe deadline for submitting proposals is October 15, 2026, at 15:00 Kyiv time;\r\n•\tall questions regarding the tender conditions must be submitted no later than October 09, 2026, at 18:00 Kyiv time;\r\n•\tPrice proposals must be submitted either in Ukrainian or English;\r\n•\tAll tender-related communication must be conducted exclusively in writing via email at anonymised@example.invalid;\r\n•\tThe PFRU-2 project is exempt from taxes, fees, and VAT in the partner country. Therefore, PFRU-2 will make payments for services excluding VAT;\r\n•\tEmail for submitting proposals: anonymised@example.invalid;\r\n•\tWhen sending proposals or inquiries via email, it is mandatory to include the tender number PFRU2-2025-779.6 in the email subject line.\r\n\r\nProposal Submission Instructions:\r\n\r\nITT_PFRU2-2025-779.6 - review the tender conditions;\r\nVolume 3_Terms of Reference - complete the document and sign the original scan/convert to PDF and sign electronically and submit the completed Excel file and the signed document as part of the proposal.\r\nAnnex 1 - complete either the English or Ukrainian version and sign the original and scan/convert to PDF and sign electronically and include it in the proposal submission.\r\n\r\nRegistration documents that follow the laws of your country must be part of the proposal.",
+    "datePublished": "2026-09-30T08:24:33+01:00",
+    "status": "active",
+    "classification": {
+     "scheme": "CPV",
+     "id": "09330000",
+     "description": "Solar energy"
+    },
+    "additionalClassifications": [
+     {
+      "scheme": "CPV",
+      "id": "31155000",
+      "description": "Inverters"
+     },
+     {
+      "scheme": "CPV",
+      "id": "31434000",
+      "description": "Lithium accumulators"
+     },
+     {
+      "scheme": "CPV",
+      "id": "31440000",
+      "description": "Batteries"
+     }
+    ],
+    "items": [
+     {
+      "id": "1",
+      "deliveryAddresses": [
+       {
+        "countryName": "Ukraine"
+       }
+      ]
+     }
+    ],
+    "value": {
+     "amount": 1,
+     "currency": "GBP"
+    },
+    "procurementMethod": "open",
+    "procurementMethodDetails": "Open procedure (above threshold)",
+    "tenderPeriod": {
+     "endDate": "2026-10-15T10:00:00+01:00"
+    },
+    "contractPeriod": {
+     "startDate": "2026-10-29T20:00:00Z",
+     "endDate": "2026-12-31T18:59:59Z"
+    },
+    "suitability": {
+     "sme": true,
+     "vcse": false
+    },
+    "mainProcurementCategory": "goods",
+    "documents": [
+     {
+      "id": "1",
+      "documentType": "tenderNotice",
+      "description": "Opportunity notice on Contracts Finder",
+      "url": "https://www.contractsfinder.service.gov.uk/Notice/9c6f4687-4df9-405d-be58-e4d18b1fcf2d",
+      "datePublished": "2026-09-30T08:24:33+01:00",
+      "format": "text/html",
+      "language": "en"
+     },
+     {
+      "id": "2",
+      "documentType": "tenderNotice",
+      "url": "https://www.contractsfinder.service.gov.uk/Notice/Attachment/83eead40-7f6a-4075-8811-1c30d44ca654",
+      "format": "application/pdf"
+     },
+     {
+      "id": "3",
+      "documentType": "eligibilityCriteria",
+      "url": "https://www.contractsfinder.service.gov.uk/Notice/Attachment/8ba4637d-813c-4984-baf2-1f8f7f8418cd",
+      "format": "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+     },
+     {
+      "id": "4",
+      "documentType": "biddingDocuments",
+      "url": "https://www.contractsfinder.service.gov.uk/Notice/Attachment/c909b5ee-b213-4123-91d2-da7d18d559ac",
+      "format": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+     },
+     {
+      "id": "5",
+      "documentType": "procurementPlan",
+      "url": "https://www.contractsfinder.service.gov.uk/Notice/Attachment/5af44e15-014b-47c8-a703-b77b28e2378d",
+      "format": "application/zip"
+     }
+    ]
+   },
+   "relatedProcesses": [
+    {
+     "id": "1",
+     "relationship": [
+      "parent"
+     ]
+    }
+   ],
+   "parties": [
+    {
+     "id": "GB-SRS-sid4gov.cabinetoffice.gov.uk/kg2DT6UE",
+     "name": "Chemonics International, Inc.",
+     "identifier": {
+      "legalName": "Chemonics International, Inc.",
+      "scheme": "GB-SRS",
+      "id": "sid4gov.cabinetoffice.gov.uk/kg2DT6UE"
+     },
+     "address": {
+      "streetAddress": "Ukraine",
+      "locality": "Kyiv",
+      "postalCode": "EC1M 5QL",
+      "countryName": "England"
+     },
+     "contactPoint": {
+      "name": "Contact (anonymised)",
+      "email": "anonymised@example.invalid"
+     },
+     "roles": [
+      "buyer"
+     ]
+    }
+   ],
+   "buyer": {
+    "id": "GB-SRS-sid4gov.cabinetoffice.gov.uk/kg2DT6UE",
+    "name": "Chemonics International, Inc."
+   }
+  },
+  {
+   "ocid": "ocds-b5fd17-c4aa0a09-5b78-4344-8f54-7c3aaee3c32f",
+   "id": "89fd813e-e7d9-4f44-b8f9-0c98e015299c-915997",
+   "language": "en",
+   "date": "2026-09-30T12:48:22+01:00",
+   "tag": [
+    "tender"
+   ],
+   "initiationType": "tender",
+   "tender": {
+    "id": "e5f7b089-91ee-4598-a67d-18ff6084da0d",
+    "title": "CA18512 - Paradigm Trust - provision of Planned Preventative Maintenance",
+    "description": "Paradigm Trust - provision of Planned Preventative Maintenance\r\n\r\nParadigm Trust (the \"Authority\") is issuing this Invitation to Tender (\"ITT\") in connection with the competitive procurement of Planned Preventative Maintenance for all sites.\r\n\r\nLot 1 - London Schools\r\nLot 2 - Ipswich Academy and Schools\r\nLot 3 - Both Locations combined\r\n\r\n\r\nIncludes Lots: \r\nLot 1: London Schools\r\nLot 2: Ipswich Academy and Schools\r\nLot 3: Combined Area \r\n\r\nTo access this competition: \r\n\r\nRegistered:\r\nLogin to https://suppliers.multiquote.com and view the opportunity CA18512.\r\n\r\nNot registered:\r\nVisit https://suppliers.multiquote.com then register and quote CA18512 as the reason for registration. \r\n\r\n Any queries please contact MultiQuote on [phone removed].",
+    "datePublished": "2026-09-30T12:48:21+01:00",
+    "status": "active",
+    "classification": {
+     "scheme": "CPV",
+     "id": "50324200",
+     "description": "Preventive maintenance services"
+    },
+    "items": [
+     {
+      "id": "1",
+      "deliveryAddresses": [
+       {
+        "postalCode": "E14 0PT"
+       },
+       {
+        "countryName": "British Oversea Territories"
+       },
+       {
+        "countryName": "Channel Islands"
+       },
+       {
+        "countryName": "Europe"
+       },
+       {
+        "countryName": "Isle of Man"
+       },
+       {
+        "countryName": "Rest of the World"
+       },
+       {
+        "countryName": "United Kingdom"
+       }
+      ]
+     }
+    ],
+    "value": {
+     "amount": 1500000.01,
+     "currency": "GBP"
+    },
+    "procurementMethod": "open",
+    "procurementMethodDetails": "Open procedure",
+    "tenderPeriod": {
+     "endDate": "2026-11-07T12:00:00Z"
+    },
+    "contractPeriod": {
+     "startDate": "2027-04-01T00:00:00+01:00",
+     "endDate": "2030-03-31T23:59:59+01:00"
+    },
+    "suitability": {
+     "sme": true,
+     "vcse": false
+    },
+    "mainProcurementCategory": "services",
+    "documents": [
+     {
+      "id": "1",
+      "documentType": "tenderNotice",
+      "description": "Opportunity notice on Contracts Finder",
+      "url": "https://www.contractsfinder.service.gov.uk/Notice/89fd813e-e7d9-4f44-b8f9-0c98e015299c",
+      "datePublished": "2026-09-30T12:48:21+01:00",
+      "format": "text/html",
+      "language": "en"
+     }
+    ]
+   },
+   "parties": [
+    {
+     "id": "GB-CFS-191412",
+     "name": "Paradigm Trust",
+     "identifier": {
+      "legalName": "Paradigm Trust"
+     },
+     "address": {
+      "streetAddress": "c/o Culloden Primary School, Dee Street",
+      "locality": "London",
+      "postalCode": "E14 0PT",
+      "countryName": "England"
+     },
+     "contactPoint": {
+      "name": "Contact (anonymised)",
+      "email": "anonymised@example.invalid"
+     },
+     "details": {
+      "url": "https://suppliers.multiquote.com"
+     },
+     "roles": [
+      "buyer"
+     ]
+    }
+   ],
+   "buyer": {
+    "id": "GB-CFS-191412",
+    "name": "Paradigm Trust"
+   }
+  },
+  {
+   "ocid": "ocds-b5fd17-d7a44506-30db-4234-990c-6bebde6d7121",
+   "id": "d4856b86-d1fb-491e-b1ec-5f376d8886c0-915978",
+   "language": "en",
+   "date": "2026-09-30T06:56:30+01:00",
+   "tag": [
+    "tender"
+   ],
+   "initiationType": "tender",
+   "tender": {
+    "id": "PFRU2-2025-779.5",
+    "title": "Procurement of Agricultural and Warehouse Machinery, Trailed and Mounted Equipment",
+    "description": "Partnership Fund for a Resilient Ukraine Phase 2 (PFRU-2) is a multi-year, multi-donor-funded programme managed by the UK's Foreign, Commonwealth and Development Office.\r\nAs part of its project activities, PFRU-2 is seeking an organization to supply the Agricultural and Warehouse Machinery, Trailed and Mounted Equipment.\r\n\r\nPlease note the following important tender provisions:\r\n•\tthe deadline for submitting proposals is October 15, 2026, at 15:00 Kyiv time;\r\n•\tall questions regarding the tender conditions must be submitted no later than October 07, 2026, at 18:00 Kyiv time;\r\n•\tPrice proposals must be submitted either in Ukrainian or English;\r\n•\tAll tender-related communication must be conducted exclusively in writing via email at anonymised@example.invalid;\r\n•\tThe PFRU-2 project is exempt from taxes, fees, and VAT in the partner country. Therefore, PFRU-2 will make payments for services excluding VAT;\r\n•\tEmail for submitting proposals: anonymised@example.invalid;\r\n•\tWhen sending proposals or inquiries via email, it is mandatory to include the tender number PFRU2-2025-779.5 in the email subject line.\r\n\r\nProposal Submission Instructions:\r\n\r\nITT_PFRU2-2025-779.5 - review the tender conditions;\r\nVolume 3_Terms of Reference - complete the document and sign the original scan/convert to PDF and sign electronically and submit the completed Excel file and the signed document as part of the proposal.\r\nAnnex 1 - complete either the English or Ukrainian version and sign the original and scan/convert to PDF and sign electronically and include it in the proposal submission.\r\n\r\nRegistration documents that follow the laws of your country must be part of the proposal.",
+    "datePublished": "2026-09-30T06:56:30+01:00",
+    "status": "active",
+    "classification": {
+     "scheme": "CPV",
+     "id": "16000000",
+     "description": "Agricultural machinery"
+    },
+    "items": [
+     {
+      "id": "1",
+      "deliveryAddresses": [
+       {
+        "countryName": "Ukraine"
+       }
+      ]
+     }
+    ],
+    "value": {
+     "amount": 1,
+     "currency": "GBP"
+    },
+    "procurementMethod": "open",
+    "procurementMethodDetails": "Open procedure (above threshold)",
+    "tenderPeriod": {
+     "endDate": "2026-10-15T15:00:00+01:00"
+    },
+    "contractPeriod": {
+     "startDate": "2026-11-16T19:00:00Z",
+     "endDate": "2027-11-17T18:59:59Z"
+    },
+    "suitability": {
+     "sme": true,
+     "vcse": false
+    },
+    "mainProcurementCategory": "goods",
+    "documents": [
+     {
+      "id": "1",
+      "documentType": "tenderNotice",
+      "description": "Opportunity notice on Contracts Finder",
+      "url": "https://www.contractsfinder.service.gov.uk/Notice/d4856b86-d1fb-491e-b1ec-5f376d8886c0",
+      "datePublished": "2026-09-30T06:56:30+01:00",
+      "format": "text/html",
+      "language": "en"
+     },
+     {
+      "id": "2",
+      "documentType": "eligibilityCriteria",
+      "url": "https://www.contractsfinder.service.gov.uk/Notice/Attachment/e47215e1-a5b0-4b07-a1f7-a7409b4fa787",
+      "format": "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+     },
+     {
+      "id": "3",
+      "documentType": "contractDraft",
+      "url": "https://www.contractsfinder.service.gov.uk/Notice/Attachment/aa940bf9-eee4-4e3c-802b-2cf7b52cad8b",
+      "format": "application/pdf"
+     },
+     {
+      "id": "4",
+      "documentType": "tenderNotice",
+      "url": "https://www.contractsfinder.service.gov.uk/Notice/Attachment/19a62e9b-b584-491b-a9fe-9e9d6c8e7563",
+      "format": "application/pdf"
+     },
+     {
+      "id": "5",
+      "documentType": "procurementPlan",
+      "url": "https://www.contractsfinder.service.gov.uk/Notice/Attachment/92ab3da1-c157-493e-a247-05720df334fa",
+      "format": "application/zip"
+     },
+     {
+      "id": "6",
+      "documentType": "biddingDocuments",
+      "url": "https://www.contractsfinder.service.gov.uk/Notice/Attachment/11d16dc3-026f-45b1-8383-8abbce635d1f",
+      "format": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+     }
+    ]
+   },
+   "relatedProcesses": [
+    {
+     "id": "1",
+     "relationship": [
+      "parent"
+     ]
+    }
+   ],
+   "parties": [
+    {
+     "id": "GB-SRS-sid4gov.cabinetoffice.gov.uk/kg2DT6UE",
+     "name": "Chemonics International, Inc.",
+     "identifier": {
+      "legalName": "Chemonics International, Inc.",
+      "scheme": "GB-SRS",
+      "id": "sid4gov.cabinetoffice.gov.uk/kg2DT6UE"
+     },
+     "address": {
+      "streetAddress": "Ukraine",
+      "locality": "Kyiv",
+      "postalCode": "EC1M 5QL",
+      "countryName": "England"
+     },
+     "contactPoint": {
+      "name": "Contact (anonymised)",
+      "email": "anonymised@example.invalid"
+     },
+     "roles": [
+      "buyer"
+     ]
+    }
+   ],
+   "buyer": {
+    "id": "GB-SRS-sid4gov.cabinetoffice.gov.uk/kg2DT6UE",
+    "name": "Chemonics International, Inc."
+   }
+  },
+  {
+   "ocid": "ocds-b5fd17-8a93ed8a-7f2c-4f6b-9e58-c18edcb20ec0",
+   "id": "1d7f1cc4-69f7-492f-803d-0f505481b5d5-915957",
+   "language": "en",
+   "date": "2026-09-30T11:05:27+01:00",
+   "tag": [
+    "tender"
+   ],
+   "initiationType": "tender",
+   "tender": {
+    "id": "RA360599",
+    "title": "RA360599 - SERVICE COMPRESSORS & DRYERS",
+    "description": "Site Location Colchester Hospital\r\nSite Contact Nick Bailey email address anonymised@example.invalid - To access this competition: login to https://suppliers.multiquote.com and view the opportunity RA360599. Not registered on MultiQuote - visit https://suppliers.multiquote.com then register and quote RA360599 as the reason for registration. Any queries please contact MultiQuote on [phone removed].",
+    "datePublished": "2026-09-30T11:05:27+01:00",
+    "status": "active",
+    "classification": {
+     "scheme": "CPV",
+     "id": "50000000",
+     "description": "Repair and maintenance services"
+    },
+    "items": [
+     {
+      "id": "1",
+      "deliveryAddresses": [
+       {
+        "postalCode": "IP4 5PD"
+       },
+       {
+        "countryName": "British Oversea Territories"
+       },
+       {
+        "countryName": "Channel Islands"
+       },
+       {
+        "countryName": "Europe"
+       },
+       {
+        "countryName": "Isle of Man"
+       },
+       {
+        "countryName": "Rest of the World"
+       },
+       {
+        "countryName": "United Kingdom"
+       }
+      ]
+     }
+    ],
+    "procurementMethod": "open",
+    "procurementMethodDetails": "Open procedure",
+    "tenderPeriod": {
+     "endDate": "2026-10-15T12:00:00+01:00"
+    },
+    "contractPeriod": {
+     "startDate": "2026-11-01T00:00:00Z",
+     "endDate": "2027-10-31T23:59:59Z"
+    },
+    "suitability": {
+     "sme": true,
+     "vcse": false
+    },
+    "mainProcurementCategory": "goods",
+    "documents": [
+     {
+      "id": "1",
+      "documentType": "tenderNotice",
+      "description": "Opportunity notice on Contracts Finder",
+      "url": "https://www.contractsfinder.service.gov.uk/Notice/1d7f1cc4-69f7-492f-803d-0f505481b5d5",
+      "datePublished": "2026-09-30T11:05:27+01:00",
+      "format": "text/html",
+      "language": "en"
+     }
+    ]
+   },
+   "parties": [
+    {
+     "id": "GB-CFS-103358",
+     "name": "East Suffolk and North Essex NHS FT",
+     "identifier": {
+      "legalName": "East Suffolk and North Essex NHS FT"
+     },
+     "address": {
+      "streetAddress": "Heath Road",
+      "locality": "Ipswich",
+      "postalCode": "IP4 5PD",
+      "countryName": "England"
+     },
+     "contactPoint": {
+      "name": "Contact (anonymised)",
+      "email": "anonymised@example.invalid"
+     },
+     "details": {
+      "url": "https://suppliers.multiquote.com"
+     },
+     "roles": [
+      "buyer"
+     ]
+    }
+   ],
+   "buyer": {
+    "id": "GB-CFS-103358",
+    "name": "East Suffolk and North Essex NHS FT"
+   }
+  },
+  {
+   "ocid": "ocds-b5fd17-93dd42f5-5f1c-419e-9896-f5032dba0642",
+   "id": "35a765d3-efac-4704-bc0a-71f9aa1215f2-915952",
+   "language": "en",
+   "date": "2026-09-30T10:54:45+01:00",
+   "tag": [
+    "tender"
+   ],
+   "initiationType": "tender",
+   "tender": {
+    "id": "2F35C570-BA0D-4ED2-B946-935664B44EBA",
+    "title": "Taxi and MPV (1-8 seats) - Taxi and MPV (1-8 seats)",
+    "description": "Vehicle type: Saloon\r\nPassenger Assistant Required: No\r\n\r\nProposed Taxi Route: \r\nFrom: BN20 8HA\r\nTo: Northease Manor School, BN7 3EY\r\n\r\nFrequency: Monday to Friday\r\nDaily School Time: Mon-Thurs 08:30-16:00 and Fri 08:30-15:00\r\n This opportunity has been distributed on SProc.net",
+    "datePublished": "2026-09-30T10:54:45+01:00",
+    "status": "active",
+    "classification": {
+     "scheme": "CPV",
+     "id": "60000000",
+     "description": "Transport services (excl. Waste transport)"
+    },
+    "items": [
+     {
+      "id": "1",
+      "deliveryAddresses": [
+       {
+        "countryName": "United Kingdom"
+       }
+      ]
+     }
+    ],
+    "procurementMethod": "selective",
+    "procurementMethodDetails": "Restricted procedure (above threshold)",
+    "tenderPeriod": {
+     "endDate": "2026-10-05T09:30:00+01:00"
+    },
+    "contractPeriod": {
+     "startDate": "2026-10-06T01:00:00+01:00",
+     "endDate": "2029-07-31T23:59:59+01:00"
+    },
+    "suitability": {
+     "sme": true,
+     "vcse": false
+    },
+    "mainProcurementCategory": "services",
+    "documents": [
+     {
+      "id": "1",
+      "documentType": "tenderNotice",
+      "description": "Opportunity notice on Contracts Finder",
+      "url": "https://www.contractsfinder.service.gov.uk/Notice/35a765d3-efac-4704-bc0a-71f9aa1215f2",
+      "datePublished": "2026-09-30T10:54:45+01:00",
+      "format": "text/html",
+      "language": "en"
+     },
+     {
+      "id": "2",
+      "url": "https://www.sproc.net"
+     }
+    ]
+   },
+   "parties": [
+    {
+     "id": "GB-CFS-334419",
+     "name": "East Sussex County Council",
+     "identifier": {
+      "legalName": "East Sussex County Council"
+     },
+     "address": {
+      "streetAddress": "County Hall, St Anne's Crescent",
+      "locality": "Lewes",
+      "postalCode": "BN7 1UE",
+      "countryName": "United Kingdom"
+     },
+     "contactPoint": {
+      "name": "Contact (anonymised)",
+      "email": "anonymised@example.invalid"
+     },
+     "details": {
+      "url": "http://www.eastsussex.gov.uk"
+     },
+     "roles": [
+      "buyer"
+     ]
+    }
+   ],
+   "buyer": {
+    "id": "GB-CFS-334419",
+    "name": "East Sussex County Council"
+   }
+  },
+  {
+   "ocid": "ocds-b5fd17-dc8e040a-6142-449e-a5ea-74310842956c",
+   "id": "4c401f50-44ee-4f47-a432-8e18aea994b0-915949",
+   "language": "en",
+   "date": "2026-09-30T10:50:44+01:00",
+   "tag": [
+    "tender"
+   ],
+   "initiationType": "tender",
+   "tender": {
+    "id": "FD41CAB6-8C11-49F7-B419-B38012BEF387",
+    "title": "Taxi and MPV (1-8 seats) - Taxi and MPV (1-8 seats)",
+    "description": "Vehicle type: Saloon\r\nPassenger Assistant Required: No\r\n\r\nProposed Taxi Route: \r\nFrom: TN21 8JX\r\nTo:  Uplands CC, TN5 6AZ\r\n\r\nFrequency: Monday to Friday\r\nDaily School Time: Mon-Fri 08.45-15.10\r\n This opportunity has been distributed on SProc.net",
+    "datePublished": "2026-09-30T10:50:44+01:00",
+    "status": "active",
+    "classification": {
+     "scheme": "CPV",
+     "id": "60000000",
+     "description": "Transport services (excl. Waste transport)"
+    },
+    "items": [
+     {
+      "id": "1",
+      "deliveryAddresses": [
+       {
+        "countryName": "United Kingdom"
+       }
+      ]
+     }
+    ],
+    "procurementMethod": "selective",
+    "procurementMethodDetails": "Restricted procedure (above threshold)",
+    "tenderPeriod": {
+     "endDate": "2026-10-05T09:30:00+01:00"
+    },
+    "contractPeriod": {
+     "startDate": "2026-10-06T01:00:00+01:00",
+     "endDate": "2029-07-31T23:59:59+01:00"
+    },
+    "suitability": {
+     "sme": true,
+     "vcse": false
+    },
+    "mainProcurementCategory": "services",
+    "documents": [
+     {
+      "id": "1",
+      "documentType": "tenderNotice",
+      "description": "Opportunity notice on Contracts Finder",
+      "url": "https://www.contractsfinder.service.gov.uk/Notice/4c401f50-44ee-4f47-a432-8e18aea994b0",
+      "datePublished": "2026-09-30T10:50:44+01:00",
+      "format": "text/html",
+      "language": "en"
+     },
+     {
+      "id": "2",
+      "url": "https://www.sproc.net"
+     }
+    ]
+   },
+   "parties": [
+    {
+     "id": "GB-CFS-334419",
+     "name": "East Sussex County Council",
+     "identifier": {
+      "legalName": "East Sussex County Council"
+     },
+     "address": {
+      "streetAddress": "County Hall, St Anne's Crescent",
+      "locality": "Lewes",
+      "postalCode": "BN7 1UE",
+      "countryName": "United Kingdom"
+     },
+     "contactPoint": {
+      "name": "Contact (anonymised)",
+      "email": "anonymised@example.invalid"
+     },
+     "details": {
+      "url": "http://www.eastsussex.gov.uk"
+     },
+     "roles": [
+      "buyer"
+     ]
+    }
+   ],
+   "buyer": {
+    "id": "GB-CFS-334419",
+    "name": "East Sussex County Council"
+   }
+  },
+  {
+   "ocid": "ocds-b5fd17-e62cd65b-a882-4516-a22b-0502bebefdc8",
+   "id": "30574464-a9f7-43c3-b839-c1c2805c5eff-915945",
+   "language": "en",
+   "date": "2026-09-30T10:46:43+01:00",
+   "tag": [
+    "tender"
+   ],
+   "initiationType": "tender",
+   "tender": {
+    "id": "F23BA162-4E0B-45A3-A85D-E2C30783EC7F",
+    "title": "Taxi and MPV (1-8 seats) - Taxi and MPV (1-8 seats)",
+    "description": "Vehicle type: Saloon \r\nPassenger Assistant Required:  No\r\n \r\nProposed Taxi Route:\r\nFrom:  BN20 8UL \r\nTo:   The Haven Church of England Methodist Primary School, BN23 5SW\r\n\r\nFrequency: Monday - Friday \r\nDaily School Time: 08:50 - 15:30\r\n \r\nComments for Operator:  \r\n ASD and ADHD \r\n \r\n This opportunity has been distributed on SProc.net",
+    "datePublished": "2026-09-30T10:46:43+01:00",
+    "status": "active",
+    "classification": {
+     "scheme": "CPV",
+     "id": "60000000",
+     "description": "Transport services (excl. Waste transport)"
+    },
+    "items": [
+     {
+      "id": "1",
+      "deliveryAddresses": [
+       {
+        "countryName": "United Kingdom"
+       }
+      ]
+     }
+    ],
+    "procurementMethod": "selective",
+    "procurementMethodDetails": "Restricted procedure (above threshold)",
+    "tenderPeriod": {
+     "endDate": "2026-10-05T10:00:00+01:00"
+    },
+    "contractPeriod": {
+     "startDate": "2026-10-12T01:00:00+01:00",
+     "endDate": "2029-07-31T23:59:59+01:00"
+    },
+    "suitability": {
+     "sme": true,
+     "vcse": false
+    },
+    "mainProcurementCategory": "services",
+    "documents": [
+     {
+      "id": "1",
+      "documentType": "tenderNotice",
+      "description": "Opportunity notice on Contracts Finder",
+      "url": "https://www.contractsfinder.service.gov.uk/Notice/30574464-a9f7-43c3-b839-c1c2805c5eff",
+      "datePublished": "2026-09-30T10:46:43+01:00",
+      "format": "text/html",
+      "language": "en"
+     },
+     {
+      "id": "2",
+      "url": "https://www.sproc.net"
+     }
+    ]
+   },
+   "parties": [
+    {
+     "id": "GB-CFS-334419",
+     "name": "East Sussex County Council",
+     "identifier": {
+      "legalName": "East Sussex County Council"
+     },
+     "address": {
+      "streetAddress": "County Hall, St Anne's Crescent",
+      "locality": "Lewes",
+      "postalCode": "BN7 1UE",
+      "countryName": "United Kingdom"
+     },
+     "contactPoint": {
+      "name": "Contact (anonymised)",
+      "email": "anonymised@example.invalid"
+     },
+     "details": {
+      "url": "http://www.eastsussex.gov.uk"
+     },
+     "roles": [
+      "buyer"
+     ]
+    }
+   ],
+   "buyer": {
+    "id": "GB-CFS-334419",
+    "name": "East Sussex County Council"
+   }
+  },
+  {
+   "ocid": "ocds-b5fd17-8dad35aa-7fe5-46b6-8304-34f9a9713fed",
+   "id": "bd6f6ea3-04bd-4c7b-8faa-6f6fdb0bad57-915909",
+   "language": "en",
+   "date": "2026-09-30T09:44:15+01:00",
+   "tag": [
+    "tender"
+   ],
+   "initiationType": "tender",
+   "tender": {
+    "id": "RNT-LTC-FRC-01",
+    "title": "Balfour Beatty - Roads North of the Thames - LTC - FRC Structures Package",
+    "description": "The Lower Thames Crossing Roads, North Programme is seeking expressions of interest from suppliers with experience in reinforced concrete (FRC) and structural works.\r\n\r\nThe scope is expected to include elements such as reinforced concrete foundations, abutments, retaining walls, pile caps, reinforced earth structures, bridge structures and other civil engineering works. As part of our procurement planning, we are considering a range of packaging options, including splitting the works into multiple packages. Through this PQQ, we are looking to better understand the market's capability, capacity and preferred delivery models to help inform the final procurement strategy.\r\n\r\nWhat We're Looking For\r\nWe would like to hear from organisations with experience in one or more of the following:\r\n\r\nReinforced concrete foundations\r\nReinforced concrete abutments\r\nReinforced concrete retaining walls\r\nReinforced earth structures\r\nPile caps and substructures\r\nBridge and highway structures\r\nStructural concrete works\r\nCivil engineering and infrastructure projects\r\nDesign, construction, supply and installation services\r\nTemporary works design and management\r\nQuality assurance, testing and commissioning\r\n\r\nWe welcome responses from organisations of all sizes, including SMEs, either independently or as part of a consortium, joint venture or wider supply chain arrangement.\r\n\r\nHow to Apply\r\nIf you are interested in this opportunity, please complete the attached FRC Structures Package Eligibility Criteria Questionnaire and return it to the Supply Chain Team by 14.10.26 at:\r\nanonymised@example.invalid\r\n\r\nPlease ensure all sections of the questionnaire are completed, as this will help us gain a full understanding of your organisation's capabilities, capacity and experience. The qualification questions have been designed to assess your ability to meet Balfour Beatty and Lower Thames Crossing supply chain requirements and will help inform the final packaging strategy for these works.\r\n\r\nAs we are currently considering a number of packaging options, including smaller and specialist work packages, we are particularly interested in understanding the scale of work your organisation can deliver, your technical capabilities and your preferred delivery model.\r\n\r\nAdditional information: The Lower Thames Crossing (LTC) is a new road to better connect Essex and Kent through a tunnel beneath the River Thames. Our purpose is to drive a change in how we deliver - connecting people to jobs and businesses to opportunities, leaving a skills legacy for the local community and construction industry, all whilst restoring nature and drawing a new blueprint for low-carbon construction.\r\n\r\nOur ambition is to deliver the UK's greenest road, and to do the right thing for local communities and the environment. We can only achieve this with the support of our supply chain, and it is therefore critical that for any supplier to be successful in winning work on LTC, they must demonstrate commitments to supporting delivery of our ambitions:\r\n\r\n• Delivering the works through a 'zero emissions' solution, and not using diesel on site in any plant or machinery.\r\n\r\n• Supporting us to leave a skills legacy for the local community, by not only recruiting locally, but upskilling your workforce to enable meaningful progression into higher paid higher skilled work.\r\n\r\n• Helping to facilitate successful opportunities by providing early careers roles, as well as inspiring young people into construction through delivery of STEM engagement.",
+    "datePublished": "2026-09-30T09:44:15+01:00",
+    "status": "active",
+    "classification": {
+     "scheme": "CPV",
+     "id": "45221100",
+     "description": "Construction work for bridges"
+    },
+    "additionalClassifications": [
+     {
+      "scheme": "CPV",
+      "id": "45223200",
+      "description": "Structural works"
+     },
+     {
+      "scheme": "CPV",
+      "id": "45223500",
+      "description": "Reinforced-concrete structures"
+     },
+     {
+      "scheme": "CPV",
+      "id": "45233100",
+      "description": "Construction work for highways, roads"
+     },
+     {
+      "scheme": "CPV",
+      "id": "45262210",
+      "description": "Foundation work"
+     },
+     {
+      "scheme": "CPV",
+      "id": "45262300",
+      "description": "Concrete work"
+     },
+     {
+      "scheme": "CPV",
+      "id": "45262310",
+      "description": "Reinforced-concrete work"
+     }
+    ],
+    "items": [
+     {
+      "id": "1",
+      "deliveryAddresses": [
+       {
+        "region": "East of England",
+        "countryName": "United Kingdom"
+       },
+       {
+        "region": "South East",
+        "countryName": "United Kingdom"
+       }
+      ]
+     }
+    ],
+    "value": {
+     "amount": 1000000,
+     "currency": "GBP"
+    },
+    "procurementMethod": "open",
+    "procurementMethodDetails": "Open procedure (above threshold)",
+    "tenderPeriod": {
+     "endDate": "2026-10-14T17:00:00+01:00"
+    },
+    "contractPeriod": {
+     "startDate": "2028-04-01T00:00:00+01:00",
+     "endDate": "2030-11-01T23:59:59Z"
+    },
+    "suitability": {
+     "sme": true,
+     "vcse": true
+    },
+    "mainProcurementCategory": "works",
+    "documents": [
+     {
+      "id": "1",
+      "documentType": "tenderNotice",
+      "description": "Opportunity notice on Contracts Finder",
+      "url": "https://www.contractsfinder.service.gov.uk/Notice/bd6f6ea3-04bd-4c7b-8faa-6f6fdb0bad57",
+      "datePublished": "2026-09-30T09:44:15+01:00",
+      "format": "text/html",
+      "language": "en"
+     },
+     {
+      "id": "2",
+      "documentType": "eligibilityCriteria",
+      "description": "How to apply, please complete the attached FRC Structures Package Eligibility Criteria by the 14.10.26. then submit to the Supply Chain Team at: anonymised@example.invalid.\r\n\r\nPlease make sure to complete the eligibility criteria section of the PQQ fully, as missing information might affect your chance to move forward to the next stage. The following questions are designed as 'Qualification Questions' to assess your organisations ability to meet Balfour Beatty's and Lower Thames Crossing's supply chain requirements requirements.\r\n\r\nPlease note this is by no means a guarantee of any work",
+      "url": "https://www.contractsfinder.service.gov.uk/Notice/Attachment/2e22f2a9-c175-4909-9b73-a663041b8d25",
+      "format": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+     }
+    ]
+   },
+   "parties": [
+    {
+     "id": "GB-SRS-supplierregistration.cabinetoffice.gov.uk/UfZq8heB",
+     "name": "BALFOUR BEATTY CIVIL ENGINEERING LIMITED",
+     "identifier": {
+      "legalName": "BALFOUR BEATTY CIVIL ENGINEERING LIMITED",
+      "scheme": "GB-SRS",
+      "id": "supplierregistration.cabinetoffice.gov.uk/UfZq8heB"
+     },
+     "address": {
+      "streetAddress": "5 Churchill Pl",
+      "locality": "London",
+      "postalCode": "E145HU",
+      "countryName": "England"
+     },
+     "contactPoint": {
+      "name": "Contact (anonymised)",
+      "email": "anonymised@example.invalid"
+     },
+     "roles": [
+      "buyer"
+     ]
+    }
+   ],
+   "buyer": {
+    "id": "GB-SRS-supplierregistration.cabinetoffice.gov.uk/UfZq8heB",
+    "name": "BALFOUR BEATTY CIVIL ENGINEERING LIMITED"
+   }
+  },
+  {
+   "ocid": "ocds-b5fd17-5162dab8-9888-4c89-9265-db374b2a2c4d",
+   "id": "4b87f6c0-03f0-4a06-85ca-197622e49105-915895",
+   "language": "en",
+   "date": "2026-09-29T17:51:23+01:00",
+   "tag": [
+    "tender"
+   ],
+   "initiationType": "tender",
+   "tender": {
+    "id": "2730ef59-46a7-4959-904c-c614e1f5c713",
+    "title": "CA18487 - DN Colleges Group - North Lindsey College - ITT for Global House Reclad and Refurbishment Project",
+    "description": "This document is an invitation to tender (ITT) for the design and construction of the proposed recladding and refurbishment works to Global House, an existing DN Colleges facility within their North Lindsey Campus.\r\n\r\nTo access this competition: \r\n\r\nRegistered:\r\nLogin to https://suppliers.multiquote.com and view the opportunity CA18487.\r\n\r\nNot registered:\r\nVisit https://suppliers.multiquote.com then register and quote CA18487 as the reason for registration. \r\n\r\n Any queries please contact MultiQuote on [phone removed].",
+    "datePublished": "2026-09-29T17:51:23+01:00",
+    "status": "active",
+    "classification": {
+     "scheme": "CPV",
+     "id": "45443000",
+     "description": "Facade work"
+    },
+    "additionalClassifications": [
+     {
+      "scheme": "CPV",
+      "id": "45300000",
+      "description": "Building installation work"
+     },
+     {
+      "scheme": "CPV",
+      "id": "45453100",
+      "description": "Refurbishment work"
+     },
+     {
+      "scheme": "CPV",
+      "id": "45262650",
+      "description": "Cladding works"
+     }
+    ],
+    "items": [
+     {
+      "id": "1",
+      "deliveryAddresses": [
+       {
+        "postalCode": "DN1 2RF"
+       },
+       {
+        "countryName": "British Oversea Territories"
+       },
+       {
+        "countryName": "Channel Islands"
+       },
+       {
+        "countryName": "Europe"
+       },
+       {
+        "countryName": "Isle of Man"
+       },
+       {
+        "countryName": "Rest of the World"
+       },
+       {
+        "countryName": "United Kingdom"
+       }
+      ]
+     }
+    ],
+    "value": {
+     "amount": 3500000,
+     "currency": "GBP"
+    },
+    "procurementMethod": "open",
+    "procurementMethodDetails": "Open procedure",
+    "tenderPeriod": {
+     "endDate": "2026-10-30T12:00:00Z"
+    },
+    "contractPeriod": {
+     "startDate": "2027-01-18T00:00:00Z",
+     "endDate": "2027-08-16T23:59:59+01:00"
+    },
+    "suitability": {
+     "sme": true,
+     "vcse": false
+    },
+    "mainProcurementCategory": "works",
+    "documents": [
+     {
+      "id": "1",
+      "documentType": "tenderNotice",
+      "description": "Opportunity notice on Contracts Finder",
+      "url": "https://www.contractsfinder.service.gov.uk/Notice/4b87f6c0-03f0-4a06-85ca-197622e49105",
+      "datePublished": "2026-09-29T17:51:23+01:00",
+      "format": "text/html",
+      "language": "en"
+     }
+    ]
+   },
+   "parties": [
+    {
+     "id": "GB-CFS-313688",
+     "name": "DN Colleges Group",
+     "identifier": {
+      "legalName": "DN Colleges Group"
+     },
+     "address": {
+      "streetAddress": "The Hub, Chappell Drive",
+      "locality": "Doncaster",
+      "postalCode": "DN1 2RF",
+      "countryName": "England"
+     },
+     "contactPoint": {
+      "name": "Contact (anonymised)",
+      "email": "anonymised@example.invalid"
+     },
+     "details": {
+      "url": "https://suppliers.multiquote.com"
+     },
+     "roles": [
+      "buyer"
+     ]
+    }
+   ],
+   "buyer": {
+    "id": "GB-CFS-313688",
+    "name": "DN Colleges Group"
+   }
+  },
+  {
+   "ocid": "ocds-b5fd17-f3ca5216-4338-47f1-9806-cd2ebd5b158d",
+   "id": "ca0f8769-db53-4f40-bcef-581178e3cb2c-915877",
+   "language": "en",
+   "date": "2026-09-29T15:51:08+01:00",
+   "tag": [
+    "tenderAmendment"
+   ],
+   "initiationType": "tender",
+   "tender": {
+    "id": "9b02a656-c157-410b-ae85-747eea963799",
+    "title": "CA18282 - Provision of 111-2 Service",
+    "description": "This opportunity is being run under the Provider Selection Regime (PSR) regulations.\r\n\r\nThe development of a specialist all age mental health response via 111 is a key ambition of the NHS England Long Term Plan (2021-2024), and the recovery plan for urgent and emergency care priority for 2023/24.  This required all calls for support during mental health crisis to be made via 111 by the end of March 2024 and is referred to as 111-2.  Avon and Wiltshire Mental Health Partnership NHS Trust (AWP) currently deliver this service in partnership with a system partner. \r\nAWP is seeking a provider to deliver an integrated model for the NHS 111 Mental Health Crisis Response Service (111 Option 2) for individuals experiencing a mental health crisis across both adult (18 years and over) and children and young people (under 18 years) pathways. The appointed provider will be solely responsible for the delivery of the call handling element of the 111 Option 2 pathway, including access, triage and call management. AWP will retain responsibility for all clinical assessment activity and associated clinical decision-making and outcomes. The provider must be able to operate within a matrix management model, whereby all partners maintain responsibility for their own governance arrangements, professional standards and areas of specialist expertise, while working collaboratively at both strategic and operational leadership levels to deliver a seamless, integrated and high-quality service.\r\n\r\nThe service forms part of the NHS England requirement that callers contacting NHS 111 and selecting the mental health option are connected directly to a dedicated mental health response service available 24 hours per day, 7 days per week. The service will work collaboratively with urgent and emergency care pathways, crisis services, community mental health teams, acute hospitals, ambulance services, primary care and voluntary sector partners.\r\n\r\nTo access this competition:\r\n\r\nRegistered:\r\nLogin to https://suppliers.multiquote.com and view the opportunity CA18282.\r\n\r\nNot registered:\r\n\r\nVisit https://suppliers.multiquote.com then register and quote CA18282 as the reason for registration.\r\n\r\n\r\nTo access this competition: \r\n\r\nRegistered:\r\nLogin to https://suppliers.multiquote.com and view the opportunity CA18282.\r\n\r\nNot registered:\r\nVisit https://suppliers.multiquote.com then register and quote CA18282 as the reason for registration. \r\n\r\n Any queries please contact MultiQuote on [phone removed].",
+    "status": "active",
+    "classification": {
+     "scheme": "CPV",
+     "id": "85100000",
+     "description": "Health services"
+    },
+    "items": [
+     {
+      "id": "1",
+      "deliveryAddresses": [
+       {
+        "postalCode": "BA1 3QE"
+       },
+       {
+        "countryName": "British Oversea Territories"
+       },
+       {
+        "countryName": "Channel Islands"
+       },
+       {
+        "countryName": "Europe"
+       },
+       {
+        "countryName": "Isle of Man"
+       },
+       {
+        "countryName": "Rest of the World"
+       },
+       {
+        "countryName": "United Kingdom"
+       }
+      ]
+     }
+    ],
+    "value": {
+     "amount": 4050000,
+     "currency": "GBP"
+    },
+    "procurementMethod": "open",
+    "procurementMethodDetails": "Open procedure",
+    "tenderPeriod": {
+     "endDate": "2026-11-02T12:00:00Z"
+    },
+    "contractPeriod": {
+     "startDate": "2027-04-01T00:00:00+01:00",
+     "endDate": "2030-03-31T23:59:59+01:00"
+    },
+    "suitability": {
+     "sme": true,
+     "vcse": false
+    },
+    "mainProcurementCategory": "services",
+    "documents": [
+     {
+      "id": "1",
+      "documentType": "tenderNotice",
+      "description": "Opportunity notice on Contracts Finder",
+      "url": "https://www.contractsfinder.service.gov.uk/Notice/ca0f8769-db53-4f40-bcef-581178e3cb2c",
+      "datePublished": "2026-07-28T14:51:16+01:00",
+      "dateModified": "2026-09-29T15:51:08+01:00",
+      "format": "text/html",
+      "language": "en"
+     }
+    ]
+   },
+   "parties": [
+    {
+     "id": "GB-CFS-106637",
+     "name": "Avon and Wiltshire Mental Health Partnership NHS trust",
+     "identifier": {
+      "legalName": "Avon and Wiltshire Mental Health Partnership NHS trust"
+     },
+     "address": {
+      "streetAddress": "NHS Bath House, Newbridge Hill",
+      "locality": "Bath",
+      "postalCode": "BA1 3QE",
+      "countryName": "England"
+     },
+     "contactPoint": {
+      "name": "Contact (anonymised)",
+      "email": "anonymised@example.invalid"
+     },
+     "details": {
+      "url": "https://suppliers.multiquote.com"
+     },
+     "roles": [
+      "buyer"
+     ]
+    }
+   ],
+   "buyer": {
+    "id": "GB-CFS-106637",
+    "name": "Avon and Wiltshire Mental Health Partnership NHS trust"
+   }
+  },
+  {
+   "ocid": "ocds-b5fd17-38f5369f-57bc-4fa7-ab43-c6f418eaae02",
+   "id": "7fe08841-b456-4fd1-8512-81b303e5a3b1-915818",
+   "language": "en",
+   "date": "2026-09-29T07:36:12+01:00",
+   "tag": [
+    "tender"
+   ],
+   "initiationType": "tender",
+   "tender": {
+    "id": "PFRU2-2025-782",
+    "title": "Procurement of Services for Organizational Development and Institutional Strengthening of the Ukrainian Cultural Foundation",
+    "description": "Chemonics Group UK Limited which is implementing the Partnership Fund for a Resilient Ukraine Phase 2 (PFRU-2) Project as part of international technical assistance (hereinafter referred to as Chemonics) invites you to submit a Tender for Procurement of Services for Organizational Development and Institutional Strengthening of the Ukrainian Cultural Foundation.\r\n\r\nThe selected vendor will be awarded a Purchase Order with a period of performance of 6-8 months.\r\n\r\nImportant: Please include reference number PFRU2-2025-782 in the subject line of your email",
+    "datePublished": "2026-09-29T07:36:12+01:00",
+    "status": "active",
+    "classification": {
+     "scheme": "CPV",
+     "id": "79411100",
+     "description": "Business development consultancy services"
+    },
+    "additionalClassifications": [
+     {
+      "scheme": "CPV",
+      "id": "79420000",
+      "description": "Management-related services"
+     }
+    ],
+    "items": [
+     {
+      "id": "1",
+      "deliveryAddresses": [
+       {
+        "countryName": "Ukraine"
+       }
+      ]
+     }
+    ],
+    "value": {
+     "amount": 1,
+     "currency": "GBP"
+    },
+    "procurementMethod": "selective",
+    "procurementMethodDetails": "Restricted procedure (above threshold)",
+    "tenderPeriod": {
+     "endDate": "2026-10-22T10:00:00+01:00"
+    },
+    "contractPeriod": {
+     "startDate": "2026-11-15T19:00:00Z",
+     "endDate": "2027-05-31T18:59:59+01:00"
+    },
+    "suitability": {
+     "sme": true,
+     "vcse": false
+    },
+    "mainProcurementCategory": "services",
+    "documents": [
+     {
+      "id": "1",
+      "documentType": "tenderNotice",
+      "description": "Opportunity notice on Contracts Finder",
+      "url": "https://www.contractsfinder.service.gov.uk/Notice/7fe08841-b456-4fd1-8512-81b303e5a3b1",
+      "datePublished": "2026-09-29T07:36:12+01:00",
+      "format": "text/html",
+      "language": "en"
+     },
+     {
+      "id": "2",
+      "documentType": "evaluationCriteria",
+      "url": "https://www.contractsfinder.service.gov.uk/Notice/Attachment/684388f6-dc50-4e88-888a-b85e9b7ec7e2",
+      "format": "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+     },
+     {
+      "id": "3",
+      "documentType": "tenderNotice",
+      "url": "https://www.contractsfinder.service.gov.uk/Notice/Attachment/df36b5af-0c28-4fc8-a6d3-48d323e8f7f3",
+      "format": "application/pdf"
+     },
+     {
+      "id": "4",
+      "documentType": "biddingDocuments",
+      "url": "https://www.contractsfinder.service.gov.uk/Notice/Attachment/43c84c20-0c9f-4dc8-8c1d-d5fb3fca4517",
+      "format": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+     },
+     {
+      "id": "5",
+      "documentType": "procurementPlan",
+      "url": "https://www.contractsfinder.service.gov.uk/Notice/Attachment/35930a9c-0a05-46dd-b50e-488cae7e3abf",
+      "format": "application/zip"
+     }
+    ]
+   },
+   "relatedProcesses": [
+    {
+     "id": "1",
+     "relationship": [
+      "parent"
+     ]
+    }
+   ],
+   "parties": [
+    {
+     "id": "GB-SRS-sid4gov.cabinetoffice.gov.uk/kg2DT6UE",
+     "name": "Chemonics International, Inc.",
+     "identifier": {
+      "legalName": "Chemonics International, Inc.",
+      "scheme": "GB-SRS",
+      "id": "sid4gov.cabinetoffice.gov.uk/kg2DT6UE"
+     },
+     "address": {
+      "streetAddress": "EC1M 5QL",
+      "locality": "London",
+      "postalCode": "EC1M 5QL",
+      "countryName": "England"
+     },
+     "contactPoint": {
+      "name": "Contact (anonymised)",
+      "email": "anonymised@example.invalid"
+     },
+     "roles": [
+      "buyer"
+     ]
+    }
+   ],
+   "buyer": {
+    "id": "GB-SRS-sid4gov.cabinetoffice.gov.uk/kg2DT6UE",
+    "name": "Chemonics International, Inc."
+   }
+  },
+  {
+   "ocid": "ocds-b5fd17-d30a9889-4ae6-4ce1-a898-a91dcf2f4989",
+   "id": "cd9cf91d-ba1c-432f-9580-9ca4ceea97a1-915806",
+   "language": "en",
+   "date": "2026-09-29T11:30:46+01:00",
+   "tag": [
+    "tender"
+   ],
+   "initiationType": "tender",
+   "tender": {
+    "id": "87046F86-E817-453E-AB95-75027CDD6E5F",
+    "title": "Taxi and MPV (1-8 seats) Passenger Assistant - Taxi and MPV (1-8 seats) Passenger Assistant",
+    "description": "Vehicle type: Saloon \r\nPassenger Assistant Required:  Yes \r\n \r\nProposed Taxi Route:\r\nFrom:  BN10 7PG\r\nTo:   Ropemakers Academy, BN27 1FB\r\n\r\nFrequency: Monday - Friday \r\nDaily School Time: 08:30 - 14:30\r\n \r\nComments for Operator:  \r\n ASD\r\n This opportunity has been distributed on SProc.net",
+    "datePublished": "2026-09-29T11:30:46+01:00",
+    "status": "active",
+    "classification": {
+     "scheme": "CPV",
+     "id": "60000000",
+     "description": "Transport services (excl. Waste transport)"
+    },
+    "items": [
+     {
+      "id": "1",
+      "deliveryAddresses": [
+       {
+        "countryName": "United Kingdom"
+       }
+      ]
+     }
+    ],
+    "procurementMethod": "selective",
+    "procurementMethodDetails": "Restricted procedure (above threshold)",
+    "tenderPeriod": {
+     "endDate": "2026-10-06T10:15:00+01:00"
+    },
+    "contractPeriod": {
+     "startDate": "2026-11-02T01:00:00Z",
+     "endDate": "2029-07-31T23:59:59+01:00"
+    },
+    "suitability": {
+     "sme": true,
+     "vcse": false
+    },
+    "mainProcurementCategory": "services",
+    "documents": [
+     {
+      "id": "1",
+      "documentType": "tenderNotice",
+      "description": "Opportunity notice on Contracts Finder",
+      "url": "https://www.contractsfinder.service.gov.uk/Notice/cd9cf91d-ba1c-432f-9580-9ca4ceea97a1",
+      "datePublished": "2026-09-29T11:30:46+01:00",
+      "format": "text/html",
+      "language": "en"
+     },
+     {
+      "id": "2",
+      "url": "https://www.sproc.net"
+     }
+    ]
+   },
+   "parties": [
+    {
+     "id": "GB-CFS-334419",
+     "name": "East Sussex County Council",
+     "identifier": {
+      "legalName": "East Sussex County Council"
+     },
+     "address": {
+      "streetAddress": "County Hall, St Anne's Crescent",
+      "locality": "Lewes",
+      "postalCode": "BN7 1UE",
+      "countryName": "United Kingdom"
+     },
+     "contactPoint": {
+      "name": "Contact (anonymised)",
+      "email": "anonymised@example.invalid"
+     },
+     "details": {
+      "url": "http://www.eastsussex.gov.uk"
+     },
+     "roles": [
+      "buyer"
+     ]
+    }
+   ],
+   "buyer": {
+    "id": "GB-CFS-334419",
+    "name": "East Sussex County Council"
+   }
+  },
+  {
+   "ocid": "ocds-b5fd17-072c9766-ef50-4993-9acc-9016a7c75998",
+   "id": "30ac6008-b80d-41e2-96a1-4fceae17043b-915793",
+   "language": "en",
+   "date": "2026-09-29T10:52:42+01:00",
+   "tag": [
+    "tenderAmendment"
+   ],
+   "initiationType": "tender",
+   "tender": {
+    "id": "UKPACT-50",
+    "title": "​​Renewable Energy Certification Integration in ASEAN​",
+    "description": "Palladium as the delivery partner for the Foreign, Commonwealth and Development Office (FCDO) funded UK Partnering for Accelerate Climate Transitions (UK PACT) programme invites you to submit a quotation for the services detailed in this RFQ.\r\n \r\nRenewable energy has seen a growing demand across the ASEAN region. This is because countries are putting more effort into pursuing energy transition, decarbonisation and net-zero commitments. Renewable energy (RE) certification has emerged as an important market-based tool to facilitate statements and assurance on renewable electricity and support government as well as the private sector in achieving their targets. In addition, RE certification would be a beneficial instrument in supporting the ASEAN Power Grid and the cross-border electricity trading in the region.\r\n \r\nInterested suppliers/consortia are encouraged to review the RfQ documentation and submit your proposal in accordance with the instructions above by the Close Date and Time. This RFQ includes the following materials:\r\n \r\nSchedule 1 - Terms of Reference\r\nSchedule 2 - Instructions for submission\r\nSchedule 3 - Terms and Conditions\r\nAnnex I - RFQ Response Form\r\nAnnex II - Budget and workplan template",
+    "datePublished": "2026-09-22T16:46:12+01:00",
+    "status": "active",
+    "classification": {
+     "scheme": "CPV",
+     "id": "09000000",
+     "description": "Petroleum products, fuel, electricity and other sources of energy"
+    },
+    "additionalClassifications": [
+     {
+      "scheme": "CPV",
+      "id": "73000000",
+      "description": "Research and development services and related consultancy services"
+     },
+     {
+      "scheme": "CPV",
+      "id": "80000000",
+      "description": "Education and training services"
+     }
+    ],
+    "items": [
+     {
+      "id": "1",
+      "deliveryAddresses": [
+       {
+        "countryName": "Brunei"
+       },
+       {
+        "countryName": "Cambodia"
+       },
+       {
+        "countryName": "Indonesia"
+       },
+       {
+        "countryName": "Laos"
+       },
+       {
+        "countryName": "Malaysia"
+       },
+       {
+        "countryName": "Philippines"
+       },
+       {
+        "countryName": "Singapore"
+       },
+       {
+        "countryName": "Thailand"
+       },
+       {
+        "countryName": "Vietnam"
+       }
+      ]
+     }
+    ],
+    "value": {
+     "amount": 160000,
+     "currency": "GBP"
+    },
+    "procurementMethod": "open",
+    "procurementMethodDetails": "Open procedure (above threshold)",
+    "tenderPeriod": {
+     "endDate": "2026-10-15T12:00:00+01:00"
+    },
+    "contractPeriod": {
+     "startDate": "2026-11-03T00:00:00Z",
+     "endDate": "2027-03-31T23:59:59+01:00"
+    },
+    "suitability": {
+     "sme": true,
+     "vcse": true
+    },
+    "mainProcurementCategory": "services",
+    "documents": [
+     {
+      "id": "1",
+      "documentType": "tenderNotice",
+      "description": "Opportunity notice on Contracts Finder",
+      "url": "https://www.contractsfinder.service.gov.uk/Notice/30ac6008-b80d-41e2-96a1-4fceae17043b",
+      "datePublished": "2026-09-22T16:46:12+01:00",
+      "dateModified": "2026-09-29T10:52:42+01:00",
+      "format": "text/html",
+      "language": "en"
+     },
+     {
+      "id": "2",
+      "documentType": "biddingDocuments",
+      "url": "https://www.contractsfinder.service.gov.uk/Notice/Attachment/24a31762-7332-4c20-9b9d-a230e4fbe611",
+      "format": "application/pdf"
+     },
+     {
+      "id": "3",
+      "documentType": "biddingDocuments",
+      "url": "https://www.contractsfinder.service.gov.uk/Notice/Attachment/b65eff6c-18b1-4653-93c1-1e943fa44101",
+      "format": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+     },
+     {
+      "id": "4",
+      "documentType": "biddingDocuments",
+      "url": "https://www.contractsfinder.service.gov.uk/Notice/Attachment/9c23fe19-c029-477c-8048-a7cef0724639",
+      "format": "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+     }
+    ]
+   },
+   "parties": [
+    {
+     "id": "GB-SRS-sid4gov.cabinetoffice.gov.uk/V34c8F27",
+     "name": "PALLADIUM INTERNATIONAL LIMITED",
+     "identifier": {
+      "legalName": "PALLADIUM INTERNATIONAL LIMITED",
+      "scheme": "GB-SRS",
+      "id": "sid4gov.cabinetoffice.gov.uk/V34c8F27"
+     },
+     "address": {
+      "streetAddress": "Second Floor",
+      "locality": "LONDON",
+      "postalCode": "EC1Y8ND",
+      "countryName": "England"
+     },
+     "contactPoint": {
+      "name": "Contact (anonymised)",
+      "email": "anonymised@example.invalid"
+     },
+     "roles": [
+      "buyer"
+     ]
+    }
+   ],
+   "buyer": {
+    "id": "GB-SRS-sid4gov.cabinetoffice.gov.uk/V34c8F27",
+    "name": "PALLADIUM INTERNATIONAL LIMITED"
+   }
+  }
+ ]
+}

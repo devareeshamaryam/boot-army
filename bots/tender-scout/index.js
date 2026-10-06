@@ -1,137 +1,106 @@
+/**
+ * TenderScout CLI. One-shot: harvest -> score -> digest, then exit. Scheduling is external (cron / systemd timer).
+ *
+ *   node index.js [--since YYYY-MM-DD] [--sources contracts-finder,find-a-tender] [--stages tender,award]
+ *                 [--dry-run] [--send] [--cache] [--offline]
+ *
+ * Dry run is the DEFAULT: the database is an in-memory copy (nothing on disk changes)
+ * and digests are printed, not posted. Only --send writes data/tender-scout-v2.sqlite
+ * and posts to Slack (per profile, when its webhook env var is set). --dry-run wins over --send.
+ * Dry runs only:
+ *   --cache    keep a scratch DB (data/tender-scout-v2-dryrun.sqlite) so repeat dry runs fetch only what is new
+ *   --offline  no API calls at all: re-score and print from the database as it is
+ */
 import { config as loadEnv } from 'dotenv';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
+import { parseArgs } from 'node:util';
 loadEnv({ path: fileURLToPath(new URL('../../.env', import.meta.url)), quiet: true });
 
-/**
- * B3 TenderScout — entry point.
- *
- *   npm start -w bots/tender-scout
- *   npm run dry-run -w bots/tender-scout     # zero writes: in-memory DB copies, no Slack, no pings
- */
-import { existsSync, readFileSync } from 'node:fs';
-import { config, db as coreDb, health, logger, slack, snapshot, spine as coreSpine } from '@botarmy/core';
-import { harvestAll } from './harvest.js';
-import {
-  BOT, activeProfiles, getCursor, markNotified, matchAndScore, pendingMatches, recordSourceRun, setCursor,
-  storeTenders, syncProfiles, validateConfig, volumeAnomaly,
-} from './process.js';
-import { buildAnomalyAlert, buildDigest } from './digest.js';
-import { openAwardsForScoring } from './score.js';
+import { health, logger } from '@botarmy/core';
+import { buyerHistory, deleteScore, finishRun, openDb, openNotices, saveScore, startRun } from './db.js';
+import { deliverDigest } from './digest.js';
+import { ADAPTERS, contractsFinder, runHarvest } from './harvest.js';
+import { loadProfiles } from './profiles.js';
+import { score } from './score.js';
 
-const DRY_RUN = process.argv.includes('--dry-run');
-const DEFAULT_CHANNEL = 'tenders'; // SLACK_WEBHOOK_URL_TENDERS, else SLACK_WEBHOOK_URL
+export const BOT = 'tender-scout';
 
-const log = logger.forBot(BOT);
-
-function loadSettings() {
-  return config.load({
-    TS_PROFILES: { default: fileURLToPath(new URL('./profiles.json', import.meta.url)) },
-    TS_MAX_RANKED: { type: 'number', default: 20, min: 1, max: 40, integer: true },
-    // Pin the clock (ISO timestamp): reproducible runs for tests, or re-running a past day's windows.
-    TS_NOW: { description: 'override the run time (testing / backfill only)' },
+/** @returns {{ since?: string, sources: string[], stages: string[], send: boolean, dryRun: boolean, cache: boolean, offline: boolean }} */
+export function parseCli(argv) {
+  const { values } = parseArgs({
+    args: argv,
+    options: {
+      since: { type: 'string' }, sources: { type: 'string' }, stages: { type: 'string' }, 'dry-run': { type: 'boolean' }, send: { type: 'boolean' },
+      cache: { type: 'boolean' }, offline: { type: 'boolean' },
+    },
+    strict: true,
   });
+  if (values.since && !/^\d{4}-\d{2}-\d{2}$/.test(values.since)) throw new Error(`--since must be YYYY-MM-DD, got "${values.since}"`);
+  if (values.since && Number.isNaN(Date.parse(`${values.since}T00:00:00Z`))) throw new Error(`--since is not a real date: ${values.since}`);
+  const stages = values.stages ? values.stages.split(',').map((s) => s.trim()).filter(Boolean) : contractsFinder.stages;
+  const unknown = stages.filter((s) => !contractsFinder.stages.includes(s));
+  if (unknown.length || !stages.length) throw new Error(`--stages must be a comma list of: ${contractsFinder.stages.join(', ')} (Contracts Finder only)`);
+  const sources = values.sources ? values.sources.split(',').map((s) => s.trim()).filter(Boolean) : Object.keys(ADAPTERS);
+  const badSources = sources.filter((s) => !ADAPTERS[s]);
+  if (badSources.length || !sources.length) throw new Error(`--sources must be a comma list of: ${Object.keys(ADAPTERS).join(', ')}`);
+  const dryRun = Boolean(values['dry-run']) || !values.send;
+  if (!dryRun && (values.cache || values.offline)) throw new Error('--cache and --offline are for dry runs; drop --send');
+  return { since: values.since, sources, stages, send: !dryRun, dryRun, cache: Boolean(values.cache), offline: Boolean(values.offline) };
 }
 
-function loadConfigFile(file) {
-  if (!existsSync(file)) throw new Error(`Profiles not found at ${file}. Copy profiles.example.json to profiles.json.`);
-  let raw;
+/** Score every open notice for every profile; excluded notices lose any old score. */
+export function scoreAll(db, profiles, now) {
+  const counts = {};
+  db.transaction(() => {
+    const notices = openNotices(db, now);
+    for (const p of profiles) {
+      counts[p.entity] = { scored: 0, excluded: 0 };
+      for (const n of notices) {
+        const r = score(n, p, { now, buyerHistory: buyerHistory(db, n.buyer_key, p.cpvPrefixes) });
+        if (r.excluded) { deleteScore(db, n.ocid, p.entity); counts[p.entity].excluded++; }
+        else { saveScore(db, n.ocid, p.entity, r, now); counts[p.entity].scored++; }
+      }
+    }
+  })();
+  return counts;
+}
+
+/**
+ * One full run against an open database. Exported for tests.
+ * @returns {Promise<{ runId, harvest, scored, digests }>}
+ */
+export async function runOnce({ db, profiles, sources = Object.keys(ADAPTERS), stages, since, send = false, offline = false, now = new Date().toISOString(), env = process.env, log, print, httpOptions }) {
+  const runId = startRun(db, { sources, stages, since: since ?? null, send, offline }, now);
+  const counts = {};
   try {
-    raw = JSON.parse(readFileSync(file, 'utf8').replace(/^\uFEFF/, ''));
+    counts.harvest = offline ? 'skipped (--offline)' : await runHarvest(db, { adapters: sources.map((s) => ADAPTERS[s]), stages, since, now, log, httpOptions });
+    counts.scored = scoreAll(db, profiles, now);
+    counts.digests = [];
+    for (const p of profiles) counts.digests.push(await deliverDigest(db, p, { runId, now, send, env, log, print }));
+    finishRun(db, runId, { status: 'ok', counts }, new Date().toISOString());
+    return { runId, ...counts };
   } catch (err) {
-    throw new Error(`profiles.json is not valid JSON: ${err.message}`);
+    finishRun(db, runId, { status: 'failed', counts, error: err.message }, new Date().toISOString());
+    throw err;
   }
-  return validateConfig(raw);
-}
-
-async function deliver(channel, message) {
-  if (DRY_RUN) {
-    console.log(JSON.stringify({ channel, ...message }, null, 2));
-    return;
-  }
-  await slack.post(channel, message);
 }
 
 async function main() {
-  const s = loadSettings();
-  if (s.TS_NOW && !Number.isFinite(Date.parse(s.TS_NOW))) throw new Error('TS_NOW must be an ISO timestamp');
-  const cfg = loadConfigFile(s.TS_PROFILES);
-  const channels = [...new Set([DEFAULT_CHANNEL, ...cfg.profiles.map((p) => p.slackChannel ?? DEFAULT_CHANNEL)])];
-  if (!DRY_RUN) channels.forEach((c) => slack.resolveWebhook(c)); // fail fast, loudly, before any work
-
-  const db = coreDb.connect(BOT, { dryRun: DRY_RUN });
-  const store = snapshot.openStore({ dryRun: DRY_RUN });
-  const spine = coreSpine.openSpine({ dryRun: DRY_RUN });
-  let awards = null; // B6 lookup, opened just before scoring
-  try {
-    coreDb.migrate(db, new URL('./migrations/', import.meta.url), { namespace: BOT });
-    const now = s.TS_NOW ? new Date(s.TS_NOW).toISOString() : new Date().toISOString();
-    syncProfiles(db, cfg.profiles, now);
-    const runId = Number(db.prepare(`INSERT INTO runs (started_at) VALUES (?)`).run(now).lastInsertRowid);
-    log.info(`${DRY_RUN ? 'Dry run: in-memory copies, nothing will be written · ' : ''}${cfg.profiles.length} profiles`, { dataDir: config.dataDir() });
-
-    // 1. Harvest: raw snapshots only.
-    const harvest = await harvestAll({ sources: cfg.sources, store, getCursor: (id) => getCursor(db, id), now, log });
-    const problems = harvest.failures.map((f) => `${f.sourceId}: ${f.error}`);
-    for (const f of harvest.failures) recordSourceRun(db, { runId, sourceId: f.sourceId, notices: 0, outcome: 'failed', note: f.error, now });
-    if (!harvest.fetches.length && problems.length) {
-      await deliver(DEFAULT_CHANNEL, buildAnomalyAlert({ date: now.slice(0, 10), problems }));
-      const err = new Error(`Every source failed (${problems.length})`);
-      err.alerted = true;
-      throw err;
+  const args = parseCli(process.argv.slice(2));
+  const log = logger.forBot(BOT);
+  await health.run(BOT, async () => {
+    const profiles = loadProfiles({ allowExample: args.dryRun, log });
+    const db = openDb({ dryRun: args.dryRun, cache: args.cache });
+    try {
+      if (args.cache) log.info(`DRY RUN with cache: ${db.botarmy.path} (the live database is not touched; nothing is posted)`);
+      else if (args.dryRun) log.info('DRY RUN: in-memory database, nothing is written or posted (use --send for a live run)');
+      if (args.offline) log.info('OFFLINE: no API calls; scoring and printing what the database already holds');
+      const r = await runOnce({ db, profiles, sources: args.sources, stages: args.stages, since: args.since, send: args.send, offline: args.offline, log });
+      log.info('Summary', { harvest: r.harvest, digests: r.digests.map((d) => `${d.entity}: ${d.count}${d.posted ? ' posted' : ` (${d.note})`}`) });
+    } finally {
+      db.close();
     }
-
-    // 2. Store tenders per source; advance a cursor only after a clean, plausible fetch.
-    const changed = [];
-    for (const fetch of harvest.fetches) {
-      const anomaly = volumeAnomaly(db, fetch.sourceId, fetch.notices, cfg.volumeGuard);
-      if (anomaly) {
-        problems.push(anomaly);
-        recordSourceRun(db, { runId, sourceId: fetch.sourceId, notices: fetch.notices, outcome: 'anomaly', note: anomaly, now });
-        log.error(anomaly);
-        continue;
-      }
-      const r = storeTenders({ db, store, fetch, now, log });
-      changed.push(...r.changedIds);
-      problems.push(...r.failures);
-      recordSourceRun(db, { runId, sourceId: fetch.sourceId, notices: fetch.notices, outcome: r.failures.length ? 'failed' : 'ok', note: r.failures[0] ?? null, now });
-      if (!r.failures.length && fetch.nextCursor) setCursor(db, fetch.sourceId, fetch.nextCursor, now);
-    }
-    if (problems.length) await deliver(DEFAULT_CHANNEL, buildAnomalyAlert({ date: now.slice(0, 10), problems }));
-
-    // 3. Match, score, emit spine events.
-    const profiles = activeProfiles(db);
-    // B6 award analytics: read-only, in-memory copy on dry runs; unavailable → factors listed as not scored.
-    awards = openAwardsForScoring({ dryRun: DRY_RUN, log });
-    const counts = matchAndScore({ db, spine, profiles, tenderIds: changed, now, log, awards });
-
-    // 4. One digest per profile.
-    let posted = 0;
-    for (const p of profiles) {
-      const pending = pendingMatches(db, p.profileId);
-      if (!pending.length) continue;
-      await deliver(p.slackChannel ?? DEFAULT_CHANNEL, buildDigest({ profile: p, matches: pending, now, warnings: problems, maxRanked: s.TS_MAX_RANKED }));
-      if (!DRY_RUN) markNotified(db, pending.map((m) => m.matchId), now);
-      posted += 1;
-    }
-    if (!posted) log.info('No new opportunities; no digest sent');
-
-    const stats = { fetched: harvest.fetches.length, failed: harvest.failures.length, changedTenders: changed.length, ...counts, digests: posted };
-    db.prepare(`UPDATE runs SET finished_at = ?, status = ?, stats = ? WHERE id = ?`)
-      .run(new Date().toISOString(), problems.length ? 'partial' : 'ok', JSON.stringify(stats), runId);
-    log.info('Run complete', stats);
-  } finally {
-    awards?.close?.();
-    db.close();
-    store.close();
-    spine.close();
-  }
+  }, { dryRun: args.dryRun, log });
 }
 
-await health.run(BOT, main, {
-  dryRun: DRY_RUN,
-  log,
-  onFailure: async (err) => {
-    if (DRY_RUN || err.alerted) return;
-    await slack.post(DEFAULT_CHANNEL, `:rotating_light: TenderScout failed: ${err.message}`);
-  },
-});
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) await main();

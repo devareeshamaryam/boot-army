@@ -2,7 +2,8 @@
  * core.http — the only place bots touch the network.
  *
  * - retries network errors, 5xx and 429 (honouring Retry-After), backoff 1s, 2s, 4s…
- * - per-host minimum interval between requests
+ * - per-host minimum interval between requests; hosts with a known API limit get a shared,
+ *   cross-process interval (setHostPolicy), so concurrent bots don't trip it for each other
  * - fixture recording/replay for golden tests:
  *     BOTARMY_HTTP_RECORD=<dir>  write every response to <dir>/<key>.json
  *     BOTARMY_HTTP_REPLAY=<dir>  serve responses from <dir>, never touch the network
@@ -10,8 +11,9 @@
  * - setFetch(fn) injects a fetch implementation for unit tests
  */
 import { createHash } from 'node:crypto';
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readFileSync, rmSync, statSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
+import { dataDir } from './config.js';
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 let fetchImpl = (...args) => globalThis.fetch(...args);
@@ -51,15 +53,102 @@ export function fixtureKey(method, url, body) {
 
 /* --------------------------------------------------------- rate limiting */
 
+/**
+ * Shared policies for hosts with known API limits. The interval is a floor over each
+ * caller's minIntervalMs, and it is coordinated ACROSS PROCESSES: every request reserves
+ * the next free slot in <dataDir>/.http-throttle/<host>.next (guarded by a mkdir lock),
+ * so two bots calling the same API at the same time share one budget instead of
+ * tripping its limit for each other. A 429 pushes the shared slot back for everyone.
+ */
+const HOST_POLICIES = new Map([
+  // Verified 2026-10-06: ~12 requests in a short burst, then "Rate limit of 12 exceeded. Please retry after 120 seconds."
+  ['www.contractsfinder.service.gov.uk', { minIntervalMs: 5_000 }],
+  // Limit not published or observed; 1s matches what bots already used.
+  ['www.find-tender.service.gov.uk', { minIntervalMs: 1_000 }],
+]);
+
+/** Set (or with null, remove) the shared policy for a host, e.g. in tests. */
+export function setHostPolicy(host, policy) {
+  if (policy) HOST_POLICIES.set(host, policy);
+  else HOST_POLICIES.delete(host);
+}
+
+export const hostPolicy = (host) => HOST_POLICIES.get(host) ?? null;
+
+const throttleDir = () => process.env.BOTARMY_THROTTLE_DIR?.trim() || path.join(dataDir(), '.http-throttle');
+const LOCK_STALE_MS = 10_000;
+const LOCK_GIVE_UP_MS = 30_000;
+
+/** Run fn(next) -> newNext under the host's cross-process lock. Returns fn's input `next` and its result. */
+async function withHostFile(host, fn) {
+  const dir = throttleDir();
+  mkdirSync(dir, { recursive: true });
+  const base = path.join(dir, host.replace(/[^a-z0-9.-]/gi, '_'));
+  const lock = `${base}.lock`;
+  const giveUp = Date.now() + LOCK_GIVE_UP_MS;
+  let locked = false;
+  while (!locked) {
+    try {
+      mkdirSync(lock); // atomic: fails with EEXIST while another process holds it
+      locked = true;
+    } catch (err) {
+      if (err.code !== 'EEXIST') throw err;
+      try {
+        if (Date.now() - statSync(lock).mtimeMs > LOCK_STALE_MS) rmSync(lock, { recursive: true, force: true }); // holder died
+      } catch {
+        // lock vanished between the checks: retry
+      }
+      if (Date.now() > giveUp) break; // never hang a bot on a stuck lock; pace in-process only
+      await sleep(25);
+    }
+  }
+  try {
+    let next = 0;
+    try {
+      next = Number(readFileSync(`${base}.next`, 'utf8')) || 0;
+    } catch {
+      // first request to this host
+    }
+    const updated = fn(next);
+    writeFileSync(`${base}.next`, String(updated));
+    return next;
+  } finally {
+    if (locked) rmSync(lock, { recursive: true, force: true });
+  }
+}
+
+/** Reserve the next shared slot for a host; resolves after waiting for it. */
+async function sharedSlot(host, intervalMs) {
+  let slot = 0;
+  await withHostFile(host, (next) => {
+    slot = Math.max(Date.now(), next);
+    return slot + intervalMs;
+  });
+  const wait = slot - Date.now();
+  if (wait > 0) await sleep(wait);
+}
+
+/** Tell every process to keep off a host for `ms` (after a 429). */
+export async function penalizeHost(host, ms) {
+  if (!hostPolicy(host)) return;
+  await withHostFile(host, (next) => Math.max(next, Date.now() + ms));
+}
+
 const hosts = new Map();
 async function throttle(host, minIntervalMs) {
-  if (!minIntervalMs) return;
+  const policy = hostPolicy(host);
+  const interval = Math.max(minIntervalMs || 0, policy?.minIntervalMs || 0);
+  if (!interval) return;
   const state = hosts.get(host) ?? { next: 0, chain: Promise.resolve() };
   hosts.set(host, state);
   state.chain = state.chain.then(async () => {
+    if (policy?.minIntervalMs) {
+      await sharedSlot(host, interval);
+      return;
+    }
     const wait = state.next - Date.now();
     if (wait > 0) await sleep(wait);
-    state.next = Date.now() + minIntervalMs;
+    state.next = Date.now() + interval;
   });
   return state.chain;
 }
@@ -147,6 +236,7 @@ export async function fetch(url, o = {}) {
     if (retryable && attempt < retries) {
       const wait = raw.status === 429 ? retryAfterMs(responseHeaders['retry-after']) ?? 5000 * 2 ** attempt : 1000 * 2 ** attempt;
       if (wait > maxRetryAfterMs) throw new HttpError(`${method} ${redact(url)} -> 429, Retry-After ${Math.round(wait / 1000)}s too long`, { status: 429, url: redact(url) });
+      if (raw.status === 429) await penalizeHost(host, wait); // other processes back off too
       await sleep(wait);
       continue;
     }

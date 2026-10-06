@@ -1,8 +1,8 @@
 {
   "name": "tender-scout",
-  "version": "0.2.0",
+  "version": "1.0.0",
   "private": true,
-  "description": "B3: open UK and EU tender notices matched and scored against each subscribing entity's capability profile.",
+  "description": "UK public-sector tenders: daily harvest (Contracts Finder), winnability score per entity, ranked Slack digest. Also stores award notices for Hiring-Signal Scout.",
   "type": "module",
   "main": "index.js",
   "engines": {
@@ -10,12 +10,11 @@
   },
   "scripts": {
     "start": "node index.js",
-    "dry-run": "node index.js --dry-run",
+    "send": "node index.js --send",
     "test": "node --test \"test/**/*.test.js\""
   },
   "dependencies": {
     "@botarmy/core": "*",
-    "award-analytics": "*",
     "dotenv": "^18.0.4"
   }
 }

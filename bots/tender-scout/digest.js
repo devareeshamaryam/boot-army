@@ -1,111 +1,98 @@
 /**
- * B3 Slack Block Kit formatting. Pure functions: no I/O.
- * One message per capability profile: ranked opportunities, then key deadlines.
+ * Ranked Slack digest per entity (Block Kit, incoming webhook).
+ *
+ * A notice is never posted to the same entity twice (digests_sent). It is only
+ * recorded as sent after Slack accepts the message. Anything that is not a real
+ * send (dry run, no webhook configured, PLACEHOLDER profile) prints the exact
+ * payload instead and records nothing.
  */
-import { daysUntil, NOT_SCORED } from './score.js';
+import { http } from '@botarmy/core';
+import { digestCandidates, markSent } from './db.js';
+import { hasPlaceholder } from './profiles.js';
+import { formatMoney, topReasons } from './score.js';
 
-const SECTION_LIMIT = 2900;
-const MAX_BLOCKS = 50;
-export const MAX_RANKED = 20;
-export const KEY_DEADLINE_DAYS = 21;
+const esc = (s) => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+const clip = (s, n) => (s && s.length > n ? `${s.slice(0, n - 1)}…` : s);
+const DAY = 86_400_000;
 
-export const esc = (s) => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-const clip = (s, n = SECTION_LIMIT) => (s.length <= n ? s : `${s.slice(0, n - 1)}…`);
-const link = (url, text) => (url && /^https:\/\//i.test(url) ? `<${url}|${esc(text).replace(/\|/g, '¦')}>` : esc(text));
-const SOURCE_LABEL = { contractsFinder: 'Contracts Finder', findATender: 'Find a Tender', ted: 'TED' };
+const ukDate = (iso) => new Date(iso).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'Europe/London' });
 
-/** Value exactly as published, or an explicit "not published". */
-export function valueLabel(t) {
-  const fmt = (n) => Math.round(n).toLocaleString('en-GB');
-  const cur = t.currency ? `${esc(t.currency)} ` : '';
-  if (t.valueMin !== null && t.valueMax !== null && t.valueMin !== t.valueMax) return `${cur}${fmt(t.valueMin)}–${fmt(t.valueMax)}`;
-  const v = t.valueMax ?? t.valueMin;
-  return v === null || v === undefined ? 'value not published' : `${cur}${fmt(v)}`;
+function valueText(n) {
+  if (n.value_amount != null) return formatMoney(n.value_amount, n.value_currency);
+  return n.value_placeholder ? '_not published (placeholder value)_' : '_not published_';
 }
 
-/** Deadline with days left, or an explicit "not published". */
-export function deadlineLabel(t, now) {
-  const days = daysUntil(t.deadline, now);
-  if (days === null) return 'deadline not published';
-  return `closes ${t.deadline.slice(0, 10)} (${days} day${days === 1 ? '' : 's'} left)`;
+function deadlineText(n, now) {
+  if (!n.deadline) return '_not published_';
+  const days = Math.floor((Date.parse(n.deadline) - Date.parse(now)) / DAY);
+  return `${ukDate(n.deadline)} (${days} day${days === 1 ? '' : 's'})`;
 }
 
-function why(reasons) {
-  const parts = [];
-  if (reasons.cpv?.matched) parts.push(`CPV ${esc(reasons.cpv.input)} ⊂ ${esc(reasons.cpv.matched)}`);
-  else if (reasons.cpv?.unknown) parts.push('CPV not published');
-  if (reasons.keywords?.input?.length) parts.push(`keywords: ${reasons.keywords.input.slice(0, 3).map(esc).join(', ')}`);
-  if (reasons.location?.input && reasons.location.value === 1) parts.push(`📍 ${esc([reasons.location.input].flat()[0])}`);
-  else if (reasons.location?.unknown) parts.push('location not published');
-  return parts.join(' · ');
-}
-
-export function opportunityBlock(t, now) {
-  return {
-    type: 'section',
-    text: {
-      type: 'mrkdwn',
-      text: clip(`*${t.score}* · ${link(t.url, t.title)}\n${esc(t.buyer ?? 'buyer not published')} · *${valueLabel(t)}* · ${deadlineLabel(t, now)} · ${SOURCE_LABEL[t.source] ?? esc(t.source)}\n_${why(t.reasons)}_`),
-    },
-  };
+function itemBlock(n, i, now) {
+  const title = esc(clip(n.title ?? 'Untitled notice', 150)).replace(/\|/g, '/');
+  const heading = n.link ? `<${n.link}|${title}>` : title;
+  const lines = [
+    `*${i + 1}. ${heading}*  ·  *Score ${n.score.score}*`,
+    `*Buyer:* ${esc(clip(n.buyer_name ?? 'not published', 100))}  ·  *Value:* ${valueText(n)}  ·  *Deadline:* ${deadlineText(n, now)}`,
+    ...topReasons(n.score.breakdown).map((r) => `• ${esc(r)}`),
+  ];
+  if (n.score.gaps.length) lines.push(`_Gaps: ${esc(n.score.gaps.join(', '))}_`);
+  return { type: 'section', text: { type: 'mrkdwn', text: lines.join('\n') } };
 }
 
 /**
- * @param {object} input
- * @param {{ name: string }} input.profile
- * @param {object[]} input.matches   rows from pendingMatches() (best first)
- * @param {string}   input.now       ISO timestamp (deadline maths)
- * @param {string[]} [input.warnings]
+ * @param {object} profile
+ * @param {object[]} items  digestCandidates() rows, best first
+ * @param {{ now: string }} options
+ * @returns {{ text: string, blocks: object[] } | null}  null when there is nothing to post
  */
-export function buildDigest({ profile, matches, now, warnings = [], maxRanked = MAX_RANKED }) {
-  const date = now.slice(0, 10);
-  const ranked = matches.slice(0, maxRanked);
-  const closing = matches
-    .filter((t) => { const d = daysUntil(t.deadline, now); return d !== null && d <= KEY_DEADLINE_DAYS; })
-    .sort((a, b) => a.deadline.localeCompare(b.deadline) || a.id - b.id)
-    .slice(0, 12);
-
-  const blocks = [
-    { type: 'header', text: { type: 'plain_text', text: `Tenders for ${profile.name} · ${date}`, emoji: true } },
-    {
-      type: 'context',
-      elements: [{ type: 'mrkdwn', text: `${matches.length} new opportunit${matches.length === 1 ? 'y' : 'ies'}${matches.length > ranked.length ? ` (top ${ranked.length} shown)` : ''} · ranked by fit and winnability (0–100)` }],
-    },
-  ];
-  if (ranked.length) {
-    blocks.push({ type: 'divider' }, { type: 'section', text: { type: 'mrkdwn', text: '*Ranked opportunities*' } });
-    for (const t of ranked) blocks.push(opportunityBlock(t, now));
-  } else {
-    blocks.push({ type: 'section', text: { type: 'mrkdwn', text: 'No new opportunities.' } });
-  }
-  if (closing.length) {
-    const lines = closing.map((t) => `• *${esc(t.deadline.slice(0, 10))}* (${daysUntil(t.deadline, now)}d) · ${link(t.url, t.title)} · ${esc(t.buyer ?? 'buyer not published')}`);
-    blocks.push({ type: 'divider' }, { type: 'section', text: { type: 'mrkdwn', text: clip(`:alarm_clock: *Key deadlines (next ${KEY_DEADLINE_DAYS} days)*\n${lines.join('\n')}`) } });
-  }
-  if (warnings.length) {
-    blocks.push({ type: 'context', elements: [{ type: 'mrkdwn', text: clip(`:warning: ${warnings.slice(0, 8).map((w) => `• ${esc(w)}`).join('\n')}${warnings.length > 8 ? `\n…and ${warnings.length - 8} more` : ''}`) }] });
-  }
-  blocks.push({ type: 'context', elements: [{ type: 'mrkdwn', text: `_Not scored yet: ${NOT_SCORED.map(esc).join('; ')}. Unpublished values, deadlines and locations are shown as such, never estimated._` }] });
-
-  if (blocks.length > MAX_BLOCKS) {
-    const footer = blocks.pop();
-    blocks.length = MAX_BLOCKS - 2;
-    blocks.push({ type: 'context', elements: [{ type: 'mrkdwn', text: '_Digest truncated to fit Slack limits._' }] }, footer);
-  }
-  const top = matches[0];
+export function buildDigest(profile, items, { now }) {
+  if (!items.length) return null;
+  const count = `${items.length} new tender${items.length === 1 ? '' : 's'}`;
   return {
-    text: top ? `Tenders for ${profile.name} ${date}: ${matches.length} new, top "${top.title}" (${top.score})` : `Tenders for ${profile.name} ${date}: none new`,
-    blocks,
+    text: `TenderScout: ${count} for ${profile.name} (top score ${items[0].score.score})`,
+    blocks: [
+      { type: 'header', text: { type: 'plain_text', text: clip(`TenderScout · ${profile.name} · ${ukDate(now)}`, 150) } },
+      { type: 'context', elements: [{ type: 'mrkdwn', text: `${count}, best first. Score = winnability 0-100; gaps are fields the buyer did not publish.` }] },
+      ...items.flatMap((n, i) => [itemBlock(n, i, now), { type: 'divider' }]),
+    ],
   };
 }
 
-/** Loud alert: a source went silent where history says it shouldn't, or failed outright. */
-export function buildAnomalyAlert({ date, problems }) {
-  return {
-    text: `TenderScout ${date}: source anomaly`,
-    blocks: [{
-      type: 'section',
-      text: { type: 'mrkdwn', text: clip(`:rotating_light: *TenderScout source problem* — the affected window will be fetched again next run.\n${problems.slice(0, 12).map((p) => `• ${esc(p)}`).join('\n')}`) },
-    }],
-  };
+/** Why this run must not post for this profile, or null if it may. */
+export function sendBlocker(profile, { send, env = process.env }) {
+  if (!send) return 'dry run (pass --send to post)';
+  if (hasPlaceholder(profile)) return `profile "${profile.entity}" still contains PLACEHOLDER values`;
+  if (!env[profile.slackWebhookEnv]?.trim()) return `${profile.slackWebhookEnv} is not set`;
+  return null;
+}
+
+/**
+ * Build and post (or print) one entity's digest.
+ * @returns {Promise<{ entity, count, posted: boolean, note: string|null }>}
+ */
+export async function deliverDigest(db, profile, { runId, now, send = false, env = process.env, log, print = console.log }) {
+  const items = digestCandidates(db, profile.entity, now, profile.maxDigestSize);
+  const payload = buildDigest(profile, items, { now });
+  if (!payload) {
+    log?.info?.(`No new tenders for ${profile.entity}`);
+    return { entity: profile.entity, count: 0, posted: false, note: 'nothing new' };
+  }
+
+  const blocker = sendBlocker(profile, { send, env });
+  if (blocker) {
+    if (send) log?.warn?.(`Not posting ${profile.entity} digest: ${blocker}`);
+    print(`--- ${profile.entity}: NOT SENT (${blocker}). Payload:\n${JSON.stringify(payload, null, 2)}`);
+    return { entity: profile.entity, count: items.length, posted: false, note: blocker };
+  }
+
+  await http.fetch(env[profile.slackWebhookEnv].trim(), {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+    retries: 2,
+  });
+  markSent(db, profile.entity, items, runId, now);
+  log?.info?.(`Posted ${profile.entity} digest`, { count: items.length });
+  return { entity: profile.entity, count: items.length, posted: true, note: null };
 }
