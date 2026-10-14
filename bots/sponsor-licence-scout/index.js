@@ -33,13 +33,20 @@ function section(title, rows) {
   return ['', `*${title}* (${rows.length})`, ...shown];
 }
 
+// Only two emoji, so they stand out: green circle = new sponsor, red circle = revoked.
+const NEW = ':large_green_circle:';
+const REVOKED = ':red_circle:';
+const n = (x) => Number(x).toLocaleString('en-GB');
+
 function message(d, today) {
-  if (d.blocked) return `:warning: Sponsor register ${today}: ${d.blocked}. Check the download.`;
-  if (d.baseline) return `Sponsor register ${today}: baseline loaded: ${d.appends.length} sponsors`;
+  if (d.blocked) return `WARNING - Sponsor register ${today}: ${d.blocked}. Check the download.`;
+  if (d.baseline) return `Sponsor register ${today}: baseline loaded: ${n(d.appends.length)} sponsors`;
   return [
-    `Sponsor register ${today}: ${d.added.length} new, ${d.revoked.length} revoked, ${d.reinstated.length} reinstated · ${d.activeAfter} active`,
-    ...section('New sponsors (Ateca leads)', d.added),
-    ...section('Revoked (workers have ~60 days; Ateca candidates / Osbrooks clients)', d.revoked),
+    `*Sponsor register ${today}*`,
+    `${NEW} ${n(d.added.length)} new   ${REVOKED} ${n(d.revoked.length)} revoked   ${n(d.reinstated.length)} reinstated   ·   ${n(d.activeAfter)} active`,
+    ...section(`${NEW} New sponsors (Ateca leads)`, d.added),
+    ...section(`${REVOKED} Revoked (workers have ~60 days; Ateca candidates / Osbrooks clients)`, d.revoked),
+    ...section('Reinstated', d.reinstated),
   ].join('\n');
 }
 
@@ -80,6 +87,6 @@ await health.run(BOT, main, {
   log,
   onFailure: async (err) => {
     if (DRY_RUN) return;
-    await slack.post(SLACK_CHANNEL, `:rotating_light: Sponsor Licence Scout failed: ${err.message}`);
+    await slack.post(SLACK_CHANNEL, `FAILED - Sponsor Licence Scout: ${err.message}`);
   },
 });
