@@ -1,21 +1,17 @@
 /**
- * B1 harvester: find the current GOV.UK register CSV and store it, raw, in the
- * snapshot store. No parsing happens here beyond locating the link.
+ * B1 harvester: find the current GOV.UK register CSV and download it into
+ * memory. Nothing is written to disk: the Google Sheet is the only store.
  *
  * Discovery order:
  *   1. GOV.UK Content API attachments
  *   2. the publication's HTML page (hrefs, link text, bare asset URLs, csv-preview links)
  *   3. SPONSOR_CSV_URL from the environment
- * Both discovery responses are stored as snapshots too, so a broken discovery
- * can be diagnosed later from the raw store.
  *
- * Runnable alone:  node bots/sponsor-licence-scout/harvest.js [--dry-run]
+ * Runnable alone:  node bots/sponsor-licence-scout/harvest.js
  */
 import { parse } from 'csv-parse/sync';
 import { http } from '@botarmy/core';
 
-export const SOURCE = 'uk-sponsor-register';
-export const INDEX_SOURCE = 'uk-sponsor-register-index';
 export const PUBLICATION_PATH = '/government/publications/register-of-licensed-sponsors-workers';
 export const CONTENT_API = `https://www.gov.uk/api/content${PUBLICATION_PATH}`;
 export const PUBLICATION_PAGE = `https://www.gov.uk${PUBLICATION_PATH}`;
@@ -110,16 +106,14 @@ export function candidatesFromContentApi(body) {
 }
 
 /**
- * Locate the current register CSV. Discovery responses are written to the
- * snapshot store (source uk-sponsor-register-index) before they are inspected.
+ * Locate the current register CSV.
  * @returns {Promise<{ url, filename, publishedDate, via }>}
  */
-export async function discoverRegisterCsv({ store, env = process.env }) {
+export async function discoverRegisterCsv({ env = process.env } = {}) {
   const attempts = [];
 
   try {
     const res = await http.fetch(CONTENT_API, { headers: headers('application/json'), userAgent: userAgent() });
-    store.writeRaw(INDEX_SOURCE, 'content-api.json', res.body, { url: CONTENT_API, contentType: res.contentType });
     const hit = rankCandidates(candidatesFromContentApi(res.json()))[0];
     if (hit) return hit;
     attempts.push('Content API: no CSV attachment matched');
@@ -129,7 +123,6 @@ export async function discoverRegisterCsv({ store, env = process.env }) {
 
   try {
     const res = await http.fetch(PUBLICATION_PAGE, { headers: headers('text/html,application/xhtml+xml'), userAgent: userAgent() });
-    store.writeRaw(INDEX_SOURCE, 'publication.html', res.body, { url: PUBLICATION_PAGE, contentType: res.contentType });
     const html = res.text();
     const hit = rankCandidates(candidatesFromHtml(html))[0];
     if (hit) return hit;
@@ -155,12 +148,11 @@ export async function discoverRegisterCsv({ store, env = process.env }) {
 /* --------------------------------------------------------------- harvest */
 
 /**
- * Discover, download and store the register CSV. Snapshot-first: the bytes are
- * written to the store before anything reads them.
- * @returns {Promise<{ snapshot: { id, isNew, sha256, bytes, fetchedAt }, source: { url, filename, publishedDate, via } }>}
+ * Discover and download the register CSV.
+ * @returns {Promise<{ csv: string, source: { url, filename, publishedDate, via } }>}
  */
-export async function harvest({ store, log, env = process.env }) {
-  const source = await discoverRegisterCsv({ store, env });
+export async function harvest({ log, env = process.env } = {}) {
+  const source = await discoverRegisterCsv({ env });
   log?.info(`Register: ${source.filename}`, { via: source.via, url: source.url });
 
   const res = await http.fetch(source.url, {
@@ -168,14 +160,8 @@ export async function harvest({ store, log, env = process.env }) {
     userAgent: userAgent(),
     timeoutMs: 120_000,
   });
-  const snapshot = store.writeRaw(SOURCE, source.filename, res.body, {
-    url: source.url,
-    contentType: res.contentType,
-    publishedDate: source.publishedDate,
-    via: source.via,
-  });
-  log?.info(`${snapshot.isNew ? 'Stored new' : 'Unchanged'} snapshot ${snapshot.id} (${(snapshot.bytes / 1e6).toFixed(2)} MB)`);
-  return { snapshot, source };
+  log?.info(`Downloaded ${(res.body.length / 1e6).toFixed(2)} MB`);
+  return { csv: res.text(), source };
 }
 
 /* ------------------------------------------------------------------ rows */
@@ -201,16 +187,13 @@ if (process.argv[1] && import.meta.url === (await import('node:url')).pathToFile
   const { config } = await import('dotenv');
   const { fileURLToPath } = await import('node:url');
   config({ path: fileURLToPath(new URL('../../.env', import.meta.url)), quiet: true });
-  const { snapshot, logger } = await import('@botarmy/core');
+  const { logger } = await import('@botarmy/core');
   const log = logger.forBot('sponsor-licence-scout:harvest');
-  const store = snapshot.openStore({ dryRun: process.argv.includes('--dry-run') });
   try {
-    const result = await harvest({ store, log });
-    console.log(JSON.stringify(result, null, 2));
+    const { csv, source } = await harvest({ log });
+    console.log(JSON.stringify({ source, rows: parseRows(csv).length }, null, 2));
   } catch (err) {
     log.error(err.message);
     process.exitCode = 1;
-  } finally {
-    store.close();
   }
 }

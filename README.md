@@ -39,6 +39,8 @@ The `.env` file is local configuration. Never commit `.env` or secrets to the re
 | `ANTHROPIC_API_KEY` | API key for Anthropic services | (empty) |
 | `HEALTHCHECKS_BASE_URL` | Base URL for health check pings | `https://hc-ping.com` |
 | `NODE_ENV` | Node.js runtime environment | `development` |
+| `GOOGLE_SHEET_ID` | Spreadsheet the bots read and write | (empty) |
+| `GOOGLE_CREDS_JSON` | Service-account key: path to the .json file, or the JSON itself | `./secrets/google-key.json` |
 
 ## Run a bot
 
@@ -54,16 +56,27 @@ Each bot workspace should define its own `start` script in its `package.json`.
 
 Create a directory at `bots/<bot-name>/` and add a `package.json` with a unique package name and a `start` script. Add the bot's implementation in that directory, then run `npm install` from the repository root so npm can link the new workspace. Bots can import shared utilities from `@botarmy/core`.
 
+## Data storage
+
+All data lives in Google Sheets. Bots keep nothing on local disk: no SQLite files and no `data/` folder. The service account in `GOOGLE_CREDS_JSON` needs edit access to the spreadsheet.
+
 ## Folder layout
 
 ```text
 .
-|-- bots/                 # Individual bot workspaces
+|-- bots/
+|   `-- sponsor-licence-scout/   # Daily sponsor register -> Google Sheet + Slack
+|       |-- index.js             # Entry point (npm start / npm run dry-run)
+|       |-- harvest.js           # Finds and downloads the GOV.UK register CSV
+|       |-- sheets.js            # Google Sheets read/write and the diff
+|       |-- logs/                # Scheduled-run log (git-ignored)
+|       `-- test/
 |-- packages/
-|   `-- core/             # Shared @botarmy/core package
-|-- .env.example          # Environment variable template
+|   `-- core/                   # Shared @botarmy/core package
+|-- secrets/                     # Google service-account key (git-ignored)
+|-- .env.example                 # Environment variable template
 |-- .gitignore
-|-- package.json          # Root npm workspace configuration
+|-- package.json                 # Root npm workspace configuration
 `-- README.md
 ```
 

@@ -6,6 +6,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { parseRows } from '../harvest.js';
 import { HEADER, diffSponsors } from '../sheets.js';
+import { legalName, pickCompany, searchUrl } from '../companies.js';
 
 const TODAY = '2026-10-05';
 const CSV_HEADER = 'Organisation Name,Town/City,County,Type & Rating,Route';
@@ -64,6 +65,42 @@ test('safety: a CSV under 50% of the Active rows changes nothing', () => {
   const d = diffSponsors([row('Co 0 Ltd', 'Leeds'), row('Co 1 Ltd', 'Leeds'), row('Co 2 Ltd', 'Leeds'), row('Co 3 Ltd', 'Leeds')], sheet, TODAY);
   assert.match(d.blocked, /4 sponsors but the sheet has 10 Active/);
   assert.deepEqual([d.appends.length, d.updates.length], [0, 0]);
+});
+
+test('moved town: same name and route → whole row updated in place, not new + revoked', () => {
+  const d = diffSponsors([row('Acme Ltd', 'Paisley')], [sheetRow('Acme Ltd', 'Renfrew', 'Active', '2025-01-02')], TODAY);
+  assert.deepEqual(d.updates, [{ row: 2, values: ['Acme Ltd', 'Paisley', 'Yorkshire', 'Worker (A rating)', 'Skilled Worker', 'Active', '2025-01-02', ''] }]);
+  assert.deepEqual([d.added.length, d.revoked.length, d.appends.length, d.changed.length], [0, 0, 0, 1]);
+});
+
+test('renamed: same town and route, similar name → changed; dissimilar names stay new + revoked', () => {
+  const renamed = diffSponsors([row('Abingdon Schools Group', 'Abingdon')], [sheetRow('Abingdon School', 'Abingdon', 'Active')], TODAY);
+  assert.deepEqual(renamed.changed, [{ from: sheetRow('Abingdon School', 'Abingdon').slice(0, 5), to: Object.values(row('Abingdon Schools Group', 'Abingdon')) }]);
+  const different = diffSponsors([row('Abc Care Ltd', 'Leeds')], [sheetRow('Care Ltd', 'Leeds', 'Active')], TODAY);
+  assert.deepEqual([different.added.length, different.revoked.length, different.changed.length], [1, 1, 0]);
+  const otherRoute = diffSponsors([{ ...row('Acme Ltd', 'York'), Route: 'Scale-up' }], [sheetRow('Acme Ltd', 'Leeds', 'Active')], TODAY);
+  assert.equal(otherRoute.changed.length, 0, 'a different route is a different sponsor');
+});
+
+test('not revoked while the organisation is still listed: dropped route or row already updated → Changed', () => {
+  // Absoft keeps Skilled Worker but loses its second route.
+  const sheet = [sheetRow('Absoft Limited', 'Aberdeen', 'Active'), Object.assign(sheetRow('Absoft Limited', 'Aberdeen', 'Active'), { 4: 'Scale-up' }),
+    sheetRow('Dormakaba UK Ltd', 'Hitchin', 'Active'), sheetRow('Dormakaba UK Ltd.', 'Tiverton', 'Active'), sheetRow('Gone Ltd', 'Hull', 'Active')];
+  const d = diffSponsors([row('Absoft Limited', 'Aberdeen'), row('Dormakaba UK Ltd.', 'Tiverton'), row('Acme Ltd', 'Leeds')], sheet, TODAY);
+  assert.deepEqual(d.revoked.map((f) => f[0]), ['Gone Ltd']);
+  assert.deepEqual(d.superseded.map((f) => `${f[0]}/${f[4]}`), ['Absoft Limited/Scale-up', 'Dormakaba UK Ltd/Skilled Worker']);
+  assert.deepEqual(d.updates.filter((u) => u.values[0] === 'Changed').map((u) => u.row), [3, 4]);
+});
+
+test('Companies House: trading name dropped; company page only for a confident match', () => {
+  assert.equal(legalName('Dynamic Pizza 2 Ltd T/A Pizza Hut'), 'Dynamic Pizza 2 Ltd');
+  assert.equal(legalName('In-An-Out ltd Trading as Mooboo'), 'In-An-Out ltd');
+  assert.match(searchUrl('A & B Ltd t/as X'), /q=A%20%26%20B%20Ltd$/);
+  const html = (...titles) => titles.map((t, i) => `<a href="/company/0000000${i}" onclick="x" title="View company"> ${t} </a>`).join('');
+  assert.equal(pickCompany(html('PIZZA &amp; KEBAB HUT 2020 LIMITED', 'DYNAMIC PIZZA 2 LTD'), 'Dynamic Pizza 2 Ltd T/A Pizza Hut'),
+    'https://find-and-update.company-information.service.gov.uk/company/00000001');
+  assert.equal(pickCompany(html('ANTHONY DAY ENGINEERING LIMITED'), 'Anthony Day Associates Ltd'), null);
+  assert.equal(pickCompany('no results', 'Acme Ltd'), null);
 });
 
 test('a CSV missing a column fails loudly, naming what was found', () => {
