@@ -1,17 +1,24 @@
 {
-  "name": "bot-army",
-  "version": "0.1.0",
+  "name": "sponsor-licence-scout",
+  "version": "0.2.0",
   "private": true,
-  "description": "Monorepo for a fleet of Node.js bots sharing common code.",
+  "description": "B1: daily Home Office licensed sponsors register to Google Sheet (new / revoked) + one Slack message.",
   "type": "module",
+  "main": "src/index.js",
   "engines": {
-    "node": ">=20"
+    "node": ">=22"
   },
-  "workspaces": [
-    "packages/*",
-    "bots/*"
-  ],
   "scripts": {
-    "lint": "echo lint: no linter configured yet"
+    "start": "node src/index.js --once",
+    "dry-run": "node src/index.js --once --dry-run",
+    "harvest": "node src/harvest.js",
+    "test": "node --test \"test/**/*.test.js\""
+  },
+  "dependencies": {
+    "csv-parse": "^5.5.6",
+    "dotenv": "^18.0.4",
+    "fuzzball": "^2.2.6",
+    "googleapis": "^183.0.0",
+    "node-fetch": "^3.3.2"
   }
 }

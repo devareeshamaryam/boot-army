@@ -1,83 +1,72 @@
-# bot-army
+# Sponsor Licence Scout
 
-bot-army is an npm workspaces monorepo for a fleet of Node.js bots that share common code in `@botarmy/core`.
+Each run downloads the Home Office register of licensed sponsors (Worker and Temporary Worker) from GOV.UK. It updates the `Sponsors` tab in a Google Sheet: new sponsors are appended, and sponsors that have disappeared are marked Revoked. It then posts one summary message to Slack.
+
+The bot runs **once and exits**: code `0` on success, code `1` on failure. Scheduling is external. In production, Cloud Scheduler triggers it as a Google Cloud Run Job.
 
 ## Requirements
 
-- Node.js 20 or newer
-- npm 9 or newer
+- Node.js 22 or newer (`googleapis` requires Node 22)
+- npm (do not use pnpm or yarn)
 
-## Install
-
-From the repository root, install dependencies with npm:
+## Setup
 
 ```sh
-npm install
+npm ci
+cp .env.example .env        # Windows PowerShell: Copy-Item .env.example .env
 ```
 
-Copy `.env.example` to `.env` and fill in any credentials you need.
+Fill in `.env`, then put the Google service-account key at `credentials/service-account.json`, or set `GOOGLE_SERVICE_ACCOUNT_KEY_FILE` to its path. The service account needs edit access to the spreadsheet. `.env`, `credentials/` and `service-account*.json` are git-ignored and docker-ignored. Never commit them.
 
-Mac/Linux:
+## Commands
 
-```sh
-cp .env.example .env
-```
+| Command | What it does |
+| --- | --- |
+| `npm start` | One full run: update the Sheet, post to Slack, then exit (`node src/index.js --once`) |
+| `npm run dry-run` | Download the register and compute the diff, then print what would change and the Slack message. **Nothing is written to the Sheet and nothing is sent to Slack.** |
+| `npm run harvest` | Only find and download the register CSV, then print its source and row count |
+| `npm test` | Unit tests (no network, no Google) |
 
-Windows PowerShell:
+## Behaviour
 
-```powershell
-Copy-Item .env.example .env
-```
-
-The `.env` file is local configuration. Never commit `.env` or secrets to the repository.
+- **Safety check:** if today's CSV has fewer than 50% of the sponsors marked Active in the Sheet, the download is treated as broken. The Sheet is left unchanged and a `WARNING` message goes to Slack.
+- **Failure alert:** any error posts `FAILED - Sponsor Licence Scout: <reason>` to Slack and exits with code 1.
+- **Healthchecks.io:** if `HEALTHCHECKS_BASE_URL` and a check UUID are set, the run pings start, success and fail.
 
 ## Environment variables
 
-| Variable | Purpose | Default |
-| --- | --- | --- |
-| `SLACK_WEBHOOK_URL` | Slack incoming webhook URL for notifications | (empty) |
-| `ANTHROPIC_API_KEY` | API key for Anthropic services | (empty) |
-| `HEALTHCHECKS_BASE_URL` | Base URL for health check pings | `https://hc-ping.com` |
-| `NODE_ENV` | Node.js runtime environment | `development` |
-| `GOOGLE_SHEET_ID` | Spreadsheet the bots read and write | (empty) |
-| `GOOGLE_CREDS_JSON` | Service-account key: path to the .json file, or the JSON itself | `./secrets/google-key.json` |
+See `.env.example` for the full list, with a comment on each variable. Required: `GOOGLE_SHEET_ID`, plus a Slack webhook (`SLACK_WEBHOOK_URL` or `SLACK_WEBHOOK_URL_SPONSORS`). `GOOGLE_SERVICE_ACCOUNT_KEY_FILE` defaults to `./credentials/service-account.json`. Relative paths are resolved from the project root.
 
-## Run a bot
-
-Run a bot's `start` script from the repository root:
+## Docker / Cloud Run Job
 
 ```sh
-npm run start -w bots/<bot-name>
+docker build -t sponsor-licence-scout .
+docker run --rm --env-file .env \
+  -v "$PWD/credentials:/app/credentials:ro" sponsor-licence-scout
 ```
 
-Each bot workspace should define its own `start` script in its `package.json`.
+The image never contains `.env` or the key. On Cloud Run:
 
-## Add a bot
-
-Create a directory at `bots/<bot-name>/` and add a `package.json` with a unique package name and a `start` script. Add the bot's implementation in that directory, then run `npm install` from the repository root so npm can link the new workspace. Bots can import shared utilities from `@botarmy/core`.
-
-## Data storage
-
-All data lives in Google Sheets. Bots keep nothing on local disk: no SQLite files and no `data/` folder. The service account in `GOOGLE_CREDS_JSON` needs edit access to the spreadsheet.
+- Pass the other variables as env vars, or as Secret Manager secrets exposed as env vars.
+- Mount the key as a Secret Manager volume, for example at `/secrets/sa/key.json`.
+- Set `GOOGLE_SERVICE_ACCOUNT_KEY_FILE` to the mounted path.
 
 ## Folder layout
 
 ```text
 .
-|-- bots/
-|   `-- sponsor-licence-scout/   # Daily sponsor register -> Google Sheet + Slack
-|       |-- index.js             # Entry point (npm start / npm run dry-run)
-|       |-- harvest.js           # Finds and downloads the GOV.UK register CSV
-|       |-- sheets.js            # Google Sheets read/write and the diff
-|       |-- logs/                # Scheduled-run log (git-ignored)
-|       `-- test/
-|-- packages/
-|   `-- core/                   # Shared @botarmy/core package
-|-- secrets/                     # Google service-account key (git-ignored)
-|-- .env.example                 # Environment variable template
-|-- .gitignore
-|-- package.json                 # Root npm workspace configuration
-`-- README.md
+|-- src/
+|   |-- index.js        # Entry point: one run, then exit
+|   |-- harvest.js      # Finds and downloads the GOV.UK register CSV
+|   |-- sheets.js       # Google Sheets read/write and the diff
+|   |-- companies.js    # Companies House links for the Slack message
+|   `-- core/           # Shared helpers: http, logger, match, slack, health
+|-- test/               # node:test unit tests
+|-- credentials/        # Service-account key (git-ignored)
+|-- Dockerfile
+|-- .dockerignore
+|-- .env.example
+`-- package.json
 ```
 
-This repository uses npm only; do not use pnpm or yarn.
+All data lives in the Google Sheet. The bot keeps nothing on local disk.

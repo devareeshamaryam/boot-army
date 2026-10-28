@@ -1,10 +1,9 @@
 node_modules/
 .env
-*.db
-*.sqlite
-*.sqlite-*
-*.db-*
-logs/
+credentials/
+service-account*.json
 secrets/
 *-key.json
+logs/
+*.log
 .http-throttle/

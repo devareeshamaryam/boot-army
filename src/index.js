@@ -1,6 +1,6 @@
 import { config as loadEnv } from 'dotenv';
 import { fileURLToPath } from 'node:url';
-loadEnv({ path: fileURLToPath(new URL('../../.env', import.meta.url)), quiet: true });
+loadEnv({ path: fileURLToPath(new URL('../.env', import.meta.url)), quiet: true });
 
 /**
  * B1 Sponsor Licence Scout — entry point.
@@ -9,10 +9,14 @@ loadEnv({ path: fileURLToPath(new URL('../../.env', import.meta.url)), quiet: tr
  * Google Sheet (tab "Sponsors"), append new ones, mark vanished ones Revoked,
  * and send one Slack message.
  *
- *   npm start -w bots/sponsor-licence-scout
- *   npm run dry-run -w bots/sponsor-licence-scout   # download + diff, print what would change; no Sheet writes, no Slack
+ * Runs once and exits (0 = success, 1 = failure); scheduling is external
+ * (Cloud Scheduler -> Cloud Run Job). --once is accepted for clarity; a run is
+ * always a single pass.
+ *
+ *   npm start          # node src/index.js --once
+ *   npm run dry-run    # download + diff, print what would change; no Sheet writes, no Slack
  */
-import { health, logger, slack } from '@botarmy/core';
+import { health, logger, slack } from './core/index.js';
 import { resolveLinks, searchUrl } from './companies.js';
 import { harvest, parseRows } from './harvest.js';
 import { appendRows, diffSponsors, ensureTab, openSheets, readRows, sheetUrl, updateRows } from './sheets.js';
@@ -103,3 +107,7 @@ await health.run(BOT, main, {
     await slack.post(SLACK_CHANNEL, `FAILED - Sponsor Licence Scout: ${err.message}`);
   },
 });
+
+// health.run sets exitCode 1 on failure. Exit explicitly so lingering
+// keep-alive sockets can never hold the Cloud Run Job open.
+process.exit(process.exitCode ?? 0);

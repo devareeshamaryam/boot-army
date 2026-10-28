@@ -2,12 +2,15 @@
  * Google Sheet storage for the sponsor register (the single source of truth),
  * plus the pure diff between today's CSV rows and the sheet.
  *
- * Env: GOOGLE_CREDS_JSON (service-account key: the JSON text itself, or a path to the .json file), GOOGLE_SHEET_ID.
+ * Env: GOOGLE_SERVICE_ACCOUNT_KEY_FILE (path to the service-account .json key, default
+ * ./credentials/service-account.json, relative paths from the project root), GOOGLE_SHEET_ID.
  * The service account needs edit access to the spreadsheet.
  */
 import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { google } from 'googleapis';
-import { match } from '@botarmy/core';
+import { match } from './core/index.js';
 import { legalName } from './companies.js';
 import { COLUMNS } from './harvest.js';
 
@@ -117,10 +120,18 @@ export function sameSponsor(oldFields, newFields) {
 
 /* ---------------------------------------------------------------- Google */
 
+const ROOT_DIR = fileURLToPath(new URL('../', import.meta.url));
+export const DEFAULT_KEY_FILE = './credentials/service-account.json';
+
+/** Absolute path of the service-account key file. */
+export const keyFilePath = (env = process.env) => path.resolve(ROOT_DIR, env.GOOGLE_SERVICE_ACCOUNT_KEY_FILE?.trim() || DEFAULT_KEY_FILE);
+
 export function openSheets(env = process.env) {
   const id = env.GOOGLE_SHEET_ID?.trim();
-  if (!id || !env.GOOGLE_CREDS_JSON?.trim()) throw new Error('Set GOOGLE_CREDS_JSON and GOOGLE_SHEET_ID in the root .env');
-  const auth = new google.auth.GoogleAuth({ credentials: JSON.parse(/^\s*\{/.test(env.GOOGLE_CREDS_JSON) ? env.GOOGLE_CREDS_JSON : fs.readFileSync(env.GOOGLE_CREDS_JSON.trim(), 'utf8')), scopes: ['https://www.googleapis.com/auth/spreadsheets'] });
+  if (!id) throw new Error('Set GOOGLE_SHEET_ID in the environment');
+  const keyFile = keyFilePath(env);
+  if (!fs.existsSync(keyFile)) throw new Error(`Google service-account key not found at ${keyFile}: set GOOGLE_SERVICE_ACCOUNT_KEY_FILE`);
+  const auth = new google.auth.GoogleAuth({ credentials: JSON.parse(fs.readFileSync(keyFile, 'utf8')), scopes: ['https://www.googleapis.com/auth/spreadsheets'] });
   return { api: google.sheets({ version: 'v4', auth }), id };
 }
 

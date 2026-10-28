@@ -6,7 +6,7 @@
  * when the top results contain a confident name match. Otherwise the link is
  * the search page itself, so it is never a dead end.
  */
-import { http, match } from '@botarmy/core';
+import { http, match } from './core/index.js';
 
 const ORIGIN = 'https://find-and-update.company-information.service.gov.uk';
 export const MATCH_SIMILARITY = 90;

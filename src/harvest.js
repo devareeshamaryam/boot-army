@@ -7,10 +7,10 @@
  *   2. the publication's HTML page (hrefs, link text, bare asset URLs, csv-preview links)
  *   3. SPONSOR_CSV_URL from the environment
  *
- * Runnable alone:  node bots/sponsor-licence-scout/harvest.js
+ * Runnable alone:  node src/harvest.js
  */
 import { parse } from 'csv-parse/sync';
-import { http } from '@botarmy/core';
+import { http } from './core/index.js';
 
 export const PUBLICATION_PATH = '/government/publications/register-of-licensed-sponsors-workers';
 export const CONTENT_API = `https://www.gov.uk/api/content${PUBLICATION_PATH}`;
@@ -186,8 +186,8 @@ export function parseRows(csvText) {
 if (process.argv[1] && import.meta.url === (await import('node:url')).pathToFileURL(process.argv[1]).href) {
   const { config } = await import('dotenv');
   const { fileURLToPath } = await import('node:url');
-  config({ path: fileURLToPath(new URL('../../.env', import.meta.url)), quiet: true });
-  const { logger } = await import('@botarmy/core');
+  config({ path: fileURLToPath(new URL('../.env', import.meta.url)), quiet: true });
+  const { logger } = await import('./core/index.js');
   const log = logger.forBot('sponsor-licence-scout:harvest');
   try {
     const { csv, source } = await harvest({ log });

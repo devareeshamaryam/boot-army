@@ -1,12 +1,12 @@
 /**
  * B1 tests: the CSV parser and the pure diff. No network, no Google.
- *   Run: npm test -w bots/sponsor-licence-scout
+ *   Run: npm test
  */
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { parseRows } from '../harvest.js';
-import { HEADER, diffSponsors } from '../sheets.js';
-import { legalName, pickCompany, searchUrl } from '../companies.js';
+import { parseRows } from '../src/harvest.js';
+import { HEADER, diffSponsors } from '../src/sheets.js';
+import { legalName, pickCompany, searchUrl } from '../src/companies.js';
 
 const TODAY = '2026-10-05';
 const CSV_HEADER = 'Organisation Name,Town/City,County,Type & Rating,Route';
